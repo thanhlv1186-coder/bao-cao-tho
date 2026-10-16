@@ -1,0 +1,22 @@
+plugins { id 'com.android.application' }
+android {
+  namespace 'vn.dmx.baocaotho'
+  compileSdk 34
+  defaultConfig {
+    applicationId 'vn.dmx.baocaotho'
+    minSdk 24
+    targetSdk 34
+    versionCode((System.getenv('VCODE') ?: '1') as int)
+    versionName "1.${System.getenv('VCODE') ?: '1'}"
+  }
+  signingConfigs {
+    release {
+      storeFile file('release.jks')
+      storePassword 'baocaotho2026'
+      keyAlias 'baocaotho'
+      keyPassword 'baocaotho2026'
+    }
+  }
+  buildTypes { release { minifyEnabled false; signingConfig signingConfigs.release } }
+  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
