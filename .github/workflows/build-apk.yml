@@ -2,7 +2,7 @@ name: Build APK
 on:
   push:
     branches: [main]
-    paths: ['web/**', 'android/**', '.github/workflows/**']
+    paths: ['android/**', '.github/workflows/**']   # web/** cap nhat tu xa, khong can build lai APK
   workflow_dispatch:
 permissions:
   contents: write
