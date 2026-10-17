@@ -98,6 +98,12 @@ th:first-child,td:first-child{text-align:left}
 .lnk{display:block;text-align:center;color:var(--ac);font-weight:600;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--card)}
 .rk.hot{background:var(--badbg);color:var(--bad)}
 .sharebtn{flex:none;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:var(--ac);color:#fff;font-weight:700;font-size:13px;border:0}
+.imgov{position:fixed;inset:0;z-index:50;background:rgba(2,8,23,.94);display:flex;flex-direction:column;overflow:auto;-webkit-overflow-scrolling:touch}
+.imgov-bar{position:sticky;top:0;display:flex;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:rgba(2,8,23,.85);backdrop-filter:blur(6px)}
+.imgov-bar button,.imgov-bar a{flex:1;text-align:center;padding:12px;border-radius:10px;font-weight:700;font-size:14px;border:0;text-decoration:none}
+.imgov-x{background:#334155;color:#fff}.imgov-dl{background:var(--ac);color:#fff}
+.imgov-tip{color:#cbd5e1;font-size:13px;text-align:center;padding:4px 16px 12px}
+.imgov-wrap{padding:0 10px 30px}.imgov-wrap img{width:100%;border-radius:10px;display:block}
 
 header .sub{color:rgba(255,255,255,.85)}
 header .icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);color:#fff}
@@ -447,6 +453,17 @@ function drawShareCanvas(name){
   x.fillText('App Báo cáo Thợ GHLĐ · xuất ' + new Date().toLocaleString('vi-VN'), P, y);
   return c;
 }
+function showShareImage(blob, fname){
+  const url = URL.createObjectURL(blob);
+  const ov = document.createElement('div'); ov.className = 'imgov';
+  ov.innerHTML = `<div class="imgov-bar"><button class="imgov-x">✕ Đóng</button><a class="imgov-dl" download="${esc(fname)}">⤓ Lưu ảnh</a></div>
+    <div class="imgov-tip">Nhấn giữ ảnh → <b>Lưu vào Ảnh / Tải ảnh</b> hoặc <b>Chia sẻ</b> sang LINE, Zalo</div>
+    <div class="imgov-wrap"><img alt="Báo cáo"></div>`;
+  ov.querySelector('img').src = url; ov.querySelector('.imgov-dl').href = url;
+  const close = () => { ov.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000); };
+  ov.querySelector('.imgov-x').onclick = close;
+  document.body.appendChild(ov);
+}
 function shareCN(name){
   const c = drawShareCanvas(name); if (!c) return toast('Không tạo được ảnh');
   c.toBlob(async blob => {
@@ -458,10 +475,7 @@ function shareCN(name){
         return;
       }
     } catch(e){ if (e && e.name === 'AbortError') return; }
-    const url = URL.createObjectURL(blob), a = document.createElement('a');
-    a.href = url; a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
-    toast('Đã lưu ảnh về máy — mở LINE/Zalo để gửi');
+    showShareImage(blob, file.name);   // máy không hỗ trợ chia sẻ file -> hiện ảnh để nhấn giữ Lưu/Chia sẻ
   }, 'image/png');
 }
 
