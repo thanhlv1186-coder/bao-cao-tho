@@ -65,7 +65,7 @@ h3{font-size:13px;color:var(--mu);font-weight:600;text-transform:uppercase;lette
 .stat div{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--line);font-size:13.5px}
 .stat div span:first-child{color:var(--mu)}
 .stat div:nth-child(-n+2){border-top:0}
-input[type=search],input[type=password]{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:inherit;outline:none}
+input[type=search],input[type=password],.login input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:inherit;outline:none}
 input:focus{border-color:var(--ac)}
 .back{display:inline-flex;align-items:center;gap:4px;color:var(--ac);font-weight:600;margin-bottom:8px;padding:4px 0}
 .warn{background:var(--ylbg);color:#8a5a00;border:1px solid #f5d76e;border-radius:10px;padding:8px 10px;font-size:12.5px;margin-bottom:10px;white-space:pre-line}
@@ -241,7 +241,7 @@ function shell(body){
   const tabs = [['tq','Tổng quan',IC.tq],['cn','Chi nhánh',IC.cn],['dh','Đơn hàng',IC.dh],['tho','Thợ',IC.tho],['th','Theo tháng',IC.th]];
   return `<header><div class="hrow"><div style="flex:1;min-width:0"><div class="ttl">BÁO CÁO THỢ GHLĐ</div>
       <div class="sub num">${esc(d.ky)} · cập nhật ${esc(d.updated)}</div></div>
-      <button class="icon" id="rf" aria-label="Làm mới">${IC.ref}</button><button class="icon" id="lo" aria-label="Đăng xuất">${IC.out}</button></div>
+      <button class="icon" id="rf" aria-label="Làm mới">${IC.ref}</button><button class="icon" id="me" aria-label="Đổi tên">${IC.tho}</button><button class="icon" id="lo" aria-label="Đăng xuất">${IC.out}</button></div>
     <div class="seg">${d.bc.map((b,i) => `<button data-vi="${i}" class="${i===S.vi?'on':''}">${esc(b.vung)}</button>`).join('')}</div></header>
     <main>${S.newVer ? `<div class="upd"><span>Có bản app mới (v${S.newVer.v})</span><a href="${S.newVer.url}">Tải về</a></div>` : ''}
     ${d.warn ? `<div class="warn">${esc(d.warn)}</div>` : ''}${body}</main>
@@ -398,8 +398,53 @@ function viewTH(){
       return `<tr><td>${esc(r[0])}</td>${g.items.map((x,i) => `<td>${i === g.items.length-1 ? chip(x.v) : x.txt}</td>`).join('')}</tr>`; }).join('')}</tbody></table></div>`;
 }
 
+/* ---------------- Thống kê sử dụng: mỗi lần mở app gửi 1 dòng về Google Sheet (Apps Script) */
+const LOG_URL = 'https://script.google.com/macros/s/AKfycbyBsGSKTNq_eDRyYIdwrEWndHXT8jyjv1TFPfsxOfozRKXhH6zkiMSJZ4P3NwV93ppB/exec';   // Google Apps Script nhận log
+function devId(){ let d = LS.get('did'); if (!d){ d = (Date.now().toString(36) + Math.random().toString(36).slice(2, 8)).toUpperCase(); LS.set('did', d); } return d; }
+function uaInfo(){
+  const ua = navigator.userAgent;
+  const platform = /iPhone|iPad|iPod/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : /Windows/.test(ua) ? 'Windows' : /Mac/.test(ua) ? 'Mac' : 'Khác';
+  let model = '';
+  if (platform === 'Android'){ const m = ua.match(/Android[^;]*;\s*([^;)]+?)(?:\sBuild|[;)])/); model = m ? m[1].trim() : ''; }
+  else if (platform === 'iOS'){ model = (ua.match(/iPhone|iPad|iPod/) || [''])[0]; }
+  const browser = /SamsungBrowser/.test(ua) ? 'Samsung' : /EdgiOS|Edg/.test(ua) ? 'Edge' : /CriOS|Chrome/.test(ua) ? 'Chrome' : /FxiOS|Firefox/.test(ua) ? 'Firefox' : /Safari/.test(ua) ? 'Safari' : 'Khác';
+  const pwa = (window.navigator.standalone || matchMedia('(display-mode: standalone)').matches) ? 'App (MH chính)' : 'Trình duyệt';
+  return {ua, platform, model, browser, pwa};
+}
+function sendLog(ev){
+  if (!LOG_URL) return;
+  try {
+    const i = uaInfo();
+    const body = JSON.stringify({ ev, did: devId(), name: LS.get('uname') || '', manv: LS.get('umnv') || '',
+      platform: i.platform, model: i.model, browser: i.browser, pwa: i.pwa, region: S.data ? BC().vung : '',
+      ver: String(CFG.ver || (/github\.io$/.test(location.hostname) ? 'iOS' : '')),
+      ctime: new Date().toLocaleString('vi-VN'), tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      lang: navigator.language, screen: screen.width + 'x' + screen.height, ua: i.ua });
+    const blob = new Blob([body], {type: 'text/plain;charset=UTF-8'});
+    if (navigator.sendBeacon && navigator.sendBeacon(LOG_URL, blob)) return;
+    fetch(LOG_URL, {method: 'POST', mode: 'no-cors', body: blob, keepalive: true}).catch(() => {});
+  } catch(e){}
+}
+function logOpen(){ if (S._logged) return; S._logged = true; sendLog('open'); }
+function nameForm(canCancel){
+  $('#app').innerHTML = `<div class="login">
+    <div class="sub" style="margin-bottom:6px">Điện Máy Xanh · Thợ GHLĐ</div>
+    <h1>Bạn là ai?</h1>
+    <div class="sub" style="margin-bottom:18px">Nhập họ tên và mã nhân viên để tiếp tục. Dùng để nhận diện máy dùng app.</div>
+    <input id="nm" placeholder="Họ tên" value="${esc(LS.get('uname') || '')}" style="margin-bottom:10px">
+    <input id="mv" placeholder="Mã nhân viên" value="${esc(LS.get('umnv') || '')}" inputmode="numeric">
+    <button class="btn" id="save">Tiếp tục</button>
+    ${canCancel ? '<button class="lnk" id="cancel" style="margin-top:10px">Huỷ</button>' : ''}
+    <div class="err" id="er2"></div></div>`;
+  const save = () => { const n = $('#nm').value.trim(); if (!n){ $('#er2').textContent = 'Vui lòng nhập họ tên'; return; }
+    LS.set('uname', n); LS.set('umnv', $('#mv').value.trim()); S._logged = false; render(); };
+  $('#save').onclick = save; if (canCancel) $('#cancel').onclick = () => render();
+}
+
 function render(){
   if (!S.data) return;
+  if (LOG_URL && !LS.get('uname')) return nameForm(false);
+  logOpen();
   if (S.vi >= S.data.bc.length) S.vi = 0;
   const r = route(); let body;
   if (r.v === 'cn') body = r.id ? viewCNDetail(r.id) : viewCN();
@@ -415,8 +460,9 @@ function render(){
 }
 
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],#rf,#lo'); if (!t) return;
+  const t = e.target.closest('[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],#rf,#me,#lo'); if (!t) return;
   if (t.id === 'rf') return refresh(false);
+  if (t.id === 'me') return nameForm(true);
   if (t.id === 'lo') { LS.del('pw'); LS.del('enc'); S.data = null; return loginView(); }
   if (t.dataset.vi !== undefined) { S.vi = +t.dataset.vi; LS.set('vi', S.vi); const r = route(); if (r.id) location.hash = r.v; else render(); return; }
   if (t.dataset.go) { location.hash = t.dataset.go; return; }
