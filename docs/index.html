@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1a73e8">
+<title>Báo cáo Thợ GHLĐ</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BC Thợ GHLĐ">
+<script src="config.js"></script>
+<style>
+:root{--bg:#eef3fa;--card:#ffffff;--card2:#f3f7fd;--line:#dde6f2;--tx:#1e293b;--mu:#5b6b82;--dim:#8a99ad;
+--ok:#15803d;--okbg:#e3f6e9;--bad:#dc2626;--badbg:#fde8e8;--na:#64748b;--nabg:#eef2f7;
+--ac:#1a73e8;--acbg:#e8f1fe;--hd:#1a73e8;--hd2:#2b86f0;--yl:#ffd400;--ylbg:#fff6cc}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.num{font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,var(--hd),var(--hd2));color:#fff;border-bottom:3px solid var(--yl);padding:calc(10px + env(safe-area-inset-top)) 16px 8px}
+.hrow{display:flex;align-items:center;gap:10px}
+.ttl{font-weight:700;font-size:16px;flex:1;letter-spacing:.2px}
+.sub{color:var(--mu);font-size:12px}
+.icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--card);border:1px solid var(--line)}
+.icon svg{width:18px;height:18px}
+.spin svg{animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px;margin-top:8px}
+.seg button{flex:1;padding:7px 0;border-radius:8px;color:var(--mu);font-weight:600;font-size:14px}
+.seg button.on{background:var(--card2);color:var(--tx);box-shadow:inset 0 0 0 1px var(--line)}
+main{padding:12px 16px 90px;max-width:760px;margin:0 auto}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:5;display:flex;background:#fff;box-shadow:0 -2px 10px rgba(30,64,120,.08);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--dim);padding:4px 0}
+nav button svg{width:22px;height:22px}
+nav button.on{color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi .k{font-size:12.5px;color:var(--mu);display:flex;justify-content:space-between;gap:6px;align-items:flex-start}
+.kpi .v{font-size:24px;font-weight:700;margin:4px 0 2px}
+.kpi .m{font-size:12px;color:var(--mu)}
+.kpi .m b{color:var(--tx);font-weight:600}
+.chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.c-ok{color:var(--ok);background:var(--okbg)}.c-bad{color:var(--bad);background:var(--badbg)}.c-na{color:var(--mu);background:var(--nabg)}
+.bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:6px;position:relative}
+.bar i{display:block;height:100%;border-radius:6px}
+.bar .t{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--tx);opacity:.6}
+h3{font-size:13px;color:var(--mu);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin:18px 2px 8px}
+.row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row .n{flex:1;min-width:0}
+.row .n div:first-child{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .r{text-align:right;font-size:13px}
+.list .row{cursor:pointer}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin:0 -16px 10px;padding:0 16px 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mu);font-size:13px;font-weight:600}
+.chips button.on{border-color:var(--ac);color:var(--ac);background:var(--acbg)}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.mini div{background:var(--card2);border-radius:8px;padding:5px 7px;font-size:11px;color:var(--mu)}
+.mini b{display:block;font-size:13.5px;color:var(--tx);margin-top:1px}
+.mini .bad b{color:var(--bad)}.mini .ok b{color:var(--ok)}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.stat div{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-top:1px solid var(--line);font-size:13.5px}
+.stat div span:first-child{color:var(--mu)}
+.stat div:nth-child(-n+2){border-top:0}
+input[type=search],input[type=password]{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:inherit;outline:none}
+input:focus{border-color:var(--ac)}
+.back{display:inline-flex;align-items:center;gap:4px;color:var(--ac);font-weight:600;margin-bottom:8px;padding:4px 0}
+.warn{background:var(--ylbg);color:#8a5a00;border:1px solid #f5d76e;border-radius:10px;padding:8px 10px;font-size:12.5px;margin-bottom:10px;white-space:pre-line}
+.upd{background:var(--acbg);border:1px solid #b9d4fb;color:var(--ac);border-radius:10px;padding:9px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.upd a{color:var(--tx);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{color:var(--mu);font-weight:600;text-align:right;padding:6px 4px;border-bottom:1px solid var(--line)}
+td{text-align:right;padding:7px 4px;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+.login{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:24px;max-width:420px;margin:0 auto}
+.login h1{font-size:22px;margin:0 0 4px}
+.btn{width:100%;margin-top:12px;padding:12px;border-radius:10px;background:var(--ac);color:#fff;font-weight:700}
+.err{color:var(--bad);font-size:13px;margin-top:8px;min-height:18px}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);padding:8px 14px;border-radius:999px;font-size:13px;z-index:9;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+.empty{color:var(--dim);text-align:center;padding:24px 0;font-size:13px}
+.sel{display:flex;gap:8px;margin-bottom:10px}
+.sel select{flex:none;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:inherit}
+.rk{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--card2);color:var(--mu);flex:none}
+.stk{display:flex;height:10px;border-radius:6px;overflow:hidden;background:var(--line);margin-top:8px}
+.stk i{display:block;height:100%}
+.lg{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:6px}
+.lg span::before{content:'';display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:var(--c)}
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.tri div{background:var(--card2);border-radius:10px;padding:8px 10px;border-top:3px solid var(--c)}
+.tri small{display:block;font-size:11px;color:var(--mu)}
+.tri b{font-size:18px}
+.tri em{font-style:normal;font-size:11.5px;color:var(--mu)}
+.tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
+.lnk{display:block;text-align:center;color:var(--ac);font-weight:600;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--card)}
+.rk.hot{background:var(--badbg);color:var(--bad)}
+
+header .sub{color:rgba(255,255,255,.85)}
+header .icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);color:#fff}
+header .seg{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.25)}
+header .seg button{color:rgba(255,255,255,.85)}
+header .seg button.on{background:#fff;color:var(--hd);box-shadow:none}
+.card{box-shadow:0 1px 3px rgba(30,64,120,.08)}
+.kpi .k span:first-child{color:var(--hd);font-weight:700}
+th{background:var(--hd);color:#fff}
+table thead th:first-child{border-top-left-radius:8px}table thead th:last-child{border-top-right-radius:8px}
+tbody tr:nth-child(even) td{background:#f7faff}
+.rk{background:var(--ylbg);color:#8a5a00}
+.chips button.on{background:var(--hd);color:#fff;border-color:var(--hd)}
+.login h1{color:var(--hd)}
+.toast{color:#fff;background:#1e293b;border-color:#1e293b}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+'use strict';
+const CFG = window.APP_CFG || {repo:'', ver:0};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LS = {get(k){try{return localStorage.getItem(k)}catch(e){return null}}, set(k,v){try{localStorage.setItem(k,v)}catch(e){}}, del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const IC = {
+  ref:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>',
+  tq:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>',
+  cn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>',
+  dh:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13v10H1zM14 10h4l3 3v3h-7"/><circle cx="5.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/></svg>',
+  tho:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
+  th:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>',
+  out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>'
+};
+let S = {data:null, vi: +(LS.get('vi')||0), kpi: +(LS.get('kpi')||1), mk: +(LS.get('mk')||1), sortTho: LS.get('st')||'risk', q:'', loading:false, newVer:null};
+
+/* ------------------------------------------------ dữ liệu: tải + giải mã */
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function decrypt(enc, pw){
+  const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({name:'PBKDF2', salt:b64(enc.salt), iterations:enc.it, hash:'SHA-256'}, km, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  const raw = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64(enc.iv)}, key, b64(enc.ct));
+  const st = new Blob([raw]).stream().pipeThrough(new DecompressionStream('gzip'));
+  return JSON.parse(await new Response(st).text());
+}
+async function fetchEnc(){
+  const urls = [
+    [`https://raw.githubusercontent.com/${CFG.repo}/main/data/app.json?t=${Date.now()}`, {}],
+    [`https://api.github.com/repos/${CFG.repo}/contents/data/app.json?t=${Date.now()}`, {headers:{Accept:'application/vnd.github.raw+json'}}]
+  ];
+  let last;
+  for (const [u, o] of urls){
+    try { const r = await fetch(u, {cache:'no-store', ...o}); if (r.ok) return await r.text(); last = 'HTTP ' + r.status; }
+    catch(e){ last = e.message; }
+  }
+  throw new Error(last || 'mất kết nối');
+}
+async function load(pw, quiet){
+  S.loading = true; spin(true);
+  let txt = null, online = true;
+  try { txt = await fetchEnc(); }
+  catch(e){ online = false; txt = LS.get('enc'); if (!txt) { spin(false); S.loading = false; throw new Error('Không tải được dữ liệu (' + e.message + ')'); } }
+  const enc = JSON.parse(txt);
+  const d = await decrypt(enc, pw);           // sai mật khẩu -> lỗi
+  const changed = !S.data || S.data.updated !== d.updated;
+  S.data = d; LS.set('enc', txt); LS.set('pw', pw);
+  S.loading = false; spin(false);
+  if (!quiet || changed) toast(online ? (changed && S.data ? 'Dữ liệu ' + d.updated : 'Đã là dữ liệu mới nhất') : 'Đang offline – dữ liệu ' + d.updated);
+  render();
+}
+function refresh(quiet){ const pw = LS.get('pw'); if (pw && !S.loading) load(pw, quiet).catch(e => toast(e.message)); }
+async function checkVer(){
+  if (!CFG.repo || !CFG.ver) return;
+  try { const r = await fetch(`https://api.github.com/repos/${CFG.repo}/releases/latest`); if (!r.ok) return;
+    const j = await r.json(); const v = parseInt(String(j.tag_name||'').replace(/\D/g,''));
+    if (v > CFG.ver){ S.newVer = {v, url:`https://github.com/${CFG.repo}/releases/latest/download/BaoCaoTho.apk`}; render(); } } catch(e){}
+}
+
+/* ------------------------------------------------ định dạng (theo NumberFormat của Excel) */
+function fmtX(v, f, gi, si){
+  if (v === null || v === undefined || v === '') return '–';
+  if (typeof v === 'string') return v;
+  f = f || guessFmt(gi, si);
+  if (f.includes('%')){ const d = ((f.match(/\.(0+)/)||[,''])[1]).length; return (v*100).toLocaleString('vi-VN',{minimumFractionDigits:d,maximumFractionDigits:d}) + '%'; }
+  const d = f === 'General' ? (Number.isInteger(v) ? 0 : 2) : ((f.match(/\.(0+)/)||[,''])[1]).length;
+  return v.toLocaleString('vi-VN',{minimumFractionDigits:d,maximumFractionDigits:d});
+}
+function guessFmt(gi, si){                     // khi không có định dạng Excel
+  if (gi === 5) return si === 4 ? '0.0%' : '#,##0';
+  if (si === 2) return '0.0%';                 // %HT / Lũy kế
+  if (gi === 0) return '#,##0';
+  if (gi === 3) return '0.00';
+  return '0.00%';
+}
+const chipCls = t => /^Đạt/.test(t||'') ? 'c-ok' : /^Chưa đạt/.test(t||'') ? 'c-bad' : 'c-na';
+const chip = t => `<span class="chip ${chipCls(t)}">${esc(t||'–')}</span>`;
+
+/* ------------------------------------------------ truy cập dữ liệu */
+const BC = () => (S.data.bc[S.vi] || S.data.bc[0]);
+function grp(row, gi, fmts, labs){
+  const b = BC(), g = b.groups[gi], c0 = g.c0, n = g.n, out = [];
+  for (let i = 0; i < n; i++) out.push({lab: labs[c0+i], v: row[c0+i], txt: fmtX(row[c0+i], fmts[c0+i], gi, i)});
+  return {name: (g.name||'').trim(), mt: out[0], tt: out[1], items: out, dg: out[n-1].v, ht: n === 6 ? out[4] : out[2]};
+}
+const kName = gi => (BC().groups[gi].name||'').replace(/^[^\wÀ-ỹ]+/u,'').trim();
+function U(){ const u = S.data.users; const ix = {}; u.cols.forEach((c,i) => ix[c] = i); return {rows:u.rows, ix, cols:u.cols}; }
+const userRows = () => { const {rows, ix} = U(); return rows.filter(r => r[ix['Vùng rút gọn']] === BC().vung); };
+
+function fmtU(col, v){
+  if (v === null || v === undefined) return '–';
+  if (typeof v !== 'number') return esc(v);
+  if (/^%/.test(col)) return (v*100).toLocaleString('vi-VN',{maximumFractionDigits:1}) + '%';
+  if (/Sao/.test(col)) return v.toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
+  return v.toLocaleString('vi-VN',{maximumFractionDigits:2});
+}
+
+/* ------------------------------------------------ giao diện */
+function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('on'), 2600); }
+function spin(on){ const b = $('#rf'); if (b) b.classList.toggle('spin', on); }
+function route(){ const h = (location.hash||'#tq').slice(1).split('/'); return {v:h[0]||'tq', id: h[1] ? decodeURIComponent(h.slice(1).join('/')) : null}; }
+
+function iosHint(){
+  const ios = /iPhone|iPad|iPod/.test(navigator.userAgent), standalone = window.navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+  return ios && !standalone ? `<div class="warn" style="margin-top:16px;background:var(--acbg);color:var(--hd);border-color:#b9d4fb">📲 Cài lên iPhone: bấm nút <b>Chia sẻ</b> (ô vuông có mũi tên ở thanh dưới Safari) → <b>Thêm vào MH chính</b> → <b>Thêm</b>. Lần sau mở app từ biểu tượng trên màn hình.</div>` : '';
+}
+function loginView(msg){
+  $('#app').innerHTML = `<div class="login">
+    <div class="sub" style="margin-bottom:6px">Điện Máy Xanh · Thợ GHLĐ</div>
+    <h1>Báo cáo Thợ GHLĐ</h1>
+    <div class="sub" style="margin-bottom:18px">Nhập mật khẩu được cấp để xem báo cáo</div>
+    <input type="password" id="pw" placeholder="Mật khẩu" autocomplete="current-password">
+    <button class="btn" id="go">Xem báo cáo</button>
+    <div class="err" id="er">${esc(msg||'')}</div>${iosHint()}</div>`;
+  const go = async () => { const pw = $('#pw').value; if (!pw) return; $('#go').textContent = 'Đang tải…';
+    try { await load(pw); } catch(e){ loginView(/decrypt|operation|OperationError/i.test(e.name + e.message) ? 'Sai mật khẩu' : e.message); } };
+  $('#go').onclick = go; $('#pw').onkeydown = e => { if (e.key === 'Enter') go(); }; $('#pw').focus();
+}
+
+function shell(body){
+  const d = S.data, r = route();
+  const tabs = [['tq','Tổng quan',IC.tq],['cn','Chi nhánh',IC.cn],['dh','Đơn hàng',IC.dh],['tho','Thợ',IC.tho],['th','Theo tháng',IC.th]];
+  return `<header><div class="hrow"><div style="flex:1;min-width:0"><div class="ttl">BÁO CÁO THỢ GHLĐ</div>
+      <div class="sub num">${esc(d.ky)} · cập nhật ${esc(d.updated)}</div></div>
+      <button class="icon" id="rf" aria-label="Làm mới">${IC.ref}</button><button class="icon" id="lo" aria-label="Đăng xuất">${IC.out}</button></div>
+    <div class="seg">${d.bc.map((b,i) => `<button data-vi="${i}" class="${i===S.vi?'on':''}">${esc(b.vung)}</button>`).join('')}</div></header>
+    <main>${S.newVer ? `<div class="upd"><span>Có bản app mới (v${S.newVer.v})</span><a href="${S.newVer.url}">Tải về</a></div>` : ''}
+    ${d.warn ? `<div class="warn">${esc(d.warn)}</div>` : ''}${body}</main>
+    <nav>${tabs.map(t => `<button data-go="${t[0]}" class="${r.v===t[0]?'on':''}">${t[2]}${t[1]}</button>`).join('')}</nav>`;
+}
+
+function kpiCard(row, gi, big){
+  const b = BC(), g = grp(row, gi, b.fmt_d, b.lab_d);
+  const ht = typeof g.ht.v === 'number' ? g.ht.v : null;
+  const col = chipCls(g.dg) === 'c-ok' ? 'var(--ok)' : chipCls(g.dg) === 'c-bad' ? 'var(--bad)' : 'var(--na)';
+  const extra = g.items.slice(2, -1).filter(x => x !== g.ht).map(x => `${esc(x.lab)} <b class="num">${x.txt}</b>`).join(' · ');
+  return `<div class="card kpi"><div class="k"><span>${esc(g.name)}</span>${chip(g.dg)}</div>
+    <div class="v num">${g.tt.txt}</div>
+    <div class="m">${esc(g.mt.lab)} <b class="num">${g.mt.txt}</b> · ${esc(g.ht.lab)} <b class="num">${g.ht.txt}</b></div>
+    ${extra ? `<div class="m" style="margin-top:2px">${extra}</div>` : ''}
+    ${ht !== null ? `<div class="bar"><i style="width:${Math.min(100, Math.max(2, ht/1.3*100))}%;background:${col}"></i><span class="t" style="left:${100/1.3}%"></span></div>` : ''}</div>`;
+}
+
+function viewTQ(){
+  const b = BC(), lines = [];
+  for (let gi = 1; gi < b.groups.length; gi++){
+    const bad = b.cn.filter(r => chipCls(grp(r, gi, b.fmt_d, b.lab_d).dg) === 'c-bad');
+    lines.push(`<div class="card"><div class="kpi"><div class="k"><span style="color:var(--tx);font-weight:600">${esc(b.groups[gi].name)}</span>
+      <span class="chip ${bad.length ? 'c-bad' : 'c-ok'}">${bad.length ? bad.length + ' CN chưa đạt' : 'Tất cả đạt'}</span></div></div>
+      ${bad.length ? `<div class="list" style="margin-top:4px">${bad.map(r => { const g = grp(r, gi, b.fmt_d, b.lab_d);
+        return `<div class="row" data-cn="${esc(r[1])}"><div class="n"><div>${esc(r[1])}</div></div><div class="r num">${g.tt.txt} <span class="sub">/ MT ${g.mt.txt}</span></div></div>`; }).join('')}</div>` : ''}</div>`);
+  }
+  return `<div class="grid2">${b.groups.map((g,gi) => kpiCard(b.total, gi)).join('')}</div>
+    <h3>Chi nhánh chưa đạt</h3>${lines.join('')}`;
+}
+
+function kpiChips(sel, attr){ return `<div class="chips">${BC().groups.map((g,i) => `<button data-${attr}="${i}" class="${i===sel?'on':''}">${esc(kName(i))}</button>`).join('')}</div>`; }
+
+function viewCN(){
+  const b = BC(), gi = Math.min(S.kpi, b.groups.length-1);
+  const rows = b.cn.map(r => ({r, g: grp(r, gi, b.fmt_d, b.lab_d)}));
+  rows.sort((a,c) => (typeof a.g.ht.v === 'number' ? a.g.ht.v : 9) - (typeof c.g.ht.v === 'number' ? c.g.ht.v : 9));
+  if (gi === 4) rows.reverse();   // hủy nhập trả: %HT thấp là tốt -> xấu lên trước
+  return kpiChips(gi, 'kpi') + `<div class="card list">${rows.map(({r,g}) => {
+    const ht = typeof g.ht.v === 'number' ? g.ht.v : null, cc = chipCls(g.dg);
+    return `<div class="row" data-cn="${esc(r[1])}" style="display:block"><div style="display:flex;gap:8px;align-items:center">
+      <div class="n"><div>${esc(r[1])}</div></div><span class="num" style="font-weight:700">${g.tt.txt}</span>${chip(g.dg)}</div>
+      <div class="sub num" style="margin-top:2px">${esc(g.mt.lab)} ${g.mt.txt} · ${esc(g.ht.lab)} ${g.ht.txt}</div>
+      ${ht !== null ? `<div class="bar"><i style="width:${Math.min(100, Math.max(2, ht/1.3*100))}%;background:${cc==='c-ok'?'var(--ok)':cc==='c-bad'?'var(--bad)':'var(--na)'}"></i><span class="t" style="left:${100/1.3}%"></span></div>` : ''}</div>`; }).join('')}</div>`;
+}
+
+function thoRow(r, ix, showCN){
+  const risk = r[ix['Điểm rủi ro']] || 0, rank = r[ix['Hạng rủi ro trong kho']];
+  return `<div class="row" data-tho="${esc(r[ix['Mã user']])}"><div class="rk ${risk >= 5 ? 'hot' : ''}">${rank ?? '–'}</div>
+    <div class="n"><div>${esc(r[ix['Tên user']] || r[ix['User']])}</div><div class="sub">${esc(r[ix['Mã user']])}${showCN ? ' · ' + esc(r[ix['Chi nhánh']]) : ''} · ${fmtU('',r[ix['Đơn TC (3268)']])} đơn</div></div>
+    <div class="r num"><div>${fmtU('% Đúng hẹn', r[ix['% Đúng hẹn']])} <span class="sub">đúng hẹn</span></div>
+    <div class="sub">trễ ${fmtU('',r[ix['Đơn trễ hẹn']])} · lỗi ${fmtU('',r[ix['Tổng lỗi TN']])} · ⭐${fmtU('Sao',r[ix['Sao phục vụ']])}</div></div></div>`;
+}
+
+function viewCNDetail(name){
+  const b = BC(), r = b.cn.find(x => x[1] === name) || (b.total[1] === name ? b.total : null);
+  if (!r) return `<div class="empty">Không thấy chi nhánh ${esc(name)}</div>`;
+  const {ix} = U(); const us = userRows().filter(u => u[ix['Chi nhánh']] === name).sort((a,c) => (c[ix['Điểm rủi ro']]||0) - (a[ix['Điểm rủi ro']]||0));
+  const L = S.data.loi, li = {}; L.cols.forEach((c,i) => li[c] = i);
+  const loi = L.rows.filter(x => x[li['Cấp']] === 'KHO' && x[li['Chi nhánh']] === name && x[li['Vùng rút gọn']] === b.vung).sort((a,c) => c[li['Số lỗi']] - a[li['Số lỗi']]);
+  return `<button class="back" data-back>‹ Quay lại</button><div class="ttl" style="font-size:20px;margin-bottom:10px">${esc(name)}</div>
+    <div class="grid2">${b.groups.map((g,gi) => kpiCard(r, gi)).join('')}</div>
+    <button class="lnk" data-dh="${esc(name)}" style="width:100%">🚚 Đơn hàng &amp; phương tiện →</button>
+    ${loi.length ? `<h3>Lỗi tay nghề theo nhóm hàng</h3><div class="card">${loi.map(x => `<div class="row"><div class="n"><div>${esc(x[li['Nhóm hàng']])}</div></div><div class="r num" style="font-weight:700">${x[li['Số lỗi']]}</div></div>`).join('')}</div>` : ''}
+    <h3>Thợ (${us.length}) · xếp theo điểm rủi ro</h3>
+    <div class="card list">${us.map(u => thoRow(u, ix)).join('') || '<div class="empty">Chưa có dữ liệu thợ</div>'}</div>`;
+}
+
+function viewTho(){
+  const {ix} = U(); const q = S.q.trim().toLowerCase();
+  const key = {risk:'Điểm rủi ro', don:'Đơn TC (3268)', tre:'Đơn trễ hẹn', loi:'Tổng lỗi TN', dt:'Doanh thu thuần', sao:'Sao phục vụ'}[S.sortTho];
+  let us = userRows();
+  if (q) us = us.filter(u => [u[ix['User']], u[ix['Chi nhánh']], u[ix['Tên kho ĐP']]].join(' ').toLowerCase().includes(q));
+  us.sort((a,c) => S.sortTho === 'sao' ? (a[ix[key]] ?? 9) - (c[ix[key]] ?? 9) : (c[ix[key]]||0) - (a[ix[key]]||0));
+  const shown = us.slice(0, 150);
+  return `<div class="sel"><input type="search" id="q" placeholder="Tìm tên / mã thợ / chi nhánh" value="${esc(S.q)}">
+    <select id="st">${[['risk','Rủi ro'],['don','Đơn TC'],['tre','Trễ hẹn'],['loi','Lỗi TN'],['dt','Doanh thu'],['sao','Sao thấp']].map(o => `<option value="${o[0]}" ${o[0]===S.sortTho?'selected':''}>${o[1]}</option>`).join('')}</select></div>
+    <div class="sub" style="margin:0 2px 8px">${us.length} thợ${us.length > shown.length ? ' · hiện 150 đầu' : ''}</div>
+    <div class="card list" id="tl">${shown.map(u => thoRow(u, ix, true)).join('') || '<div class="empty">Không tìm thấy</div>'}</div>`;
+}
+
+function viewThoDetail(ma){
+  const {rows, ix, cols} = U(); const u = rows.find(r => String(r[ix['Mã user']]) === String(ma));
+  if (!u) return `<div class="empty">Không thấy thợ ${esc(ma)}</div>`;
+  const skip = new Set(['Kỳ báo cáo','Vùng rút gọn','User','Mã user','Tên user','Tên kho ĐP','Chi nhánh','Mã kho ĐP']);
+  const T = S.data.tre, ti = {}; T.cols.forEach((c,i) => ti[c] = i);
+  const tre = T.rows.filter(r => String(r[ti['Nhân viên giao']]||'').split('-')[0].trim() === String(ma));
+  const L = S.data.loi, li = {}; L.cols.forEach((c,i) => li[c] = i);
+  const loi = L.rows.filter(x => x[li['Cấp']] !== 'KHO' && String(x[li['User']]||'').split('-')[0].trim() === String(ma));
+  return `<button class="back" data-back>‹ Quay lại</button>
+    <div class="ttl" style="font-size:20px">${esc(u[ix['Tên user']])}</div>
+    <div class="sub" style="margin-bottom:10px">${esc(ma)} · ${esc(u[ix['Tên kho ĐP']])}</div>
+    <div class="card"><div class="stat num">${cols.filter(c => !skip.has(c)).map(c => `<div><span>${esc(c)}</span><b>${fmtU(c, u[ix[c]])}</b></div>`).join('')}</div></div>
+    ${loi.length ? `<h3>Lỗi tay nghề theo nhóm hàng</h3><div class="card">${loi.map(x => `<div class="row"><div class="n"><div>${esc(x[li['Nhóm hàng']])}</div></div><div class="r num" style="font-weight:700">${x[li['Số lỗi']]}</div></div>`).join('')}</div>` : ''}
+    ${thoXe(ma)}
+    <h3>Đơn trễ hẹn (${tre.length})</h3>
+    <div class="card">${tre.map(r => `<div class="row" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num">${esc(r[ti['Mã đơn hàng vật lý']])}</b><span class="chip c-bad num">trễ ${fmtU('', Math.round(r[ti['Số phút trễ']]||0))}′</span></div>
+      <div class="sub">${esc(r[ti['TÊN YCVC']])}</div>
+      <div class="sub num">Hẹn cuối ${esc(r[ti['TG HẸN GIAO CUỐI']])} · đến nhà ${esc(r[ti['TG ĐẾN NHÀ KHÁCH']])} · ${esc(r[ti['Kiểu đổi giờ']])} · ${esc(r[ti['Xác nhận KH']])}</div></div>`).join('') || '<div class="empty">Không có đơn trễ hẹn 👏</div>'}</div>`;
+}
+
+/* ---------- ĐƠN HÀNG & PHƯƠNG TIỆN (TQ_XE: Xe máy / Xe tải NB / Xe thuê — như sheet TỔNG QUAN mục 1) */
+const XG = [['Xe máy','XE MÁY','#1a73e8'],['Xe tải NB','XE TẢI NỘI BỘ','#16a34a'],['Xe thuê','XE THUÊ','#f2a900']];
+function XE(){ const t = S.data.xe || {cols:[],rows:[]}; const ix = {}; t.cols.forEach((c,i) => ix[c] = i); return {rows: t.rows.filter(r => r[ix['Vùng rút gọn']] === BC().vung), ix}; }
+const n0 = v => (v||0).toLocaleString('vi-VN');
+function agg(rows, ix){ const a = {tong:0}; XG.forEach(g => a[g[0]] = 0); rows.forEach(r => { a[r[ix['Nhóm xe']]] = (a[r[ix['Nhóm xe']]]||0) + (r[ix['Số đơn']]||0); a.tong += r[ix['Số đơn']]||0; }); return a; }
+const pct = (a,b) => b ? (a/b*100).toLocaleString('vi-VN',{maximumFractionDigits:1}) + '%' : '–';
+const stk = a => `<div class="stk">${XG.map(g => a.tong ? `<i style="width:${a[g[0]]/a.tong*100}%;background:${g[2]}"></i>` : '').join('')}</div>`;
+function dhCard(a, title){
+  return `<div class="card"><div class="kpi"><div class="k"><span>${esc(title)}</span><span class="chip c-na">% ĐƠN XE THUÊ ${pct(a['Xe thuê'], a.tong)}</span></div>
+    <div class="v num">${n0(a.tong)} <span class="sub">TỔNG ĐƠN</span></div></div>${stk(a)}
+    <div class="tri num">${XG.map(g => `<div style="--c:${g[2]}"><small>${g[1]}</small><b>${n0(a[g[0]])}</b> <em>${pct(a[g[0]], a.tong)}</em></div>`).join('')}</div></div>`;
+}
+function viewDH(){
+  const {rows, ix} = XE(); const kho = rows.filter(r => r[ix['Cấp']] === 'KHO');
+  if (!kho.length) return '<div class="empty">Chưa có dữ liệu đơn hàng / phương tiện</div>';
+  const by = {}; kho.forEach(r => (by[r[ix['Chi nhánh']]] = by[r[ix['Chi nhánh']]] || []).push(r));
+  const list = Object.entries(by).map(([cn, rs]) => ({cn, a: agg(rs, ix)})).sort((x,y) => y.a.tong - x.a.tong);
+  return dhCard(agg(kho, ix), 'ĐƠN HÀNG THÁNG · ' + BC().vung) +
+    `<div class="lg">${XG.map(g => `<span style="--c:${g[2]}">${g[1]}</span>`).join('')}</div>
+    <h3>Theo chi nhánh</h3><div class="card list">${list.map(({cn,a}) => `<div class="row" data-dh="${esc(cn)}" style="display:block">
+      <div style="display:flex;gap:8px;align-items:baseline"><div class="n"><div>${esc(cn)}</div></div><b class="num">${n0(a.tong)}</b><span class="sub" style="width:64px;text-align:right">thuê ${pct(a['Xe thuê'],a.tong)}</span></div>
+      ${stk(a)}<div class="sub num" style="margin-top:4px">Xe máy ${n0(a['Xe máy'])} · Xe tải NB ${n0(a['Xe tải NB'])} · Xe thuê ${n0(a['Xe thuê'])}</div></div>`).join('')}</div>`;
+}
+function viewDHDetail(cn){
+  const {rows, ix} = XE(); const kho = rows.filter(r => r[ix['Cấp']] === 'KHO' && r[ix['Chi nhánh']] === cn);
+  const tai = kho.filter(r => r[ix['Loại xe']] === 'Xe tải').sort((x,y) => y[ix['Số đơn']] - x[ix['Số đơn']]);
+  const us = {}; rows.filter(r => r[ix['Cấp']] !== 'KHO' && r[ix['Chi nhánh']] === cn).forEach(r => { const k = r[ix['Mã user']]; (us[k] = us[k] || []).push(r); });
+  const {rows: ur, ix: ui} = U(); const nm = k => { const u = ur.find(x => String(x[ui['Mã user']]) === String(k)); return u ? u[ui['Tên user']] : k; };
+  const ul = Object.entries(us).map(([k, rs]) => ({k, a: agg(rs, ix)})).sort((x,y) => y.a.tong - x.a.tong);
+  return `<button class="back" data-back>‹ Quay lại</button><div class="ttl" style="font-size:20px;margin-bottom:10px">${esc(cn)}</div>
+    ${dhCard(agg(kho, ix), 'ĐƠN HÀNG THÁNG')}
+    <h3>Xe tải (${tai.length} xe)</h3><div class="card">${tai.map(r => { const g = XG.find(x => x[0] === r[ix['Nhóm xe']]);
+      return `<div class="row"><div class="n"><div class="num">${esc(r[ix['Biển số']] || '(không biển số)')}</div></div><span class="tag" style="--c:${g[2]}">${g[0] === 'Xe tải NB' ? 'Nội bộ' : 'Thuê'}</span><b class="num" style="width:56px;text-align:right">${n0(r[ix['Số đơn']])}</b></div>`; }).join('') || '<div class="empty">Không có đơn xe tải</div>'}</div>
+    <h3>Thợ (${ul.length}) · theo số đơn</h3><div class="card list">${ul.map(({k,a}) => `<div class="row" data-tho="${esc(k)}" style="display:block">
+      <div style="display:flex;gap:8px"><div class="n"><div>${esc(nm(k))}</div></div><b class="num">${n0(a.tong)}</b></div>${stk(a)}
+      <div class="sub num" style="margin-top:4px">Xe máy ${n0(a['Xe máy'])} · Xe tải NB ${n0(a['Xe tải NB'])} · Xe thuê ${n0(a['Xe thuê'])}</div></div>`).join('')}</div>`;
+}
+function thoXe(ma){
+  const {rows, ix} = XE(); const rs = rows.filter(r => r[ix['Cấp']] !== 'KHO' && String(r[ix['Mã user']]) === String(ma));
+  if (!rs.length) return '';
+  const a = agg(rs, ix); rs.sort((x,y) => y[ix['Số đơn']] - x[ix['Số đơn']]);
+  return `<h3>Phương tiện</h3><div class="card">${stk(a)}<div class="tri num" style="margin-bottom:6px">${XG.map(g => `<div style="--c:${g[2]}"><small>${g[1]}</small><b>${n0(a[g[0]])}</b></div>`).join('')}</div>
+    ${rs.filter(r => r[ix['Loại xe']] === 'Xe tải').map(r => { const g = XG.find(x => x[0] === r[ix['Nhóm xe']]);
+      return `<div class="row"><div class="n"><div class="num">${esc(r[ix['Biển số']] || '(không biển số)')}</div></div><span class="tag" style="--c:${g[2]}">${g[0] === 'Xe tải NB' ? 'Nội bộ' : 'Thuê'}</span><b class="num" style="width:56px;text-align:right">${n0(r[ix['Số đơn']])}</b></div>`; }).join('')}</div>`;
+}
+
+function viewTH(){
+  const b = BC(), gi = Math.min(S.mk, b.groups.length-1), g0 = b.groups[gi];
+  const labs = b.lab_m.slice(g0.c0, g0.c0 + g0.n);
+  const rows = b.months.filter(r => r[0]);
+  return kpiChips(gi, 'mk') + `<div class="card" style="overflow-x:auto"><table class="num"><thead><tr><th>Tháng</th>${labs.map(l => `<th>${esc(l)}</th>`).join('')}</tr></thead>
+    <tbody>${rows.map(r => { const g = grp(r, gi, b.fmt_d, b.lab_m);
+      return `<tr><td>${esc(r[0])}</td>${g.items.map((x,i) => `<td>${i === g.items.length-1 ? chip(x.v) : x.txt}</td>`).join('')}</tr>`; }).join('')}</tbody></table></div>`;
+}
+
+function render(){
+  if (!S.data) return;
+  if (S.vi >= S.data.bc.length) S.vi = 0;
+  const r = route(); let body;
+  if (r.v === 'cn') body = r.id ? viewCNDetail(r.id) : viewCN();
+  else if (r.v === 'tho') body = r.id ? viewThoDetail(r.id) : viewTho();
+  else if (r.v === 'th') body = viewTH();
+  else if (r.v === 'dh') body = r.id ? viewDHDetail(r.id) : viewDH();
+  else body = viewTQ();
+  const y = window.scrollY, keepQ = document.activeElement && document.activeElement.id === 'q';
+  $('#app').innerHTML = shell(body);
+  if (keepQ){ const q = $('#q'); q.focus(); q.setSelectionRange(q.value.length, q.value.length); }
+  else if (!r.id && render._last === location.hash) window.scrollTo(0, y); else window.scrollTo(0, 0);
+  render._last = location.hash;
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],#rf,#lo'); if (!t) return;
+  if (t.id === 'rf') return refresh(false);
+  if (t.id === 'lo') { LS.del('pw'); LS.del('enc'); S.data = null; return loginView(); }
+  if (t.dataset.vi !== undefined) { S.vi = +t.dataset.vi; LS.set('vi', S.vi); const r = route(); if (r.id) location.hash = r.v; else render(); return; }
+  if (t.dataset.go) { location.hash = t.dataset.go; return; }
+  if (t.dataset.kpi !== undefined) { S.kpi = +t.dataset.kpi; LS.set('kpi', S.kpi); return render(); }
+  if (t.dataset.mk !== undefined) { S.mk = +t.dataset.mk; LS.set('mk', S.mk); return render(); }
+  if (t.dataset.dh) { location.hash = 'dh/' + encodeURIComponent(t.dataset.dh); return; }
+  if (t.dataset.cn) { location.hash = 'cn/' + encodeURIComponent(t.dataset.cn); return; }
+  if (t.dataset.tho) { location.hash = 'tho/' + encodeURIComponent(t.dataset.tho); return; }
+  if (t.dataset.back !== undefined) { history.length > 1 ? history.back() : (location.hash = route().v); }
+});
+document.addEventListener('input', e => { if (e.target.id === 'q') { S.q = e.target.value; render(); } });
+document.addEventListener('change', e => { if (e.target.id === 'st') { S.sortTho = e.target.value; LS.set('st', S.sortTho); render(); } });
+window.addEventListener('hashchange', render);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(true); });
+setInterval(() => { if (!document.hidden) refresh(true); }, 10 * 60 * 1000);
+
+if ('serviceWorker' in navigator && /github\.io$/.test(location.hostname)) { navigator.serviceWorker.register('sw.js').catch(() => {}); }
+(async function start(){
+  if (!CFG.repo) { $('#app').innerHTML = '<div class="login"><h1>Thiếu cấu hình</h1><div class="sub">config.js chưa có tên kho GitHub.</div></div>'; return; }
+  const pw = LS.get('pw'), cached = LS.get('enc');
+  if (pw && cached) { try { S.data = await decrypt(JSON.parse(cached), pw); render(); } catch(e){} }
+  if (pw) { try { await load(pw, true); } catch(e){ if (!S.data) loginView(e.message); else toast(e.message); } }
+  else loginView();
+  checkVer();
+})();
+</script>
+</body>
+</html>
