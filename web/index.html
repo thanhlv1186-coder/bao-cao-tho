@@ -100,10 +100,12 @@ th:first-child,td:first-child{text-align:left}
 .sharebtn{flex:none;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:var(--ac);color:#fff;font-weight:700;font-size:13px;border:0}
 .imgov{position:fixed;inset:0;z-index:50;background:rgba(2,8,23,.94);display:flex;flex-direction:column;overflow:auto;-webkit-overflow-scrolling:touch}
 .imgov-bar{position:sticky;top:0;display:flex;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:rgba(2,8,23,.85);backdrop-filter:blur(6px)}
-.imgov-bar button,.imgov-bar a{flex:1;text-align:center;padding:12px;border-radius:10px;font-weight:700;font-size:14px;border:0;text-decoration:none}
-.imgov-x{background:#334155;color:#fff}.imgov-dl{background:var(--ac);color:#fff}
-.imgov-tip{color:#cbd5e1;font-size:13px;text-align:center;padding:4px 16px 12px}
-.imgov-wrap{padding:0 10px 30px}.imgov-wrap img{width:100%;border-radius:10px;display:block}
+.imgov-bar button,.imgov-bar a,.imgov-acts button,.imgov-acts a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center;padding:12px 6px;border-radius:10px;font-weight:700;font-size:14px;border:0;text-decoration:none;color:#fff}
+.imgov-x{background:#334155}.imgov-dl{background:var(--ac)}
+.imgov-acts{position:sticky;bottom:0;display:flex;gap:8px;padding:10px 14px calc(12px + env(safe-area-inset-bottom));background:rgba(2,8,23,.9);backdrop-filter:blur(6px);margin-top:auto}
+.b-line{background:#06c755}.b-zalo{background:#0068ff}.b-more{background:#475569}
+.imgov-tip{color:#cbd5e1;font-size:13px;text-align:center;padding:4px 16px 12px}.imgov-tip a{color:#ffd400}
+.imgov-wrap{padding:0 10px 16px}.imgov-wrap img{width:100%;border-radius:10px;display:block}
 
 header .sub{color:rgba(255,255,255,.85)}
 header .icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);color:#fff}
@@ -453,29 +455,49 @@ function drawShareCanvas(name){
   x.fillText('App Báo cáo Thợ GHLĐ · xuất ' + new Date().toLocaleString('vi-VN'), P, y);
   return c;
 }
-function showShareImage(blob, fname){
+/* Chia sẻ ảnh:
+   - APK mới (có window.AndroidApp): Lưu vào Thư viện ảnh / gửi thẳng LINE / Zalo / ứng dụng khác (qua lõi Android).
+   - iPhone (PWA) & trình duyệt: bảng chia sẻ của hệ thống (navigator.share) — có sẵn "Lưu hình ảnh", LINE, Zalo.
+   - APK cũ (WebView không hỗ trợ chia sẻ file): nhắc cài bản app mới. */
+const PKG = { line: 'jp.naver.line.android', zalo: 'com.zing.zalo', more: '' };
+function showShareImage(c, blob, name){
+  const fname = 'BaoCao_' + slug(name) + '.png', text = 'Báo cáo Thợ GHLĐ – ' + name;
   const url = URL.createObjectURL(blob);
+  const A = window.AndroidApp && window.AndroidApp.shareImage ? window.AndroidApp : null;
+  const file = new File([blob], fname, { type: 'image/png' });
+  const canWeb = !A && !!(navigator.canShare && navigator.canShare({ files: [file] }));
+  const oldApk = !A && !canWeb && !!(CFG.ver > 0);
   const ov = document.createElement('div'); ov.className = 'imgov';
-  ov.innerHTML = `<div class="imgov-bar"><button class="imgov-x">✕ Đóng</button><a class="imgov-dl" download="${esc(fname)}">⤓ Lưu ảnh</a></div>
-    <div class="imgov-tip">Nhấn giữ ảnh → <b>Lưu vào Ảnh / Tải ảnh</b> hoặc <b>Chia sẻ</b> sang LINE, Zalo</div>
-    <div class="imgov-wrap"><img alt="Báo cáo"></div>`;
-  ov.querySelector('img').src = url; ov.querySelector('.imgov-dl').href = url;
+  let acts = '', tip = '';
+  if (A) acts = `<button class="b-line" data-p="line">LINE</button><button class="b-zalo" data-p="zalo">Zalo</button><button class="b-more" data-p="more">${IC.share} Khác</button>`;
+  else if (canWeb) { acts = `<button class="b-line" data-p="web">${IC.share} Chia sẻ (LINE, Zalo, Lưu ảnh…)</button>`; tip = 'Bấm <b>Chia sẻ</b> → chọn LINE / Zalo, hoặc <b>Lưu hình ảnh</b>'; }
+  else if (oldApk) tip = `Bản app đang dùng chưa hỗ trợ chia sẻ ảnh. <a href="https://github.com/${CFG.repo}/releases/latest/download/BaoCaoTho.apk">Tải bản app mới</a> (cài đè, không mất dữ liệu).`;
+  else tip = 'Nhấn giữ ảnh → <b>Lưu ảnh</b> hoặc <b>Chia sẻ</b>';
+  ov.innerHTML = `<div class="imgov-bar"><button class="imgov-x">✕ Đóng</button>${oldApk ? '' : `<a class="imgov-dl" ${A ? '' : `href="${url}" download="${esc(fname)}"`}>⤓ Lưu ảnh</a>`}</div>
+    ${tip ? `<div class="imgov-tip">${tip}</div>` : ''}
+    <div class="imgov-wrap"><img alt="Báo cáo" src="${url}"></div>
+    ${acts ? `<div class="imgov-acts">${acts}</div>` : ''}`;
+  let b64 = null; const data = () => b64 || (b64 = c.toDataURL('image/png'));
   const close = () => { ov.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000); };
   ov.querySelector('.imgov-x').onclick = close;
+  const dl = ov.querySelector('.imgov-dl');
+  if (dl && A) dl.onclick = e => { e.preventDefault(); try { A.saveImage(data(), fname); } catch(x){ toast('Không lưu được ảnh'); } };
+  ov.querySelectorAll('[data-p]').forEach(btn => btn.onclick = async () => {
+    const p = btn.dataset.p;
+    if (p === 'web') {
+      try { await navigator.share({ files: [file], title: 'Báo cáo ' + name, text }); }
+      catch(e){ if (!e || e.name !== 'AbortError') toast('Không chia sẻ được'); }
+      return;
+    }
+    try { A.shareImage(data(), fname, text, PKG[p]); } catch(x){ toast('Không chia sẻ được'); }
+  });
   document.body.appendChild(ov);
 }
 function shareCN(name){
   const c = drawShareCanvas(name); if (!c) return toast('Không tạo được ảnh');
-  c.toBlob(async blob => {
+  c.toBlob(blob => {
     if (!blob) return toast('Không tạo được ảnh');
-    const file = new File([blob], 'BaoCao_' + slug(name) + '.png', { type: 'image/png' });
-    try {
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'Báo cáo ' + name, text: 'Báo cáo Thợ GHLĐ – ' + name });
-        return;
-      }
-    } catch(e){ if (e && e.name === 'AbortError') return; }
-    showShareImage(blob, file.name);   // máy không hỗ trợ chia sẻ file -> hiện ảnh để nhấn giữ Lưu/Chia sẻ
+    showShareImage(c, blob, name);
   }, 'image/png');
 }
 
