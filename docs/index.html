@@ -401,20 +401,31 @@ function viewTH(){
 /* ---------------- Thống kê sử dụng: mỗi lần mở app gửi 1 dòng về Google Sheet (Apps Script) */
 const LOG_URL = 'https://script.google.com/macros/s/AKfycbyBsGSKTNq_eDRyYIdwrEWndHXT8jyjv1TFPfsxOfozRKXhH6zkiMSJZ4P3NwV93ppB/exec';   // Google Apps Script nhận log
 function devId(){ let d = LS.get('did'); if (!d){ d = (Date.now().toString(36) + Math.random().toString(36).slice(2, 8)).toUpperCase(); LS.set('did', d); } return d; }
-function uaInfo(){
+async function uaInfo(){
   const ua = navigator.userAgent;
-  const platform = /iPhone|iPad|iPod/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : /Windows/.test(ua) ? 'Windows' : /Mac/.test(ua) ? 'Mac' : 'Khác';
+  let platform = /iPhone|iPad|iPod/.test(ua) ? 'iOS' : /Android/.test(ua) ? 'Android' : /Windows/.test(ua) ? 'Windows' : /Mac/.test(ua) ? 'Mac' : 'Khác';
   let model = '';
-  if (platform === 'Android'){ const m = ua.match(/Android[^;]*;\s*([^;)]+?)(?:\sBuild|[;)])/); model = m ? m[1].trim() : ''; }
-  else if (platform === 'iOS'){ model = (ua.match(/iPhone|iPad|iPod/) || [''])[0]; }
+  // Model thật qua UA Client Hints (Chrome/Android đời mới giấu model trong UA = "K")
+  try {
+    const uad = navigator.userAgentData;
+    if (uad && uad.getHighEntropyValues){
+      const h = await uad.getHighEntropyValues(['model','platform']);
+      if (h.platform){ platform = h.platform === 'macOS' ? 'Mac' : h.platform; }
+      if (h.model) model = h.model;
+    }
+  } catch(e){}
+  if (!model || model === 'K'){            // dự phòng: lấy từ User-Agent
+    if (platform === 'Android'){ const m = ua.match(/Android[^;]*;\s*([^;)]+?)(?:\sBuild|[;)])/); model = m && m[1].trim() !== 'K' ? m[1].trim() : ''; }
+    else if (platform === 'iOS'){ model = (ua.match(/iPhone|iPad|iPod/) || [''])[0]; }
+  }
   const browser = /SamsungBrowser/.test(ua) ? 'Samsung' : /EdgiOS|Edg/.test(ua) ? 'Edge' : /CriOS|Chrome/.test(ua) ? 'Chrome' : /FxiOS|Firefox/.test(ua) ? 'Firefox' : /Safari/.test(ua) ? 'Safari' : 'Khác';
   const pwa = (window.navigator.standalone || matchMedia('(display-mode: standalone)').matches) ? 'App (MH chính)' : 'Trình duyệt';
   return {ua, platform, model, browser, pwa};
 }
-function sendLog(){                 // JSONP: ghi nhận máy + nhận lệnh khóa/mở từ trang giám sát
+async function sendLog(){          // JSONP: ghi nhận máy + nhận lệnh khóa/mở từ trang giám sát
   if (!LOG_URL) return;
   try {
-    const i = uaInfo();
+    const i = await uaInfo();
     const cb = '__bc' + Date.now();
     const p = new URLSearchParams({ callback: cb, did: devId(), name: LS.get('uname') || '', manv: LS.get('umnv') || '',
       platform: i.platform, model: i.model, browser: i.browser, pwa: i.pwa, region: S.data ? BC().vung : '',
