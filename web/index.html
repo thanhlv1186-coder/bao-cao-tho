@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a73e8">
 <title>Báo cáo Thợ GHLĐ</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BC Thợ GHLĐ">
 <script src="config.js"></script>
 <style>
 :root{--bg:#eef3fa;--card:#ffffff;--card2:#f3f7fd;--line:#dde6f2;--tx:#1e293b;--mu:#5b6b82;--dim:#8a99ad;
@@ -14,7 +20,7 @@
 html,body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .num{font-variant-numeric:tabular-nums}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-header{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,var(--hd),var(--hd2));color:#fff;border-bottom:3px solid var(--yl);padding:10px 16px 8px}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(135deg,var(--hd),var(--hd2));color:#fff;border-bottom:3px solid var(--yl);padding:calc(10px + env(safe-area-inset-top)) 16px 8px}
 .hrow{display:flex;align-items:center;gap:10px}
 .ttl{font-weight:700;font-size:16px;flex:1;letter-spacing:.2px}
 .sub{color:var(--mu);font-size:12px}
@@ -213,6 +219,10 @@ function toast(m){ const t = $('#toast'); t.textContent = m; t.classList.add('on
 function spin(on){ const b = $('#rf'); if (b) b.classList.toggle('spin', on); }
 function route(){ const h = (location.hash||'#tq').slice(1).split('/'); return {v:h[0]||'tq', id: h[1] ? decodeURIComponent(h.slice(1).join('/')) : null}; }
 
+function iosHint(){
+  const ios = /iPhone|iPad|iPod/.test(navigator.userAgent), standalone = window.navigator.standalone || matchMedia('(display-mode: standalone)').matches;
+  return ios && !standalone ? `<div class="warn" style="margin-top:16px;background:var(--acbg);color:var(--hd);border-color:#b9d4fb">📲 Cài lên iPhone: bấm nút <b>Chia sẻ</b> (ô vuông có mũi tên ở thanh dưới Safari) → <b>Thêm vào MH chính</b> → <b>Thêm</b>. Lần sau mở app từ biểu tượng trên màn hình.</div>` : '';
+}
 function loginView(msg){
   $('#app').innerHTML = `<div class="login">
     <div class="sub" style="margin-bottom:6px">Điện Máy Xanh · Thợ GHLĐ</div>
@@ -220,7 +230,7 @@ function loginView(msg){
     <div class="sub" style="margin-bottom:18px">Nhập mật khẩu được cấp để xem báo cáo</div>
     <input type="password" id="pw" placeholder="Mật khẩu" autocomplete="current-password">
     <button class="btn" id="go">Xem báo cáo</button>
-    <div class="err" id="er">${esc(msg||'')}</div></div>`;
+    <div class="err" id="er">${esc(msg||'')}</div>${iosHint()}</div>`;
   const go = async () => { const pw = $('#pw').value; if (!pw) return; $('#go').textContent = 'Đang tải…';
     try { await load(pw); } catch(e){ loginView(/decrypt|operation|OperationError/i.test(e.name + e.message) ? 'Sai mật khẩu' : e.message); } };
   $('#go').onclick = go; $('#pw').onkeydown = e => { if (e.key === 'Enter') go(); }; $('#pw').focus();
@@ -423,6 +433,7 @@ window.addEventListener('hashchange', render);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(true); });
 setInterval(() => { if (!document.hidden) refresh(true); }, 10 * 60 * 1000);
 
+if ('serviceWorker' in navigator && /github\.io$/.test(location.hostname)) { navigator.serviceWorker.register('sw.js').catch(() => {}); }
 (async function start(){
   if (!CFG.repo) { $('#app').innerHTML = '<div class="login"><h1>Thiếu cấu hình</h1><div class="sub">config.js chưa có tên kho GitHub.</div></div>'; return; }
   const pw = LS.get('pw'), cached = LS.get('enc');
