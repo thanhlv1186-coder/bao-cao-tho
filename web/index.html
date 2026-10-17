@@ -411,21 +411,30 @@ function uaInfo(){
   const pwa = (window.navigator.standalone || matchMedia('(display-mode: standalone)').matches) ? 'App (MH chính)' : 'Trình duyệt';
   return {ua, platform, model, browser, pwa};
 }
-function sendLog(ev){
+function sendLog(){                 // JSONP: ghi nhận máy + nhận lệnh khóa/mở từ trang giám sát
   if (!LOG_URL) return;
   try {
     const i = uaInfo();
-    const body = JSON.stringify({ ev, did: devId(), name: LS.get('uname') || '', manv: LS.get('umnv') || '',
+    const cb = '__bc' + Date.now();
+    const p = new URLSearchParams({ callback: cb, did: devId(), name: LS.get('uname') || '', manv: LS.get('umnv') || '',
       platform: i.platform, model: i.model, browser: i.browser, pwa: i.pwa, region: S.data ? BC().vung : '',
-      ver: String(CFG.ver || (/github\.io$/.test(location.hostname) ? 'iOS' : '')),
-      ctime: new Date().toLocaleString('vi-VN'), tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      lang: navigator.language, screen: screen.width + 'x' + screen.height, ua: i.ua });
-    const blob = new Blob([body], {type: 'text/plain;charset=UTF-8'});
-    if (navigator.sendBeacon && navigator.sendBeacon(LOG_URL, blob)) return;
-    fetch(LOG_URL, {method: 'POST', mode: 'no-cors', body: blob, keepalive: true}).catch(() => {});
+      ver: String(CFG.ver || (/github\.io$/.test(location.hostname) ? 'Web' : '')) });
+    const s = document.createElement('script');
+    const done = () => { try { delete window[cb]; } catch(e){} try { s.remove(); } catch(e){} };
+    window[cb] = res => { done(); if (res && res.locked){ S.locked = true; LS.del('enc'); lockedView(); } };
+    s.onerror = done; s.src = LOG_URL + '?' + p.toString();
+    document.head.appendChild(s); setTimeout(done, 15000);
   } catch(e){}
 }
-function logOpen(){ if (S._logged) return; S._logged = true; sendLog('open'); }
+function logOpen(){ if (S._logged) return; S._logged = true; sendLog(); }
+function lockedView(){
+  $('#app').innerHTML = `<div class="login">
+    <div class="sub" style="margin-bottom:6px">Điện Máy Xanh · Thợ GHLĐ</div>
+    <h1>Ứng dụng đã bị khóa</h1>
+    <div class="sub" style="margin-bottom:18px">Thiết bị này đã bị quản trị tạm khóa truy cập. Vui lòng liên hệ quản lý để được mở.</div>
+    <button class="btn" id="retry">Thử lại</button></div>`;
+  $('#retry').onclick = () => location.reload();
+}
 function nameForm(canCancel){
   $('#app').innerHTML = `<div class="login">
     <div class="sub" style="margin-bottom:6px">Điện Máy Xanh · Thợ GHLĐ</div>
@@ -443,6 +452,7 @@ function nameForm(canCancel){
 
 function render(){
   if (!S.data) return;
+  if (S.locked) return lockedView();
   if (LOG_URL && !LS.get('uname')) return nameForm(false);
   logOpen();
   if (S.vi >= S.data.bc.length) S.vi = 0;
