@@ -97,6 +97,7 @@ th:first-child,td:first-child{text-align:left}
 .tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent)}
 .lnk{display:block;text-align:center;color:var(--ac);font-weight:600;padding:10px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--card)}
 .rk.hot{background:var(--badbg);color:var(--bad)}
+.sharebtn{flex:none;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:var(--ac);color:#fff;font-weight:700;font-size:13px;border:0}
 
 header .sub{color:rgba(255,255,255,.85)}
 header .icon{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.3);color:#fff}
@@ -130,7 +131,8 @@ const IC = {
   dh:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h13v10H1zM14 10h4l3 3v3h-7"/><circle cx="5.5" cy="17.5" r="2"/><circle cx="17.5" cy="17.5" r="2"/></svg>',
   tho:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>',
   th:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>',
-  out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>'
+  out:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>',
+  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-3px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>'
 };
 let S = {data:null, vi: +(LS.get('vi')||0), kpi: +(LS.get('kpi')||1), mk: +(LS.get('mk')||1), sortTho: LS.get('st')||'risk', q:'', loading:false, newVer:null};
 
@@ -300,13 +302,178 @@ function thoRow(r, ix, showCN){
     <div class="sub">trễ ${fmtU('',r[ix['Đơn trễ hẹn']])} · lỗi ${fmtU('',r[ix['Tổng lỗi TN']])} · ⭐${fmtU('Sao',r[ix['Sao phục vụ']])}</div></div></div>`;
 }
 
+/* ---------------- Chia sẻ ảnh báo cáo chi nhánh (vẽ ngay trên máy, không lưu server) */
+function roundRect(x, l, t, w, h, r){ x.beginPath(); x.moveTo(l+r,t); x.arcTo(l+w,t,l+w,t+h,r); x.arcTo(l+w,t+h,l,t+h,r); x.arcTo(l,t+h,l,t,r); x.arcTo(l,t,l+w,t,r); x.closePath(); }
+function slug(s){ return String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/gi,'d').replace(/[^\w]+/g,'_'); }
+const chipCol = cc => cc === 'c-ok' ? ['#15803d','#e3f6e9'] : cc === 'c-bad' ? ['#dc2626','#fde8e8'] : ['#64748b','#eef2f7'];
+function drawTiles(x, left, top, width, items){
+  const n = items.length, gap = 14, tw = (width - (n - 1) * gap) / n, th = 160;
+  items.forEach((it, idx) => {
+    const tl = left + idx * (tw + gap);
+    roundRect(x, tl, top, tw, th, 14); x.fillStyle = '#fff'; x.fill();
+    x.textAlign = 'left'; x.textBaseline = 'top';
+    x.fillStyle = '#5b6b82'; x.font = '19px sans-serif'; x.fillText(it.lab, tl + 18, top + 16, tw - 28);
+    x.fillStyle = it.vc || '#1e293b'; x.font = 'bold 40px sans-serif'; x.fillText(it.val, tl + 18, top + 50);
+    if (it.sub){ x.fillStyle = '#8a99ad'; x.font = '18px sans-serif'; x.fillText(it.sub, tl + 18, top + 104); }
+    if (it.chip){ const [col, bg] = chipCol(it.cc); x.font = 'bold 18px sans-serif';
+      const cw = x.measureText(it.chip).width + 24; roundRect(x, tl + 18, top + 124, cw, 28, 14); x.fillStyle = bg; x.fill();
+      x.fillStyle = col; x.fillText(it.chip, tl + 30, top + 130); }
+  });
+  return top + th;
+}
+function drawTable(x, left, top, width, cols, rows){
+  const hh = 46, rh = 42; let cx = left;
+  roundRect(x, left, top, width, hh, 8); x.fillStyle = '#1a73e8'; x.fill();
+  x.fillStyle = '#fff'; x.font = 'bold 21px sans-serif'; x.textBaseline = 'middle';
+  cols.forEach(c => { x.textAlign = c.a || 'left'; const tx = c.a === 'right' ? cx + c.w - 14 : cx + 14; x.fillText(c.t, tx, top + hh / 2); cx += c.w; });
+  let y = top + hh;
+  rows.forEach((row, ri) => {
+    x.fillStyle = ri % 2 ? '#f5f8fe' : '#ffffff'; x.fillRect(left, y, width, rh);
+    cx = left;
+    row.forEach((cell, ci) => { const c = cols[ci]; x.font = (cell.b ? 'bold ' : '') + '20px sans-serif'; x.fillStyle = cell.c || '#1e293b';
+      x.textAlign = c.a || 'left'; const tx = c.a === 'right' ? cx + c.w - 14 : cx + 14; x.fillText(String(cell.t), tx, y + rh / 2, c.w - 20); cx += c.w; });
+    y += rh;
+  });
+  x.strokeStyle = '#e2e8f0'; x.lineWidth = 1; x.strokeRect(left + .5, top + .5, width - 1, y - top - 1);
+  x.textAlign = 'left'; x.textBaseline = 'top';
+  return y;
+}
+function drawShareCanvas(name){
+  const b = BC(); const r = b.cn.find(x => x[1] === name) || (b.total[1] === name ? b.total : null);
+  if (!r) return null;
+  const Q = gi => grp(r, gi, b.fmt_d, b.lab_d);
+  const { rows: xr, ix: xi } = XE();
+  const kho = xr.filter(z => z[xi['Cấp']] === 'KHO' && z[xi['Chi nhánh']] === name);
+  const don = agg(kho, xi);
+  const { rows: ur, ix: ui } = U();
+  const us = ur.filter(u => u[ui['Chi nhánh']] === name && u[ui['Vùng rút gọn']] === b.vung);
+  const sum = c => us.reduce((s, u) => s + (u[ui[c]] || 0), 0);
+  const treHen = sum('Đơn trễ hẹn'), tongLoi = sum('Tổng lỗi TN');
+  const l1065 = sum('Lỗi TN 1065'), l1063 = sum('Lỗi TN 1063'), l1025 = sum('Lỗi TN ĐH 1025');
+  const dtThuan = sum('Doanh thu thuần'), soDonBan = sum('Số đơn bán');
+  const soThoBan = us.filter(u => (u[ui['Doanh thu thuần']] || 0) > 0).length;
+  const L = S.data.loi, li = {}; L.cols.forEach((c, k) => li[c] = k);
+  const loiRows = L.rows.filter(z => z[li['Cấp']] === 'KHO' && z[li['Chi nhánh']] === name && z[li['Vùng rút gọn']] === b.vung).sort((a, c) => c[li['Số lỗi']] - a[li['Số lỗi']]);
+  const risky = us.filter(u => (u[ui['Điểm rủi ro']] || 0) > 0).sort((a, c) => (c[ui['Điểm rủi ro']] || 0) - (a[ui['Điểm rủi ro']] || 0)).slice(0, 10);
+  const uall = us.slice().sort((a, c) => (c[ui['Đơn TC (3268)']] || 0) - (a[ui['Đơn TC (3268)']] || 0)).slice(0, 60);
+  const g5 = Q(5), g3 = Q(3);
+  const mtV = typeof g5.mt.v === 'number' ? g5.mt.v : null;           // mục tiêu doanh số (nghìn đồng)
+  const saoTarget = typeof g3.mt.v === 'number' ? g3.mt.v : null;     // mục tiêu sao phục vụ của chi nhánh
+  const p1 = v => v == null ? '–' : (v * 100).toLocaleString('vi-VN', { maximumFractionDigits: 1 }) + '%';
+  const sao = v => (v == null || v === '') ? '–' : Number(v).toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const saoC = v => (saoTarget != null && typeof v === 'number' && v > 0 && v < saoTarget) ? '#dc2626' : '#1e293b';
+  const uname = u => String(u[ui['Tên user']] || u[ui['User']] || '');
+  const rrCol = v => (v || 0) >= 3 ? '#dc2626' : (v || 0) > 0 ? '#b45309' : '#8a99ad';
+
+  // ---- Bố cục NGANG (khổ rộng) ----
+  const W = 2000, P = 48, iw = W - 2 * P, gap = 40, Lw = 1180, Rx = P + Lw + gap, Rw = iw - Lw - gap;
+  const loiH = loiRows.length ? 46 + loiRows.length * 42 : 0;
+  let H = 200 + 20 + (56 + 150 + 20) + (56 + Math.max(150, loiH) + 20) + (56 + 150 + 20);
+  if (mtV) H += 40;
+  if (risky.length) H += 56 + 46 + risky.length * 42 + 20;
+  H += 56 + 46 + uall.length * 42 + 30 + 50;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d'); x.textBaseline = 'top';
+  x.fillStyle = '#eef3fa'; x.fillRect(0, 0, W, H);
+  x.fillStyle = '#1a73e8'; x.fillRect(0, 0, W, 200);
+  x.fillStyle = '#ffd400'; x.fillRect(0, 190, W, 10);
+  x.fillStyle = '#fff'; x.font = 'bold 30px sans-serif'; x.fillText('📊 BÁO CÁO THỢ GHLĐ', P, 28);
+  x.font = 'bold 54px sans-serif'; x.fillText(name, P, 70);
+  x.fillStyle = 'rgba(255,255,255,.92)'; x.font = '26px sans-serif';
+  x.fillText(b.vung + ' · ' + S.data.ky + ' · cập nhật ' + S.data.updated, P, 138);
+  let y = 220;
+  const secAt = (t, lx) => { x.fillStyle = '#1a73e8'; x.font = 'bold 28px sans-serif'; x.textAlign = 'left'; x.textBaseline = 'top'; x.fillText(t, lx, y); };
+  const sec = t => { secAt(t, P); y += 48; };
+
+  sec('1. ĐƠN HÀNG THÁNG (giao thành công)');
+  y = drawTiles(x, P, y, iw, [
+    { lab: 'TỔNG ĐƠN', val: n0(don.tong) },
+    { lab: 'XE MÁY', val: n0(don['Xe máy']), vc: '#1a73e8' },
+    { lab: 'XE TẢI NỘI BỘ', val: n0(don['Xe tải NB']), vc: '#16a34a' },
+    { lab: 'XE THUÊ', val: n0(don['Xe thuê']), vc: '#f2a900' },
+    { lab: '% ĐƠN XE THUÊ', val: don.tong ? (don['Xe thuê'] / don.tong * 100).toLocaleString('vi-VN', { maximumFractionDigits: 1 }) + '%' : '–' }
+  ]) + 20;
+
+  // Hàng 2: CHẤT LƯỢNG (trái) + NHÓM HÀNG LỖI (phải)
+  secAt('2. CHẤT LƯỢNG', P); if (loiRows.length) secAt('NHÓM HÀNG LỖI TAY NGHỀ', Rx); y += 48;
+  const qTile = (lab, gi) => { const g = Q(gi); return { lab, val: g.tt.txt, sub: 'MT ' + g.mt.txt, chip: g.dg, cc: chipCls(g.dg) }; };
+  const yL = drawTiles(x, P, y, Lw, [
+    qTile('SAO PHỤC VỤ', 3), qTile('ĐÚNG HẸN', 1), qTile('TAY NGHỀ', 2),
+    { lab: 'SỐ LỖI TAY NGHỀ', val: n0(tongLoi), sub: '1065/1063/ĐH1025: ' + l1065 + '/' + l1063 + '/' + l1025 },
+    { lab: 'ĐƠN TRỄ HẸN', val: n0(treHen), vc: treHen ? '#dc2626' : '#1e293b' }
+  ]);
+  let yR = y;
+  if (loiRows.length) yR = drawTable(x, Rx, y, Rw, [{ t: 'Nhóm hàng', w: Rw - 160, a: 'left' }, { t: 'Số lỗi', w: 160, a: 'right' }],
+    loiRows.map(z => [{ t: z[li['Nhóm hàng']] }, { t: n0(z[li['Số lỗi']]), b: true, c: '#dc2626' }]));
+  y = Math.max(yL, yR) + 20;
+
+  sec('3. DOANH SỐ BÁN HÀNG (đơn đã xuất trong tháng)');
+  y = drawTiles(x, P, y, iw, [
+    { lab: 'MỤC TIÊU (chi nhánh)', val: mtV != null ? n0(Math.round(mtV * 1000)) : '–' },
+    { lab: 'DOANH THU THUẦN', val: n0(dtThuan) },
+    { lab: 'SỐ ĐƠN ĐÃ XUẤT', val: n0(soDonBan) },
+    { lab: 'SỐ THỢ CÓ BÁN HÀNG', val: n0(soThoBan) },
+    { lab: 'DOANH THU / ĐƠN', val: soDonBan ? n0(Math.round(dtThuan / soDonBan)) : '0' }
+  ]);
+  if (mtV){
+    const ach = dtThuan / (mtV * 1000) * 100, duk = typeof g5.ht.v === 'number' ? g5.ht.v * 100 : null;
+    x.fillStyle = chipCol(chipCls(g5.dg))[0]; x.font = 'bold 24px sans-serif'; x.textAlign = 'left'; x.textBaseline = 'top';
+    x.fillText('Đạt ' + ach.toLocaleString('vi-VN', { maximumFractionDigits: 1 }) + '% mục tiêu'
+      + (duk != null ? '   ·   dự kiến ' + duk.toLocaleString('vi-VN', { maximumFractionDigits: 0 }) + '%' : ''), P, y + 14);
+    y += 40;
+  }
+  y += 20;
+
+  if (risky.length){
+    sec('4. ⚠ CẢNH BÁO USER CHẤT LƯỢNG NGUY HIỂM (điểm rủi ro > 0)');
+    y = drawTable(x, P, y, iw,
+      [{ t: '#', w: 70, a: 'right' }, { t: 'User', w: 480, a: 'left' }, { t: 'Sao phục vụ', w: 220, a: 'right' }, { t: 'Đơn trễ hẹn', w: 220, a: 'right' },
+       { t: '% Đúng hẹn', w: 260, a: 'right' }, { t: 'Lỗi tay nghề', w: 220, a: 'right' }, { t: '% Tay nghề', w: 260, a: 'right' }, { t: 'Điểm rủi ro', w: 174, a: 'right' }],
+      risky.map((u, k) => [{ t: k + 1, c: '#dc2626', b: true }, { t: uname(u), b: true }, { t: sao(u[ui['Sao phục vụ']]), c: saoC(u[ui['Sao phục vụ']]) }, { t: n0(u[ui['Đơn trễ hẹn']]) },
+        { t: p1(u[ui['% Đúng hẹn']]) }, { t: n0(u[ui['Tổng lỗi TN']]) }, { t: p1(u[ui['% Tay nghề (/đơn TC)']]) },
+        { t: n0(u[ui['Điểm rủi ro']]), b: true, c: rrCol(u[ui['Điểm rủi ro']]) }])) + 20;
+  }
+
+  sec('5. DANH SÁCH USER (' + us.length + ' user)');
+  const uc = [{ t: 'User', w: 420, a: 'left' }, { t: 'Đơn TC', w: 130, a: 'right' }, { t: 'Xe máy', w: 120, a: 'right' },
+    { t: 'Xe tải', w: 120, a: 'right' }, { t: 'Sao Thợ', w: 120, a: 'right' }, { t: 'Trễ hẹn', w: 130, a: 'right' }, { t: '% Đúng hẹn', w: 185, a: 'right' },
+    { t: 'Lỗi TN', w: 120, a: 'right' }, { t: '% Tay nghề', w: 185, a: 'right' }, { t: 'Doanh thu thuần', w: 230, a: 'right' }, { t: 'Điểm RR', w: 144, a: 'right' }];
+  y = drawTable(x, P, y, iw, uc, uall.map(u => [{ t: uname(u) }, { t: n0(u[ui['Đơn TC (3268)']]) }, { t: n0(u[ui['Đơn xe máy']]) },
+    { t: n0(u[ui['Đơn xe tải']]) }, { t: sao(u[ui['Sao phục vụ']]), c: saoC(u[ui['Sao phục vụ']]) }, { t: n0(u[ui['Đơn trễ hẹn']]), c: u[ui['Đơn trễ hẹn']] ? '#dc2626' : '#1e293b' }, { t: p1(u[ui['% Đúng hẹn']]) },
+    { t: n0(u[ui['Tổng lỗi TN']]), c: u[ui['Tổng lỗi TN']] ? '#dc2626' : '#1e293b' }, { t: p1(u[ui['% Tay nghề (/đơn TC)']]) },
+    { t: n0(u[ui['Doanh thu thuần']]) }, { t: n0(u[ui['Điểm rủi ro']]), b: true, c: rrCol(u[ui['Điểm rủi ro']]) }]));
+  y += 12;
+  x.fillStyle = '#8a99ad'; x.font = '22px sans-serif'; x.textAlign = 'left'; x.textBaseline = 'top';
+  x.fillText('App Báo cáo Thợ GHLĐ · xuất ' + new Date().toLocaleString('vi-VN'), P, y);
+  return c;
+}
+function shareCN(name){
+  const c = drawShareCanvas(name); if (!c) return toast('Không tạo được ảnh');
+  c.toBlob(async blob => {
+    if (!blob) return toast('Không tạo được ảnh');
+    const file = new File([blob], 'BaoCao_' + slug(name) + '.png', { type: 'image/png' });
+    try {
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Báo cáo ' + name, text: 'Báo cáo Thợ GHLĐ – ' + name });
+        return;
+      }
+    } catch(e){ if (e && e.name === 'AbortError') return; }
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    toast('Đã lưu ảnh về máy — mở LINE/Zalo để gửi');
+  }, 'image/png');
+}
+
 function viewCNDetail(name){
   const b = BC(), r = b.cn.find(x => x[1] === name) || (b.total[1] === name ? b.total : null);
   if (!r) return `<div class="empty">Không thấy chi nhánh ${esc(name)}</div>`;
   const {ix} = U(); const us = userRows().filter(u => u[ix['Chi nhánh']] === name).sort((a,c) => (c[ix['Điểm rủi ro']]||0) - (a[ix['Điểm rủi ro']]||0));
   const L = S.data.loi, li = {}; L.cols.forEach((c,i) => li[c] = i);
   const loi = L.rows.filter(x => x[li['Cấp']] === 'KHO' && x[li['Chi nhánh']] === name && x[li['Vùng rút gọn']] === b.vung).sort((a,c) => c[li['Số lỗi']] - a[li['Số lỗi']]);
-  return `<button class="back" data-back>‹ Quay lại</button><div class="ttl" style="font-size:20px;margin-bottom:10px">${esc(name)}</div>
+  return `<button class="back" data-back>‹ Quay lại</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div class="ttl" style="font-size:20px;flex:1">${esc(name)}</div>
+      <button class="sharebtn" data-share="${esc(name)}">${IC.share} Chia sẻ</button></div>
     <div class="grid2">${b.groups.map((g,gi) => kpiCard(r, gi)).join('')}</div>
     <button class="lnk" data-dh="${esc(name)}" style="width:100%">🚚 Đơn hàng &amp; phương tiện →</button>
     ${loi.length ? `<h3>Lỗi tay nghề theo nhóm hàng</h3><div class="card">${loi.map(x => `<div class="row"><div class="n"><div>${esc(x[li['Nhóm hàng']])}</div></div><div class="r num" style="font-weight:700">${x[li['Số lỗi']]}</div></div>`).join('')}</div>` : ''}
@@ -485,7 +652,8 @@ function render(){
 }
 
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],#rf,#me,#lo'); if (!t) return;
+  const t = e.target.closest('[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],[data-share],#rf,#me,#lo'); if (!t) return;
+  if (t.dataset.share) return shareCN(t.dataset.share);
   if (t.id === 'rf') return refresh(false);
   if (t.id === 'me') return nameForm(true);
   if (t.id === 'lo') { LS.del('pw'); LS.del('enc'); S.data = null; return loginView(); }
