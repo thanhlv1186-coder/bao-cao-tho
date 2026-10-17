@@ -263,14 +263,18 @@ function kpiCard(row, gi, big){
 function viewTQ(){
   const b = BC(), lines = [];
   for (let gi = 1; gi < b.groups.length; gi++){
-    const bad = b.cn.filter(r => chipCls(grp(r, gi, b.fmt_d, b.lab_d).dg) === 'c-bad');
+    const rows = b.cn.map(r => ({r, g: grp(r, gi, b.fmt_d, b.lab_d)}));
+    const bad = rows.filter(x => chipCls(x.g.dg) === 'c-bad').length;
+    rows.sort((x, y) => (typeof x.g.ht.v === 'number' ? x.g.ht.v : 9) - (typeof y.g.ht.v === 'number' ? y.g.ht.v : 9));
+    if (gi === 4) rows.reverse();          // hủy nhập trả: %HT thấp là tốt
     lines.push(`<div class="card"><div class="kpi"><div class="k"><span style="color:var(--tx);font-weight:600">${esc(b.groups[gi].name)}</span>
-      <span class="chip ${bad.length ? 'c-bad' : 'c-ok'}">${bad.length ? bad.length + ' CN chưa đạt' : 'Tất cả đạt'}</span></div></div>
-      ${bad.length ? `<div class="list" style="margin-top:4px">${bad.map(r => { const g = grp(r, gi, b.fmt_d, b.lab_d);
-        return `<div class="row" data-cn="${esc(r[1])}"><div class="n"><div>${esc(r[1])}</div></div><div class="r num">${g.tt.txt} <span class="sub">/ MT ${g.mt.txt}</span></div></div>`; }).join('')}</div>` : ''}</div>`);
+      <span class="chip ${bad ? 'c-bad' : 'c-ok'}">${bad ? bad + '/' + rows.length + ' CN chưa đạt' : 'Tất cả đạt'}</span></div></div>
+      <div class="list" style="margin-top:4px">${rows.map(({r, g}) =>
+        `<div class="row" data-cn="${esc(r[1])}"><div class="n"><div>${esc(r[1])}</div></div>
+          <div class="r num" style="display:flex;align-items:center;gap:8px;justify-content:flex-end">${g.tt.txt} <span class="sub">/ MT ${g.mt.txt}</span>${chip(g.dg)}</div></div>`).join('')}</div></div>`);
   }
   return `<div class="grid2">${b.groups.map((g,gi) => kpiCard(b.total, gi)).join('')}</div>
-    <h3>Chi nhánh chưa đạt</h3>${lines.join('')}`;
+    <h3>Chi nhánh theo chỉ số</h3>${lines.join('')}`;
 }
 
 function kpiChips(sel, attr){ return `<div class="chips">${BC().groups.map((g,i) => `<button data-${attr}="${i}" class="${i===sel?'on':''}">${esc(kName(i))}</button>`).join('')}</div>`; }
