@@ -443,8 +443,8 @@ function drawShareCanvas(name){
   }
 
   sec('5. DANH SÁCH USER (' + us.length + ' user)');
-  const uc = [{ t: 'User', w: 330, a: 'left' }, { t: 'Đơn TC', w: 130, a: 'right' }, { t: 'Xe máy', w: 120, a: 'right' },
-    { t: 'Xe tải', w: 120, a: 'right' }, { t: 'Tỉ lệ tiếp cận TC', w: 210, a: 'right' }, { t: 'Trễ hẹn', w: 130, a: 'right' }, { t: '% Đúng hẹn', w: 185, a: 'right' },
+  const uc = [{ t: 'User', w: 355, a: 'left' }, { t: 'Đơn TC', w: 130, a: 'right' }, { t: 'Xe máy', w: 120, a: 'right' },
+    { t: 'Xe tải', w: 120, a: 'right' }, { t: '%Tiếp cận TC', w: 185, a: 'right' }, { t: 'Trễ hẹn', w: 130, a: 'right' }, { t: '% Đúng hẹn', w: 185, a: 'right' },
     { t: 'Lỗi TN', w: 120, a: 'right' }, { t: '% Tay nghề', w: 185, a: 'right' }, { t: 'Doanh thu thuần', w: 230, a: 'right' }, { t: 'Điểm RR', w: 144, a: 'right' }];
   y = drawTable(x, P, y, iw, uc, uall.map(u => [{ t: uname(u) }, { t: n0(u[ui['Đơn TC (3268)']]) }, { t: n0(u[ui['Đơn xe máy']]) },
     { t: n0(u[ui['Đơn xe tải']]) }, { t: p1(u[ui['Tỉ lệ tiếp cận thành công']]) }, { t: n0(u[ui['Đơn trễ hẹn']]), c: u[ui['Đơn trễ hẹn']] ? '#dc2626' : '#1e293b' }, { t: p1(u[ui['% Đúng hẹn']]) },
