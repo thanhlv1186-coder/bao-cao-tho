@@ -82,6 +82,10 @@ th:first-child,td:first-child{text-align:left}
 .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);padding:8px 14px;border-radius:999px;font-size:13px;z-index:9;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap}
 .toast.on{opacity:1}
 .empty{color:var(--dim);text-align:center;padding:24px 0;font-size:13px}
+.saov{position:fixed;inset:0;z-index:40;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch;padding:calc(10px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom))}
+.stat div.sao-lk{cursor:pointer}.stat div.sao-lk b{color:var(--ac);text-decoration:underline}
+.sao-st{display:inline-block;min-width:44px;text-align:center;font-size:12px;font-weight:800;padding:3px 8px;border-radius:999px}
+.s5,.s4{color:var(--ok);background:var(--okbg)}.s3{color:#a16207;background:var(--ylbg)}.s2,.s1{color:var(--bad);background:var(--badbg)}
 .sel{display:flex;gap:8px;margin-bottom:10px}
 .sel select{flex:none;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--tx);font:inherit}
 .rk{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--card2);color:var(--mu);flex:none}
@@ -541,7 +545,9 @@ function viewThoDetail(ma){
   return `<button class="back" data-back>‹ Quay lại</button>
     <div class="ttl" style="font-size:20px">${esc(u[ix['Tên user']])}</div>
     <div class="sub" style="margin-bottom:10px">${esc(ma)} · ${esc(u[ix['Tên kho ĐP']])}</div>
-    <div class="card"><div class="stat num">${cols.filter(c => !skip.has(c)).map(c => `<div><span>${esc(c)}</span><b>${fmtU(c, u[ix[c]])}</b></div>`).join('')}</div></div>
+    <div class="card"><div class="stat num">${cols.filter(c => !skip.has(c)).map(c => c === 'Số ĐH đánh giá' && saoRows(ma).length
+      ? `<div class="sao-lk" data-saoct="${esc(ma)}"><span>${esc(c)}</span><b>${fmtU(c, u[ix[c]])} ›</b></div>`
+      : `<div><span>${esc(c)}</span><b>${fmtU(c, u[ix[c]])}</b></div>`).join('')}</div></div>
     ${loi.length ? `<h3>Lỗi tay nghề theo nhóm hàng</h3><div class="card">${loi.map(x => `<div class="row"><div class="n"><div>${esc(x[li['Nhóm hàng']])}</div></div><div class="r num" style="font-weight:700">${x[li['Số lỗi']]}</div></div>`).join('')}</div>` : ''}
     ${thoXe(ma)}
     <h3>Đơn trễ hẹn (${tre.length})</h3>
@@ -549,6 +555,24 @@ function viewThoDetail(ma){
       <div class="sub">${esc(r[ti['TÊN YCVC']])}</div>
       <div class="sub num">Hẹn cuối ${esc(r[ti['TG HẸN GIAO CUỐI']])} · đến nhà ${esc(r[ti['TG ĐẾN NHÀ KHÁCH']])} · ${esc(r[ti['Kiểu đổi giờ']])} · ${esc(r[ti['Xác nhận KH']])}</div></div>`).join('') || '<div class="empty">Không có đơn trễ hẹn 👏</div>'}</div>`;
 }
+
+/* ---------- CHI TIẾT ĐÁNH GIÁ SAO (bấm "Số ĐH đánh giá" trong trang thợ) — CRM diem-hai-long-ThoDMX */
+function saoRows(ma){ const t = S.data.sao_ct; if (!t || !t.rows) return []; return t.rows.filter(r => String(r[0]) === String(ma)); }
+function saoCT(ma, f){
+  const all = saoRows(ma), rows = f ? all.filter(r => r[1] === f) : all;
+  const {rows: us, ix} = U(); const u = us.find(r => String(r[ix['Mã user']]) === String(ma));
+  const n = s => all.filter(r => r[1] === s).length;
+  let ov = document.querySelector('.saov'); if (!ov){ ov = document.createElement('div'); ov.className = 'saov'; document.body.appendChild(ov); document.body.style.overflow = 'hidden'; }
+  ov.innerHTML = `<button class="back" data-saox>‹ Đóng</button>
+    <div class="ttl" style="font-size:18px">Chi tiết đánh giá sao</div>
+    <div class="sub" style="margin-bottom:10px">${esc(ma)} · ${esc(u ? u[ix['Tên user']] : '')} · ${all.length} lượt đánh giá${S.data.sao_ct.month ? ' · T' + esc(S.data.sao_ct.month) : ''}</div>
+    <div class="chips"><button data-saof="0" data-saom="${esc(ma)}" class="${!f ? 'on' : ''}">Tất cả ${all.length}</button>${[5,4,3,2,1].map(s => `<button data-saof="${s}" data-saom="${esc(ma)}" class="${f === s ? 'on' : ''}">${s}★ ${n(s)}</button>`).join('')}</div>
+    <div class="card">${rows.map(r => `<div class="row"><span class="sao-st s${r[1]}">${r[1]}★</span>
+      <div style="flex:1;min-width:0"><div class="num" style="font-weight:700;word-break:break-all">${esc(r[2])}</div><div class="sub num">Phiếu ${esc(r[3])} · ${esc(r[4] || '')}</div></div></div>`).join('') || '<div class="empty">Không có đánh giá</div>'}</div>`;
+  ov.scrollTop = 0;
+}
+function saoClose(){ const ov = document.querySelector('.saov'); if (ov) ov.remove(); document.body.style.overflow = ''; }
+window.addEventListener('hashchange', saoClose);
 
 /* ---------- ĐƠN HÀNG & PHƯƠNG TIỆN (TQ_XE: Xe máy / Xe tải NB / Xe thuê — như sheet TỔNG QUAN mục 1) */
 const XG = [['Xe máy','XE MÁY','#1a73e8'],['Xe tải NB','XE TẢI NỘI BỘ','#16a34a'],['Xe thuê','XE THUÊ','#f2a900']];
@@ -688,7 +712,10 @@ function render(){
 }
 
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],[data-share],#rf,#me,#lo'); if (!t) return;
+  const t = e.target.closest('[data-saox],[data-saof],[data-saoct],[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],[data-share],#rf,#me,#lo'); if (!t) return;
+  if (t.dataset.saox !== undefined) return saoClose();
+  if (t.dataset.saof !== undefined) return saoCT(t.dataset.saom, +t.dataset.saof || 0);
+  if (t.dataset.saoct) return saoCT(t.dataset.saoct, 0);
   if (t.dataset.share) return shareCN(t.dataset.share);
   if (t.id === 'rf') return refresh(false);
   if (t.id === 'me') return nameForm(true);
