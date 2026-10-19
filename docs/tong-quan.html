@@ -15,15 +15,14 @@ html,body{margin:0;padding:0;background:#edf2f9;-webkit-text-size-adjust:100%}
 [hidden]{display:none!important}
 .dash-skeleton{color:transparent!important;background:#dfe7f3;border-radius:6px}
 #lg{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#1a56db,#2f7bf5);font-family:'Times New Roman',Times,serif}
-#lg form{background:#fff;border-radius:18px;padding:24px 20px;width:100%;max-width:360px;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:12px}
-#lg h1{margin:0;font-size:20px;color:#1f5fe0;text-transform:uppercase}
+#lg .ld{background:#fff;border-radius:18px;padding:24px 20px;width:100%;max-width:360px;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:12px}
+#lg h1{margin:0 0 8px;font-size:20px;color:#1f5fe0;text-transform:uppercase}
 #lg p{margin:0;color:#5b6b85;font-size:14px}
 #lg input{font:inherit;font-size:16px;padding:10px 12px;border:1px solid #cfdcf2;border-radius:12px}
 #lg button{font:inherit;font-size:16px;font-weight:700;padding:11px;border:0;border-radius:12px;background:#1f5fe0;color:#fff;cursor:pointer}
 #lg .er{color:#dc2626;font-size:14px;min-height:1em}
 #tqbar{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));z-index:20;display:flex;gap:8px}
 #tqbar button{font:600 13px 'Times New Roman',Times,serif;border:0;border-radius:999px;padding:9px 14px;background:#1f5fe0;color:#fff;box-shadow:0 4px 12px rgba(31,95,224,.35);cursor:pointer}
-#tqbar button.o{background:#fff;color:#1f5fe0}
 </style>
 <script src="config.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
@@ -624,53 +623,33 @@ dash.calc('loi_nhom', {
 </script>
 
 </div>
-<div id="tqbar" hidden><button type="button" id="tqref">↻ Làm mới</button><button type="button" class="o" id="tqout">Thoát</button></div>
-<div id="lg">
-  <form id="lgf" autocomplete="on">
-    <h1>Tổng quan thợ GHLĐ</h1>
-    <p>Vùng Trung Bộ · Nhập mật khẩu app Báo cáo thợ GHLĐ để xem.</p>
-    <input id="lgp" type="password" placeholder="Mật khẩu" autocomplete="current-password" required>
-    <div class="er" id="lge"></div>
-    <button type="submit" id="lgb">Xem báo cáo</button>
-  </form>
-</div>
+<div id="tqbar" hidden><button type="button" id="tqref">↻ Làm mới</button></div>
+<div id="lg"><div class="ld"><h1>Tổng quan thợ GHLĐ</h1><p id="lge">Đang tải dữ liệu…</p></div></div>
 <script>
 (() => {
   const CFG = window.APP_CFG || { repo: '' };
-  const LS = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }, del(k) { try { localStorage.removeItem(k); } catch (e) {} } };
-  const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
-  async function decrypt(enc, pw) {
-    const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
-    const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(enc.salt), iterations: enc.it, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
-    const raw = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(enc.iv) }, key, b64(enc.ct));
-    const st = new Blob([raw]).stream().pipeThrough(new DecompressionStream('gzip'));
-    return JSON.parse(await new Response(st).text());
-  }
-  async function fetchEnc() {
-    const urls = [[`https://raw.githubusercontent.com/${CFG.repo}/main/data/tq.json?t=${Date.now()}`, {}],
-      [`https://api.github.com/repos/${CFG.repo}/contents/data/tq.json?t=${Date.now()}`, { headers: { Accept: 'application/vnd.github.raw+json' } }],
-      [`data/tq.json?t=${Date.now()}`, {}]];
+  const LS = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  async function fetchData() {
+    const t = Date.now();
+    const urls = [[`https://raw.githubusercontent.com/${CFG.repo}/main/data/tq.json?t=${t}`, {}],
+      [`https://api.github.com/repos/${CFG.repo}/contents/data/tq.json?t=${t}`, { headers: { Accept: 'application/vnd.github.raw+json' } }],
+      [`data/tq.json?t=${t}`, {}]];
     let last;
     for (const [u, o] of urls) { try { const r = await fetch(u, { cache: 'no-store', ...o }); if (r.ok) return await r.text(); last = 'HTTP ' + r.status; } catch (e) { last = e.message; } }
     throw new Error(last || 'mất kết nối');
   }
   const lg = document.getElementById('lg'), er = document.getElementById('lge'), bar = document.getElementById('tqbar');
-  async function load(pw) {
+  async function load() {
     let txt;
-    try { txt = await fetchEnc(); LS.set('tq_enc', txt); }
-    catch (e) { txt = LS.get('tq_enc'); if (!txt) throw new Error('Không tải được dữ liệu (' + e.message + ')'); }
-    let d;
-    try { d = await decrypt(JSON.parse(txt), pw); } catch (e) { throw new Error('Sai mật khẩu'); }
-    LS.set('pw', pw); lg.hidden = true; bar.hidden = false; window.dash._load(d);
+    try { txt = await fetchData(); LS.set('tq_pub', txt); }
+    catch (e) { txt = LS.get('tq_pub'); if (!txt) throw new Error('Không tải được dữ liệu (' + e.message + '). Kiểm tra mạng rồi tải lại trang.'); }
+    const d = JSON.parse(txt);
+    if (!d.kho_ngay) throw new Error('Dữ liệu chưa sẵn sàng, thử lại sau ít phút.');
+    lg.hidden = true; bar.hidden = false; window.dash._load(d);
   }
-  document.getElementById('lgf').addEventListener('submit', (e) => {
-    e.preventDefault(); er.textContent = 'Đang tải…';
-    load(document.getElementById('lgp').value).then(() => { er.textContent = ''; }).catch((x) => { er.textContent = x.message; });
-  });
-  document.getElementById('tqref').addEventListener('click', () => { const pw = LS.get('pw'); if (pw) load(pw).catch((x) => alert(x.message)); });
-  document.getElementById('tqout').addEventListener('click', () => { LS.del('pw'); LS.del('tq_enc'); location.reload(); });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && LS.get('pw') && lg.hidden) load(LS.get('pw')).catch(() => {}); });
-  const pw = LS.get('pw'); if (pw) load(pw).catch((x) => { er.textContent = x.message === 'Sai mật khẩu' ? 'Mật khẩu đã đổi, nhập lại giúp nhé.' : x.message; });
+  document.getElementById('tqref').addEventListener('click', () => load().catch((x) => alert(x.message)));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && lg.hidden) load().catch(() => {}); });
+  load().catch((x) => { er.textContent = x.message; });
 })();
 </script>
 </body>
