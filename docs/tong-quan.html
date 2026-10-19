@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#1a56db">
-<title>Tổng quan thợ GHLĐ · Vùng Trung Bộ</title>
+<title>Báo cáo tổng quan hằng ngày · Vùng Trung Bộ</title>
+<meta property="og:title" content="Báo cáo tổng quan hằng ngày · Vùng Trung Bộ">
+<meta property="og:description" content="Tổng quan thợ GHLĐ Vùng Trung Bộ: sản lượng, đúng hẹn, tay nghề, sao phục vụ, doanh số – cập nhật mỗi tối.">
 <link rel="icon" href="icon-192.png">
 <style>
 :root{--cds-gap-xs:4px;--cds-gap-sm:8px;--cds-gap-md:12px;--cds-gap-lg:18px;--cds-pad-xs:4px;--cds-pad-sm:8px;--cds-pad-md:12px;--cds-pad-lg:16px;
@@ -356,7 +358,7 @@ dash.calc('loi_nhom', {
     const add = (s, p, g) => { const k = s + '|' + p + '|' + g; if (!acc.has(k)) acc.set(k, { k, scope: s, period: p, nhom_hang: g, so_loi: 0 }); acc.get(k).so_loi += 1; };
     for (const r of loi) for (const p of ['M', wk(r.ngay)]) {
       if (+r.dem_kho === 1) { add('Toàn vùng', p, r.nhom_hang); add(r.kho, p, r.nhom_hang); }
-      if (r.ma_nv && r.ma_nv !== '0') add(r.kho + '|' + r.ma_nv, p, r.nhom_hang);
+      if (r.ma_nv && r.ma_nv !== '0') add(r.khoa || (r.kho + '|' + r.ma_nv), p, r.nhom_hang);
     }
     return [...acc.values()];
   },
@@ -588,7 +590,7 @@ dash.calc('loi_nhom', {
 
     // chi tiết lỗi
     if (loi) {
-      const lt = loi.filter((r) => inPer(r.ngay, S.period) && (mode === 'ALL' || (mode === 'KHO' ? r.kho === scope : (r.kho + '|' + r.ma_nv) === S.user)))
+      const lt = loi.filter((r) => inPer(r.ngay, S.period) && (mode === 'ALL' || (mode === 'KHO' ? r.kho === scope : (r.khoa || (r.kho + '|' + r.ma_nv)) === S.user)))
         .sort((a, b) => d3.descending(a.ngay, b.ngay));
       const body = $('.lt tbody');
       if (!lt.length) { const tr = document.createElement('tr'); const c = td('Không có lỗi trong kỳ này.', 'l'); c.colSpan = 6; tr.append(c); body.replaceChildren(tr); }
