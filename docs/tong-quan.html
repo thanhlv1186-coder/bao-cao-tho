@@ -654,8 +654,9 @@ dash.calc('loi_nhom', {
   const LS = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
   async function fetchData() {
     const t = Date.now();
-    const urls = [[`https://raw.githubusercontent.com/${CFG.repo}/main/data/tq.json?t=${t}`, {}],
-      [`https://api.github.com/repos/${CFG.repo}/contents/data/tq.json?t=${t}`, { headers: { Accept: 'application/vnd.github.raw+json' } }],
+    // API GitHub luôn trả bản mới nhất (raw.githubusercontent giữ bản cũ ~5 phút) -> thử API trước
+    const urls = [[`https://api.github.com/repos/${CFG.repo}/contents/data/tq.json?t=${t}`, { headers: { Accept: 'application/vnd.github.raw+json' } }],
+      [`https://raw.githubusercontent.com/${CFG.repo}/main/data/tq.json?t=${t}`, {}],
       [`data/tq.json?t=${t}`, {}]];
     let last;
     for (const [u, o] of urls) { try { const r = await fetch(u, { cache: 'no-store', ...o }); if (r.ok) return await r.text(); last = 'HTTP ' + r.status; } catch (e) { last = e.message; } }
