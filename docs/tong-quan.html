@@ -200,9 +200,10 @@ let _rz; window.addEventListener('resize', () => { clearTimeout(_rz); _rz = setT
   <section class="tq-sec" id="chat-luong">
     <h2 class="tq-h2">2. Chất lượng</h2>
     <div class="tq-tiles">
+      <div class="tq-tile"><span class="lb">⭐ Phục vụ 5 sao</span><span class="vl k-v" data-k="sao">—</span><span class="nt"><span>Mục tiêu </span><span class="mt-sao" data-source="meta" data-field="mt_sao" data-row="0">—</span><span class="ht" data-h="sao"></span><span class="k-n" data-n="sao"></span></span><span class="tq-pill k-p" data-p="sao" hidden></span><div class="tq-prog k-g" data-g="sao" hidden><i></i><b></b></div></div>
       <div class="tq-tile"><span class="lb">⏰ Đúng hẹn</span><span class="vl k-v" data-k="dung_hen">—</span><span class="nt"><span>Mục tiêu </span><span class="mt-dh" data-source="meta" data-field="mt_dung_hen" data-row="0">—</span><span class="ht" data-h="dh"></span></span><span class="tq-pill k-p" data-p="dh" hidden></span><div class="tq-prog k-g" data-g="dh" hidden><i></i><b></b></div></div>
       <div class="tq-tile"><span class="lb">🛠️ Tay nghề không lỗi</span><span class="vl k-v" data-k="tay_nghe">—</span><span class="nt"><span>Mục tiêu </span><span class="mt-tn" data-source="meta" data-field="mt_tay_nghe" data-row="0">—</span><span class="ht" data-h="tn"></span></span><span class="tq-pill k-p" data-p="tn" hidden></span><div class="tq-prog k-g" data-g="tn" hidden><i></i><b></b></div></div>
-      <div class="tq-tile"><span class="lb">⭐ Phục vụ 5 sao</span><span class="vl k-v" data-k="sao">—</span><span class="nt"><span>Mục tiêu </span><span class="mt-sao" data-source="meta" data-field="mt_sao" data-row="0">—</span><span class="ht" data-h="sao"></span><span class="k-n" data-n="sao"></span></span><span class="tq-pill k-p" data-p="sao" hidden></span><div class="tq-prog k-g" data-g="sao" hidden><i></i><b></b></div></div>
+      <div class="tq-tile"><span class="lb">❌ Huỷ/nhập trả</span><span class="vl hy-v">—</span><span class="nt"><span>Mục tiêu </span><span class="hy-mt">—</span><span class="hy-ht"></span><span class="hy-n"></span></span><span class="tq-pill hy-p" hidden></span><div class="tq-prog hy-g" hidden><i></i><b></b></div></div>
       <div class="tq-tile"><span class="lb">⚠️ Lỗi tay nghề</span><span class="vl k-v" data-k="loi_tn">—</span><span class="nt k-n" data-n="mau">&nbsp;</span></div>
       <div class="tq-tile"><span class="lb">⌛ Đơn trễ hẹn</span><span class="vl k-v" data-k="tre_hen">—</span><span class="nt k-n" data-n="tre">&nbsp;</span></div>
     </div>
@@ -534,6 +535,26 @@ dash.calc('loi_nhom', {
       const lk = S.period === 'M' && mode !== 'USER' && T.sl ? R.don_tc / (T.sl * (M.ngay_ky || 1) / (M.so_ngay_thang || 30)) : null;
       pill('sl', lk, lk == null ? null : 1, ' · Lũy kế ');
     } else { pill('dh', null); pill('tn', null); pill('sao', null); pill('sl', null); }
+    // hủy / nhập trả: số tháng theo sheet BC (cột HỦY NHẬP TRẢ) + Q_HỦY NHẬP TRẢ; càng thấp càng tốt
+    {
+      const HK = mode === 'ALL' ? M : KR;
+      const H = HK ? { v: HK.ty_le_huy, mt: HK.mt_huy, n: HK.huy_nt, d: HK.tong_don_huy } : null;
+      const hv = $('.hy-v'), hp = $('.hy-p'), hg = $('.hy-g');
+      hv.textContent = H ? pc(H.v) : '—'; $('.hy-mt').textContent = H ? pc(H.mt) : '—';
+      const ok = H && H.v != null && H.mt ? H.v <= H.mt : null;
+      $('.hy-ht').textContent = ok == null ? '' : ' · %HT ' + pc(H.v / H.mt, 1);
+      let nt = H && H.n != null ? ' · ' + n0(H.n) + '/' + n0(H.d) + ' đơn' : '';
+      if (mode === 'ALL' && M && M.so_kho_co_huy) nt += ` · ${M.so_kho_dat_huy}/${M.so_kho_co_huy} kho đạt`;
+      if (mode === 'USER') nt += ' · số của kho ' + khoOf;
+      if (S.period !== 'M') nt += ' · cả tháng';
+      $('.hy-n').textContent = nt;
+      if (ok == null) { hp.hidden = true; hg.hidden = true; }
+      else {
+        const ht = H.v / H.mt, sc = 1.1;
+        hp.hidden = false; hp.textContent = ok ? 'Đạt' : 'Chưa đạt'; hp.className = 'tq-pill hy-p ' + (ok ? 'tq-ok' : 'tq-bad');
+        hg.hidden = false; hg.querySelector('i').style.width = Math.min(ht / sc, 1) * 100 + '%'; hg.querySelector('i').style.background = ok ? '#16a34a' : '#dc2626'; hg.querySelector('b').style.left = (1 / sc * 100) + '%';
+      }
+    }
 
     // câu kết luận
     const take = $('#ket-luan'); take.replaceChildren();
