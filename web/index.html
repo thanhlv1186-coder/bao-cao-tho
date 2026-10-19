@@ -533,7 +533,7 @@ function viewTho(){
 function viewThoDetail(ma){
   const {rows, ix, cols} = U(); const u = rows.find(r => String(r[ix['Mã user']]) === String(ma));
   if (!u) return `<div class="empty">Không thấy thợ ${esc(ma)}</div>`;
-  const skip = new Set(['Kỳ báo cáo','Vùng rút gọn','User','Mã user','Tên user','Tên kho ĐP','Chi nhánh','Mã kho ĐP']);
+  const skip = new Set(['Kỳ báo cáo','Vùng rút gọn','User','Mã user','Tên user','Tên kho ĐP','Chi nhánh','Mã kho ĐP','Đơn TC (4074)']);
   const T = S.data.tre, ti = {}; T.cols.forEach((c,i) => ti[c] = i);
   const tre = T.rows.filter(r => String(r[ti['Nhân viên giao']]||'').split('-')[0].trim() === String(ma));
   const L = S.data.loi, li = {}; L.cols.forEach((c,i) => li[c] = i);
