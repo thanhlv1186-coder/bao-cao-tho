@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Chất lượng GHLĐ · Vùng Trung Bộ</title>
+<meta property="og:title" content="Chất lượng GHLĐ · Vùng Trung Bộ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+<style>
+:root{--side:#101d39;--side-2:#1b2d55;--side-fg:#c9d3e8;--brand:#f5d63d;--xl:#0070c0;--gold:#ffc000;--navy:#002060;--ok:#00b0f0;--bad:#d65a2e;--red:#c00000;--tl-ok:#0070c0;--tl-bad:#c00000;
+--nx-full:#cfecf7;--nx-full-fg:#002060;--nx-good:#c6efce;--nx-good-fg:#006100;--nx-low:#ffc7ce;--nx-low-fg:#9c0006;--sub:#cfecf7;--mrow:#f2f2f2;
+--bg:#f2f5f9;--surface:#fff;--sunk:#eef2f7;--line:#d9e0ea;--grid:#e6ebf2;--fg:#14213d;--muted:#5f6d84;--title:#002060;
+--f:"Aptos","Aptos Display","Segoe UI","Be Vietnam Pro",system-ui,Roboto,Arial,sans-serif;--r:12px;--shadow:0 1px 2px rgb(0 32 96/.06),0 6px 18px rgb(0 32 96/.05)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--side-2:#1f3462;--sub:#16384f;--mrow:#1b2740;--nx-full:#16384f;--nx-full-fg:#bfe6ff;--nx-good:#163d22;--nx-good-fg:#8fe0a6;--nx-low:#4a1a20;--nx-low-fg:#ffb3bc;--tl-ok:#4fb3ff;--tl-bad:#ff7b6b;--bg:#0c1426;--surface:#131d33;--sunk:#192640;--line:#27365a;--grid:#22304d;--fg:#e6ecf7;--muted:#97a4bd;--title:#9fc6ff;--shadow:none;color-scheme:dark}}
+:root[data-theme="dark"]{--side-2:#1f3462;--sub:#16384f;--mrow:#1b2740;--nx-full:#16384f;--nx-full-fg:#bfe6ff;--nx-good:#163d22;--nx-good-fg:#8fe0a6;--nx-low:#4a1a20;--nx-low-fg:#ffb3bc;--tl-ok:#4fb3ff;--tl-bad:#ff7b6b;--bg:#0c1426;--surface:#131d33;--sunk:#192640;--line:#27365a;--grid:#22304d;--fg:#e6ecf7;--muted:#97a4bd;--title:#9fc6ff;--shadow:none;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--f);font-size:14px;line-height:1.45;font-variant-numeric:tabular-nums;-webkit-text-size-adjust:100%}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--xl);outline-offset:2px}
+.brand{background:var(--side);color:var(--side-fg);padding:12px max(16px,env(safe-area-inset-left)) 12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+.logo .mk{width:34px;height:34px;border-radius:9px;background:var(--brand);color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:15px}
+.logo b{font-size:17px;font-weight:800;letter-spacing:-.01em;display:block;line-height:1.1}
+.logo small{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);font-weight:700}
+.brand .upd{font-size:12px;text-align:right}
+.brand .upd b{color:#fff;font-weight:600}
+.top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--surface);border-bottom:1px solid var(--line)}
+.top h1{font-size:21px;font-weight:700;margin:0;color:var(--title)}
+.top p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:9px 16px;font-weight:600;font-size:13.5px;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn svg{width:16px;height:16px}
+.btn.blue{background:var(--xl);color:#fff}
+.btn.gold{background:var(--gold);color:#002060}
+.btn.ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.content{padding:22px 28px 48px;display:flex;flex-direction:column;gap:18px;max-width:1280px;margin:0 auto}
+.hero{border-radius:16px;padding:24px 30px;color:#fff;position:relative;overflow:hidden;background:linear-gradient(105deg,#002060 0%,#0b3a86 55%,#0070c0 100%);display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.hero::after{content:"";position:absolute;width:280px;height:280px;border-radius:50%;right:120px;top:-150px;background:rgba(255,255,255,.07)}
+.hero>*{position:relative;z-index:1}
+.hero .eb{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.hero h2{font-size:clamp(21px,2.4vw,28px);font-weight:700;margin:6px 0 4px;text-wrap:balance}
+.hero p{margin:0;color:#dbe6f7;font-size:14px}
+.hero .acts{display:flex;gap:10px;flex-wrap:wrap}
+.filters{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 16px;box-shadow:var(--shadow)}
+.fld{display:flex;flex-direction:column;gap:4px;min-width:0}
+.fld>.lbl{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+select{font:inherit;font-size:13.5px;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:180px;max-width:100%}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--sunk);border-radius:9px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--muted);padding:6px 12px;border-radius:7px;cursor:pointer;font-weight:600;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--xl);color:#fff}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.stat{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid var(--line);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.stat .hd{background:var(--xl);color:var(--gold);font-weight:700;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;gap:6px;min-height:40px}
+.stat.all .hd{background:var(--gold);color:#002060}
+.stat.bad{border:2px solid var(--red);box-shadow:0 0 0 3px rgb(192 0 0/.12)}
+.stat.bad .hd{background:var(--red);color:#fff}
+.stat .bd{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.stat .v{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:var(--title)}
+.stat.bad .v{color:var(--tl-bad)}
+.stat .v small{font-size:15px;font-weight:600;margin-left:6px}
+.stat .m{font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 12px}
+.stat .m b{color:var(--fg);font-weight:700}
+.stat .m b.up{color:var(--tl-ok)}.stat .m b.dn{color:var(--tl-bad)}
+.ev{display:inline-block;font-size:11.5px;font-weight:700;border-radius:4px;padding:2px 8px;color:#fff;white-space:nowrap;letter-spacing:.02em}
+.ev.ok{background:var(--ok)}
+.ev.bad{background:#fff;color:var(--red)}
+.ev.na{background:var(--sunk);color:var(--muted)}
+.meter{height:8px;border-radius:4px;background:var(--grid);position:relative;margin-top:2px}
+.meter i{position:absolute;inset:0 auto 0 0;border-radius:4px}
+.meter .k{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--fg);opacity:.55}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.panel .ph{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+.panel .ph h3{margin:0;font-size:15px;font-weight:700;color:var(--title)}
+.panel .ph span{font-size:12px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.two{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:start}
+.bars{padding:12px 16px 14px;display:flex;flex-direction:column;gap:7px}
+.bar{display:grid;grid-template-columns:minmax(96px,32%) minmax(0,1fr) auto;gap:8px;align-items:center;font-size:12.5px;cursor:pointer;border-radius:4px;background:none;border:0;padding:0;text-align:left;width:100%}
+.bar:hover .tr{background:var(--sunk)}
+.bar.sel .nm{font-weight:800;color:var(--title)}
+.bar.sel .tr{background:var(--sunk)}
+.bar .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--fg)}
+.bar .tr{position:relative;height:16px;border-radius:4px}
+.bar .tr i{position:absolute;left:0;top:2px;bottom:2px;border-radius:0 4px 4px 0}
+.bar .tr .ref{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px dashed var(--muted);opacity:.6}
+.bar .vl{font-weight:700;min-width:62px;text-align:right}
+.vl.ok,.t.ok{color:var(--tl-ok)}.vl.bad,.t.bad{color:var(--tl-bad)}
+.axis{display:grid;grid-template-columns:minmax(96px,32%) minmax(0,1fr) auto;gap:8px;font-size:10.5px;color:var(--muted)}
+.axis div{position:relative;height:14px}
+.axis span{position:absolute;transform:translateX(-50%)}
+.axis em{min-width:62px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);padding:10px 18px;align-items:center}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:4px}
+.dash{display:inline-block;width:14px;border-top:2px dashed var(--muted);vertical-align:3px;margin-right:4px}
+.cols{margin:30px 18px 0;height:150px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;position:relative}
+.col{position:relative;height:100%;display:flex;justify-content:center;align-items:flex-end;min-width:0}
+.col .c{width:min(46px,70%);border-radius:4px 4px 0 0}
+.col .t{position:absolute;left:-6px;right:-6px;text-align:center;font-size:12px;font-weight:700}
+.col .na{font-size:11px;color:var(--muted);padding-bottom:6px}
+.cols .kl{position:absolute;left:0;right:0;border-top:2px dashed var(--muted);opacity:.6;pointer-events:none}
+.cols .kl b{position:absolute;right:0;top:-17px;font-size:10.5px;font-weight:600;color:var(--muted)}
+.xlab{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:6px 0 12px;font-size:12px;color:var(--muted);text-align:center;border-top:1px solid var(--line);margin-inline:18px}
+.xlab b{color:var(--title)}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:980px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:center;white-space:nowrap}
+thead th{background:var(--xl);color:#fff;font-weight:700;font-size:11.5px}
+thead tr:first-child th{background:var(--navy);color:var(--gold);letter-spacing:.03em}
+td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1}
+thead th:first-child{background:var(--navy);color:var(--gold)}
+tbody tr.reg td{background:var(--sub);font-weight:800;color:var(--title)}
+tbody tr.sel td{background:var(--sunk)}
+tbody tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
+tbody tr{cursor:pointer}
+td.ok{color:var(--tl-ok);font-weight:700}td.bad{color:var(--tl-bad);font-weight:700}
+.dg{display:inline-block;border-radius:4px;padding:1px 8px;font-weight:700;font-size:11.5px;color:#fff}
+.dg.ok{background:var(--ok)}.dg.bad{background:var(--bad)}
+.nx{display:inline-block;border-radius:4px;padding:2px 8px;font-weight:800;font-size:11.5px}
+.nx.full{background:var(--nx-full);color:var(--nx-full-fg)}.nx.good{background:var(--nx-good);color:var(--nx-good-fg)}.nx.low{background:var(--nx-low);color:var(--nx-low-fg)}
+.split{padding:12px 18px 16px;display:flex;flex-direction:column;gap:12px}
+.split .lb{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px}
+.split .lb b{color:var(--title)}
+.split .sb{display:flex;height:18px;gap:2px}
+.split .sb i{display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-style:normal;min-width:0;overflow:hidden}
+.split .sb i:first-child{border-radius:4px 0 0 4px}.split .sb i:last-child{border-radius:0 4px 4px 0}
+.watch{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:12px 16px 16px}
+.wk{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface);cursor:pointer;text-align:left}
+.wk:hover{border-color:var(--xl)}
+.wk .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.wk .h b{font-size:14px;color:var(--title)}
+.wk .h span{font-size:12px;font-weight:700;color:var(--tl-bad)}
+.wk .s{font-size:11.5px;color:var(--muted);margin:2px 0 6px}
+.tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag{font-size:11px;font-weight:600;border-radius:999px;padding:2px 8px;background:var(--nx-low);color:var(--nx-low-fg)}
+.foot{font-size:12px;color:var(--muted);line-height:1.6;padding:0 4px}
+#lg{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:99;padding:16px;text-align:center}
+#lg h1{color:var(--title);font-size:18px;margin:0 0 6px}#lg p{color:var(--muted);margin:0}
+#tip{position:fixed;z-index:60;pointer-events:none;background:var(--surface);color:var(--fg);border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.18);border-radius:8px;padding:8px 10px;font-size:12px;line-height:1.5;max-width:260px;display:none}
+@media (max-width:1100px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat.all{grid-column:span 3}}
+@media (max-width:900px){.grid3{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+@media (max-width:760px){
+ .top{padding:12px 16px}.content{padding:14px 16px 40px;gap:14px}
+ .hero{padding:20px 18px}.hero .acts{width:100%}.hero .acts .btn{flex:1;justify-content:center}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat.all{grid-column:span 2}
+ .stat .v{font-size:26px}.stat .hd{font-size:11.5px;padding:8px 10px}.stat .bd{padding:10px}
+ .grid2{grid-template-columns:1fr}
+ select{min-width:0;width:100%}.fld{width:100%}
+ .brand .upd{display:none}
+}
+</style>
+</head>
+<body>
+<div id="lg"><div><h1>Chất lượng GHLĐ · Vùng Trung Bộ</h1><p id="lge">Đang tải dữ liệu…</p></div></div>
+<header class="brand">
+  <a class="logo" href="#"><span class="mk">Thợ</span><span><b>Thợ ĐMX</b><small>Vùng Trung Bộ · GHLĐ</small></span></a>
+  <div class="upd">Cập nhật <b id="upd">—</b></div>
+</header>
+<div class="top">
+  <div><h1>Tổng quan</h1><p>Dashboard kết quả chất lượng theo tháng hoặc từng tuần</p></div>
+  <button class="btn blue" data-xl><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 20h16"/></svg>Xuất Excel</button>
+</div>
+<main class="content">
+  <section class="hero">
+    <div>
+      <div class="eb" id="heb">VÙNG TRUNG BỘ</div>
+      <h2 id="hh">Chất lượng GHLĐ</h2>
+      <p id="hp">—</p>
+    </div>
+    <div class="acts">
+      <a class="btn ghost" href="#bang">Xem bảng theo Kho</a>
+      <button class="btn gold" data-xl>Xuất báo cáo Excel</button>
+    </div>
+  </section>
+
+  <section class="filters">
+    <div class="fld"><span class="lbl">Kỳ báo cáo</span><div class="seg" id="ky"></div></div>
+    <div class="fld"><span class="lbl">Kho</span><select id="kho"></select></div>
+  </section>
+
+  <section class="stats" id="stats"></section>
+
+  <section class="grid2" id="bars"></section>
+  <div class="panel"><div class="legend"><span><i class="sw" style="background:var(--ok)"></i>Đạt KPI</span><span><i class="sw" style="background:var(--bad)"></i>Chưa đạt</span><span><i class="dash"></i>Mốc 100% KPI</span><span>Thanh = tỷ lệ hoàn thành KPI (TLHT); số bên phải = kết quả thực hiện. Bấm vào một kho để xem riêng kho đó.</span></div></div>
+
+  <section class="grid3" id="weeks"></section>
+
+  <section class="panel" id="bang">
+    <div class="ph"><h3 id="bt">Bảng kết quả</h3><span>Theo form báo cáo · bấm một dòng để xem kho</span></div>
+    <div class="tw"><table id="tbl"></table></div>
+  </section>
+
+  <section class="two">
+    <div class="panel"><div class="ph"><h3>Số kho đạt theo tiêu chí</h3><span id="splt">—</span></div><div class="split" id="split"></div></div>
+    <div class="panel"><div class="ph"><h3>Kho cần chú ý</h3><span>Ít tiêu chí đạt nhất</span></div><div class="watch" id="watch"></div></div>
+  </section>
+
+  <p class="foot" id="foot">Nguồn: sheet BC trong BÁO CÁO.xlsx — sản lượng (Q_SẢN LƯỢNG), đúng hẹn (Q_ĐÚNG HẸN), tay nghề (Q_TAY NGHỀ), sao phục vụ (Q_SAO PHỤC VỤ 2), hủy nhập trả (sheet BC). KPI từng kho lấy theo sheet BC. Toàn vùng = trung bình các kho, như sheet BC. TLHT = thực hiện ÷ KPI (hủy nhập trả: KPI ÷ thực hiện, thấp hơn là tốt). Tuần: T1 ngày 1–7, T2 8–14, T3 15–21, T4 22–cuối tháng; sao phục vụ và hủy nhập trả chỉ có số cả tháng. Tự cập nhật mỗi tối sau báo cáo 20h.</p>
+</main>
+<div id="tip"></div>
+<script>
+(() => {
+  const CFG = window.APP_CFG || { repo: 'thanhlv1186-coder/bao-cao-tho' };
+  const LS = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const nf = (v, d) => v == null || isNaN(v) ? '—' : v.toLocaleString('vi-VN', { minimumFractionDigits: d, maximumFractionDigits: d });
+  const pct = (v, d = 2) => v == null || isNaN(v) ? '—' : nf(v * 100, d) + '%';
+  const int = v => v == null ? '—' : Math.round(v) === 0 ? '-' : Math.round(v).toLocaleString('vi-VN');
+  const avg = a => { a = a.filter(x => x != null && !isNaN(x)); return a.length ? a.reduce((s, x) => s + x, 0) / a.length : null; };
+
+  async function fetchData() {
+    const t = Date.now();
+    const urls = [[`https://api.github.com/repos/${CFG.repo}/contents/data/tq.json?t=${t}`, { headers: { Accept: 'application/vnd.github.raw+json' } }],
+      [`https://raw.githubusercontent.com/${CFG.repo}/main/data/tq.json?t=${t}`, {}],
+      [`data/tq.json?t=${t}`, {}]];
+    let last;
+    for (const [u, o] of urls) { try { const r = await fetch(u, { cache: 'no-store', ...o }); if (r.ok) return await r.text(); last = 'HTTP ' + r.status; } catch (e) { last = e.message; } }
+    throw new Error(last || 'mất kết nối');
+  }
+
+  // ===== tiêu chí
+  const CR = [
+    { k: 'sao', t: 'Sao phục vụ', s: 'SAO PHỤC VỤ', f: v => nf(v, 2), kf: v => nf(v, 2), low: false },
+    { k: 'dh', t: 'Đúng hẹn', s: 'ĐÚNG HẸN', f: v => pct(v, 2), kf: v => pct(v, 1), low: false },
+    { k: 'tn', t: 'Tay nghề', s: 'TAY NGHỀ', f: v => pct(v, 2), kf: v => pct(v, 2), low: false },
+    { k: 'huy', t: 'Hủy nhập trả', s: 'HỦY NHẬP TRẢ', f: v => pct(v, 2), kf: v => pct(v, 2), low: true },
+  ];
+  const tlht = (c, v, kpi) => v == null || !kpi ? null : (c.low ? (v > 0 ? kpi / v : 2) : v / kpi);
+  const dat = (c, v, kpi) => v == null || kpi == null ? null : (c.low ? v <= kpi : v >= kpi);
+  const WK = [[1, 7], [8, 14], [15, 21], [22, 31]];
+
+  let D, ST = { ky: 0, kho: '' };
+
+  function agg(rows) {
+    const a = { tc: 0, tre: 0, loi: 0, mau: 0 };
+    rows.forEach(r => { a.tc += r.don_tc; a.tre += r.tre_hen; a.loi += r.loi_tn; a.mau += r.mau_tn; });
+    a.dh = a.tc > 0 ? 1 - a.tre / a.tc : null; a.tn = a.mau > 0 ? 1 - a.loi / a.mau : null;
+    return a;
+  }
+  // kết quả từng kho cho kỳ ky (0 = tháng, 1..4 = tuần)
+  function calc(ky) {
+    const [d1, d2] = ky ? WK[ky - 1] : [1, 31];
+    const rows = D.kho.map(k => {
+      const kn = D.kho_ngay.filter(r => r.kho === k.kho && +r.ngay.slice(8, 10) >= d1 && +r.ngay.slice(8, 10) <= d2);
+      const a = agg(kn);
+      const o = { kho: k.kho, ma: k.ma_kho, tc: a.tc, tre: a.tre, loi: a.loi, mau: a.mau, sao: k.sao_phuc_vu, dh: a.dh, tn: a.tn, huy: k.ty_le_huy,
+        huy_nt: k.huy_nt, tong_huy: k.tong_don_huy,
+        kpi: { sao: k.mt_sao, dh: k.mt_dung_hen, tn: k.mt_tay_nghe, huy: k.mt_huy } };
+      fin(o); return o;
+    });
+    const m = D.meta[0];
+    const reg = { kho: 'Vùng Trung Bộ', reg: true, tc: rows.reduce((s, r) => s + r.tc, 0), tre: rows.reduce((s, r) => s + r.tre, 0), loi: rows.reduce((s, r) => s + r.loi, 0), mau: rows.reduce((s, r) => s + r.mau, 0),
+      sao: avg(rows.map(r => r.sao)), dh: avg(rows.filter(r => r.tc > 0).map(r => r.dh)), tn: avg(rows.filter(r => r.mau > 0).map(r => r.tn)),
+      huy: m.ty_le_huy, huy_nt: m.huy_nt, tong_huy: m.tong_don_huy,
+      kpi: { sao: m.mt_sao, dh: m.mt_dung_hen, tn: m.mt_tay_nghe, huy: m.mt_huy } };
+    fin(reg);
+    return { reg, rows };
+  }
+  function fin(o) {
+    o.t = {}; o.ok = {}; let n = 0, c = 0;
+    CR.forEach(cr => { o.t[cr.k] = tlht(cr, o[cr.k], o.kpi[cr.k]); o.ok[cr.k] = dat(cr, o[cr.k], o.kpi[cr.k]); if (o.ok[cr.k] != null) { c++; if (o.ok[cr.k]) n++; } });
+    o.n = n; o.c = c;
+  }
+
+  function render() {
+    const m = D.meta[0];
+    const dd = m.ngay_du_lieu.split('-'), th = +dd[1], yy = dd[0];
+    const R = calc(ST.ky), MON = ST.ky ? calc(0) : R;
+    const kyTxt = ST.ky ? `Tuần ${ST.ky}` : `Tháng ${th}`;
+    const [d1, d2] = ST.ky ? WK[ST.ky - 1] : [1, m.ngay_ky];
+    const rng = `${String(d1).padStart(2, '0')}/${th} – ${String(Math.min(d2, m.ngay_ky)).padStart(2, '0')}/${th}`;
+    const full = MON.rows.filter(r => r.c && r.n === r.c).length;
+    $('#heb').textContent = `VÙNG TRUNG BỘ · ${kyTxt.toUpperCase()}`;
+    $('#hh').textContent = `Chất lượng GHLĐ ${ST.ky ? 'tuần ' + ST.ky + ' · ' : ''}tháng ${th}/${yy}`;
+    $('#hp').textContent = `Dữ liệu đến ${dd[2]}/${dd[1]}/${yy} · ${R.rows.length} kho · ${full} kho đạt đủ tiêu chí (tháng) · ${int(R.reg.tc)} đơn thành công`;
+    $('#upd').textContent = D.updated || m.cap_nhat;
+
+    // kỳ
+    $('#ky').innerHTML = ['Tháng ' + th, 'Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'].map((t, i) =>
+      `<button aria-pressed="${ST.ky === i}" data-ky="${i}" ${i && WK[i - 1][0] > m.ngay_ky ? 'disabled' : ''}>${t}</button>`).join('');
+    // kho
+    const sel = $('#kho');
+    if (!sel.options.length) sel.innerHTML = `<option value="">Toàn vùng (${R.rows.length} kho)</option>` + R.rows.map(r => `<option>${esc(r.kho)}</option>`).join('');
+    sel.value = ST.kho;
+
+    const cur = ST.kho ? R.rows.find(r => r.kho === ST.kho) : R.reg;
+    const curM = ST.kho ? MON.rows.find(r => r.kho === ST.kho) : MON.reg;
+    const where = ST.kho ? 'Kho ' + ST.kho : 'Toàn vùng';
+
+    // ===== thẻ KPI
+    const nAll = ST.kho ? '' : `<div class="m"><span><b>${full}</b>/${R.rows.length} kho đạt đủ</span></div>`;
+    let h = `<div class="stat all"><div class="hd">Nhận xét chung</div><div class="bd"><div class="v">${cur.n}/${cur.c}<small>đạt</small></div>${nAll}<div class="m">${esc(where)} · ${kyTxt}</div>
+      <div class="m"><span>Đơn TC <b>${int(cur.tc)}</b></span><span>Trễ <b>${int(cur.tre)}</b></span><span>Lỗi TN <b>${int(cur.loi)}</b></span></div></div></div>`;
+    CR.forEach(c => {
+      const v = cur[c.k], kpi = cur.kpi[c.k], t = cur.t[c.k], ok = cur.ok[c.k];
+      const bad = ok === false;
+      const fillW = t == null ? 0 : Math.min(t / 1.25, 1) * 100;
+      let det = '';
+      if (c.k === 'dh') det = `<div class="m"><span><b>${int(cur.tre)}</b> trễ / ${int(cur.tc)} đơn</span><span>${rng}</span></div>`;
+      if (c.k === 'tn') det = `<div class="m"><span><b>${int(cur.loi)}</b> lỗi / ${int(cur.mau)} đơn + phiếu</span><span>${rng}</span></div>`;
+      if (c.k === 'sao') det = `<div class="m"><span>Lũy kế cả tháng${ST.ky ? ' (không có số theo tuần)' : ''}</span></div>`;
+      if (c.k === 'huy') det = `<div class="m"><span>${cur.huy_nt != null ? `<b>${int(cur.huy_nt)}</b> hủy / ${int(cur.tong_huy)} đơn · ` : ''}thấp hơn là tốt</span><span>Cả tháng</span></div>`;
+      h += `<div class="stat${bad ? ' bad' : ''}"><div class="hd"><span>${bad ? '⚠ ' : ''}${c.s}</span>${ok == null ? '<span class="ev na">—</span>' : `<span class="ev ${ok ? 'ok' : 'bad'}">${ok ? 'ĐẠT' : '⚠ CHƯA ĐẠT'}</span>`}</div>
+        <div class="bd"><div class="v">${c.f(v)}</div>
+        <div class="meter"><i style="width:${fillW}%;background:${bad ? 'var(--bad)' : 'var(--ok)'}"></i><span class="k" style="left:80%"></span></div>
+        <div class="m"><span>KPI <b>${c.kf(kpi)}</b></span><span>TLHT <b class="${ok ? 'up' : 'dn'}">${pct(t, 1)}</b></span></div>${det}</div></div>`;
+    });
+    $('#stats').innerHTML = h;
+
+    // ===== thanh TLHT theo kho
+    $('#bars').innerHTML = CR.map(c => {
+      const rs = R.rows.filter(r => r[c.k] != null);
+      const mx = Math.min(2, Math.max(1.1, Math.ceil(Math.max(...rs.map(r => r.t[c.k] || 0)) * 2) / 2));
+      const ticks = []; for (let x = 0; x <= mx + 1e-9; x += 0.5) ticks.push(x);
+      return `<div class="panel"><div class="ph"><h3>${c.t} · TLHT</h3><span>KPI theo từng kho${c.low ? ' (thấp hơn là tốt)' : ''}${(c.k === 'sao' || c.k === 'huy') && ST.ky ? ' · số cả tháng' : ''}</span></div><div class="bars">` +
+        rs.map(r => { const t = r.t[c.k] || 0, ok = r.ok[c.k];
+          return `<button class="bar${r.kho === ST.kho ? ' sel' : ''}" data-k="${esc(r.kho)}" data-tip="<b>${esc(r.kho)}</b><br>${c.t}: ${c.f(r[c.k])}<br>KPI: ${c.kf(r.kpi[c.k])}<br>TLHT: ${pct(r.t[c.k], 1)}"><span class="nm">${esc(r.kho)}</span><span class="tr"><i style="width:${Math.min(t / mx, 1) * 100}%;background:${ok ? 'var(--ok)' : 'var(--bad)'}"></i><span class="ref" style="left:${100 / mx}%"></span></span><span class="vl ${ok ? 'ok' : 'bad'}">${c.f(r[c.k])}</span></button>`; }).join('') +
+        `<div class="axis"><span></span><div>${ticks.map(x => `<span style="left:${x / mx * 100}%">${Math.round(x * 100)}%</span>`).join('')}</div><em></em></div></div></div>`;
+    }).join('');
+
+    // ===== theo tuần (đúng hẹn, tay nghề, sản lượng)
+    const W = [1, 2, 3, 4].map(i => WK[i - 1][0] > m.ngay_ky ? null : calc(i));
+    const pick = r => ST.kho ? r.rows.find(x => x.kho === ST.kho) : r.reg;
+    const wk = (title, key, fmt, kpi, low) => {
+      const vals = W.map(r => r ? pick(r)[key] : null);
+      const ok = v => v == null || kpi == null ? null : (low ? v <= kpi : v >= kpi);
+      let lo, hi;
+      if (kpi != null) { const all = vals.filter(v => v != null).concat([kpi]); lo = Math.min(...all); hi = Math.max(...all); const pad = (hi - lo) * 0.35 || Math.abs(hi) * 0.01 || 1; lo -= pad; hi += pad; }
+      else { lo = 0; hi = Math.max(...vals.filter(v => v != null), 1) * 1.15; }
+      const y = v => (v - lo) / (hi - lo) * 100;
+      return `<div class="panel"><div class="ph"><h3>${title}</h3><span>${esc(where)}</span></div><div class="cols">` +
+        vals.map(v => v == null ? `<div class="col"><span class="na">Chưa có</span></div>` :
+          `<div class="col"><span class="t ${kpi == null ? '' : ok(v) ? 'ok' : 'bad'}" style="bottom:calc(${y(v)}% + 4px)">${fmt(v)}</span><i class="c" style="height:${Math.max(y(v), 2)}%;background:${kpi == null ? 'var(--xl)' : ok(v) ? 'var(--ok)' : 'var(--bad)'}"></i></div>`).join('') +
+        (kpi != null ? `<div class="kl" style="bottom:${y(kpi)}%"><b>KPI ${fmt(kpi)}</b></div>` : '') +
+        `</div><div class="xlab">${[1, 2, 3, 4].map(i => i === ST.ky ? `<b>Tuần ${i}</b>` : `<span>Tuần ${i}</span>`).join('')}</div></div>`;
+    };
+    $('#weeks').innerHTML = wk('Đúng hẹn theo tuần', 'dh', v => pct(v, 2), curM.kpi.dh) + wk('Tay nghề theo tuần', 'tn', v => pct(v, 2), curM.kpi.tn) + wk('Sản lượng theo tuần', 'tc', int, null);
+
+    // ===== bảng theo form
+    $('#bt').textContent = `Bảng kết quả · ${kyTxt}`;
+    const nxc = r => r.n === r.c ? 'full' : r.n >= r.c / 2 ? 'good' : 'low';
+    const cell = (r, c) => { const ok = r.ok[c.k]; return `<td>${c.f(r[c.k])}</td><td class="${ok == null ? '' : ok ? 'ok' : 'bad'}">${pct(r.t[c.k], 2)}</td><td>${ok == null ? '—' : `<span class="dg ${ok ? 'ok' : 'bad'}">${ok ? 'Đạt' : 'Chưa đạt'}</span>`}</td>`; };
+    $('#tbl').innerHTML = `<thead><tr><th rowspan="2">KHO</th>${CR.map((c, i) => `<th colspan="3">${i + 1}. ${c.s}</th>`).join('')}<th>NHẬN XÉT</th></tr>
+      <tr>${CR.map(() => '<th>THỰC HIỆN</th><th>TLHT</th><th>ĐÁNH GIÁ</th>').join('')}<th>KẾT QUẢ</th></tr></thead><tbody>` +
+      [R.reg, ...R.rows].map(r => `<tr class="${r.reg ? 'reg' : ''}${!r.reg && r.kho === ST.kho ? ' sel' : ''}" data-k="${r.reg ? '' : esc(r.kho)}"><td>${esc(r.kho)}</td>${CR.map(c => cell(r, c)).join('')}<td><span class="nx ${nxc(r)}">${r.n}/${r.c} ĐẠT</span></td></tr>`).join('') + '</tbody>';
+
+    // ===== số kho đạt
+    $('#splt').textContent = kyTxt;
+    $('#split').innerHTML = CR.map(c => { const rs = R.rows.filter(r => r.ok[c.k] != null), n = rs.filter(r => r.ok[c.k]).length, k = rs.length - n;
+      return `<div><div class="lb"><span>${c.t}</span><b>${n}/${rs.length} kho đạt</b></div><div class="sb">${n ? `<i style="flex:${n};background:var(--ok)">${n}</i>` : ''}${k ? `<i style="flex:${k};background:var(--bad)">${k}</i>` : ''}</div></div>`; }).join('');
+
+    // ===== kho cần chú ý
+    const ws = [...R.rows].filter(r => r.n < r.c).sort((a, b) => a.n / a.c - b.n / b.c || a.kho.localeCompare(b.kho, 'vi')).slice(0, 8);
+    $('#watch').innerHTML = ws.length ? ws.map(r => `<button class="wk" data-k="${esc(r.kho)}"><div class="h"><b>${esc(r.kho)}</b><span>${r.n}/${r.c} đạt</span></div><div class="s">Kho ${esc(r.ma || '')} · Vùng Trung Bộ</div><div class="tags">${CR.filter(c => r.ok[c.k] === false).map(c => `<span class="tag">${c.t}</span>`).join('')}</div></button>`).join('')
+      : '<p style="margin:4px 4px 8px;color:var(--muted)">Tất cả kho đều đạt đủ tiêu chí.</p>';
+    R_LAST = R; KY_LAST = kyTxt;
+  }
+  let R_LAST, KY_LAST;
+
+  // ===== xuất Excel (CSV mở bằng Excel)
+  function exportXl() {
+    const R = R_LAST; if (!R) return;
+    const q = s => `"${String(s).replace(/"/g, '""')}"`;
+    const head = ['Kho', ...CR.flatMap(c => [c.t + ' - Thực hiện', c.t + ' - KPI', c.t + ' - TLHT', c.t + ' - Đánh giá']), 'Số tiêu chí đạt', 'Đơn TC', 'Đơn trễ', 'Lỗi tay nghề'];
+    const lines = [head.map(q).join(',')];
+    [R.reg, ...R.rows].forEach(r => lines.push([r.kho, ...CR.flatMap(c => [c.f(r[c.k]), c.kf(r.kpi[c.k]), pct(r.t[c.k], 2), r.ok[c.k] == null ? '' : r.ok[c.k] ? 'Đạt' : 'Chưa đạt']), `${r.n}/${r.c}`, r.tc, r.tre, r.loi].map(q).join(',')));
+    const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = `Chat_luong_GHLD_Trung_Bo_${KY_LAST.replace(/\s+/g, '_')}_${D.meta[0].ngay_du_lieu}.csv`; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  }
+
+  // ===== sự kiện
+  document.addEventListener('click', e => {
+    const k = e.target.closest('[data-ky]'); if (k && !k.disabled) { ST.ky = +k.dataset.ky; render(); return; }
+    const x = e.target.closest('[data-xl]'); if (x) { exportXl(); return; }
+    const b = e.target.closest('[data-k]');
+    if (b) { const v = b.dataset.k; ST.kho = ST.kho === v ? '' : v; render(); if (!b.closest('#tbl')) $('.filters').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+  $('#kho').addEventListener('change', e => { ST.kho = e.target.value; render(); });
+  const tip = $('#tip');
+  document.addEventListener('mouseover', e => { const t = e.target.closest('[data-tip]'); if (!t) { tip.style.display = 'none'; return; } tip.innerHTML = t.dataset.tip; tip.style.display = 'block'; });
+  document.addEventListener('mousemove', e => { if (tip.style.display === 'block') { tip.style.left = Math.min(e.clientX + 14, innerWidth - 270) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; } });
+
+  (async () => {
+    let txt;
+    try { txt = await fetchData(); LS.set('ghld_pub', txt); }
+    catch (e) { txt = LS.get('ghld_pub'); if (!txt) { $('#lge').textContent = 'Không tải được dữ liệu (' + e.message + '). Kiểm tra mạng rồi tải lại trang.'; return; } }
+    try { D = JSON.parse(txt); render(); $('#lg').remove(); }
+    catch (e) { $('#lge').textContent = 'Lỗi hiển thị: ' + e.message; console.error(e); }
+  })();
+})();
+</script>
+</body>
+</html>
