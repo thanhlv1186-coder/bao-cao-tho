@@ -51,6 +51,7 @@ window.dash = (() => {
 })();
 let _rz; window.addEventListener('resize', () => { clearTimeout(_rz); _rz = setTimeout(() => window.dash.setParams({}), 200); });
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="dash-root">
@@ -183,6 +184,50 @@ let _rz; window.addEventListener('resize', () => { clearTimeout(_rz); _rz = setT
   .tq .tq-tile .nt { font-size: 13px; font-weight: 700; color: #34476a; } .tq .tq-tile .nt * { font-weight: 700; }
   .tq .tq-pill { font-weight: 800; font-size: 12px; }
 }
+
+/* ===== GIAO DIỆN THEO MẪU LINK CÔNG TY (baocao-thuy) ===== */
+#lg{background:linear-gradient(105deg,#002060 0%,#0b3a86 55%,#0070c0 100%)!important;font-family:"Aptos","Segoe UI","Be Vietnam Pro",system-ui,Arial,sans-serif!important}
+#lg h1{color:#002060!important;text-transform:none!important}
+#dash-root .tq{--tq-font:"Aptos","Aptos Display","Segoe UI","Be Vietnam Pro",system-ui,Roboto,Arial,sans-serif;
+  --color-bg:#f2f5f9;--color-fg:#14213d;--color-fg-muted:#5f6d84;--color-border-line:#d9e0ea;
+  --tq-blue:#0070c0;--tq-ok-bg:#cfecf7;--tq-bad-bg:#ffc7ce;font-variant-numeric:tabular-nums}
+#dash-root .tq>.tq-head{background:linear-gradient(105deg,#002060 0%,#0b3a86 55%,#0070c0 100%);border-radius:0 0 18px 18px;box-shadow:0 6px 18px rgb(0 32 96/.18);position:relative;overflow:hidden;padding-top:20px;padding-bottom:20px}
+#dash-root .tq>.tq-head::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-60px;top:-150px;background:rgba(255,255,255,.07)}
+#dash-root .tq .tq-head .tq-title{font-size:22px!important;text-transform:none!important;letter-spacing:0!important;font-weight:700!important}
+#dash-root .tq .tq-head .tq-sub,#dash-root .tq .tq-head .tq-sub *{color:#dbe6f7!important;font-weight:400!important}
+#dash-root .tq .tq-ctl{background:#fff;border:1px solid #d9e0ea;border-radius:12px;padding:12px;box-shadow:0 1px 2px rgb(0 32 96/.06),0 6px 18px rgb(0 32 96/.05);top:6px}
+#dash-root .tq .tq-seg{background:#eef2f7;border-radius:10px;padding:3px;gap:2px}
+#dash-root .tq .tq-seg button{background:transparent;border:0;color:#5f6d84;border-radius:8px;font-weight:700}
+#dash-root .tq .tq-seg button small{color:#8a96aa}
+#dash-root .tq .tq-seg button[aria-pressed="true"]{background:#0070c0;color:#fff}
+#dash-root .tq .tq-seg button[aria-pressed="true"] small{color:#dbe6f7;opacity:1}
+#dash-root .tq .tq-row select,#dash-root .tq .tq-row input{border-color:#d9e0ea;border-radius:8px}
+#dash-root .tq .tq-h2{color:#002060;font-size:15px;letter-spacing:.02em}
+/* thẻ chỉ số: dải tiêu đề xanh chữ vàng như mẫu */
+#dash-root .tq .tq-tile{border:1px solid #d9e0ea;border-radius:12px;padding:0 14px 14px;overflow:hidden;box-shadow:0 1px 2px rgb(0 32 96/.06),0 6px 18px rgb(0 32 96/.05)}
+#dash-root .tq .tq-tile .lb{display:block;margin:0 -14px 10px;padding:9px 14px;padding-right:84px;background:#0070c0;color:#ffc000;font-size:11.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;min-height:38px;box-sizing:border-box}
+#dash-root .tq .tq-tile .vl{color:#002060;font-weight:800;font-size:28px;letter-spacing:-.02em}
+#dash-root .tq .tq-tile .nt{color:#5f6d84}
+#dash-root .tq .tq-pill{top:8px;right:10px;border-radius:4px;font-size:11.5px;font-weight:700;padding:2px 8px;letter-spacing:.02em;text-transform:uppercase}
+#dash-root .tq .tq-pill.tq-ok{background:#00b0f0;color:#fff}
+#dash-root .tq .tq-pill.tq-bad{background:#fff;color:#c00000}
+#dash-root .tq .tq-tile:has(.tq-pill.tq-bad:not([hidden])){border:2px solid #c00000;box-shadow:0 0 0 3px rgb(192 0 0/.12)}
+#dash-root .tq .tq-tile:has(.tq-pill.tq-bad:not([hidden])) .lb{background:#c00000;color:#fff}
+#dash-root .tq .tq-tile:has(.tq-pill.tq-bad:not([hidden])) .vl{color:#c00000}
+#dash-root .tq .tq-tile:has(.tq-pill.tq-ok:not([hidden])) .tq-prog i{background:#00b0f0!important}
+#dash-root .tq .tq-tile:has(.tq-pill.tq-bad:not([hidden])) .tq-prog i{background:#d65a2e!important}
+#dash-root .tq .tq-prog{height:8px;background:#e6ebf2}
+/* khung biểu đồ / bảng */
+#dash-root .tq .tq-card{border:1px solid #d9e0ea;border-radius:12px;box-shadow:0 1px 2px rgb(0 32 96/.06),0 6px 18px rgb(0 32 96/.05)}
+#dash-root .tq .tq-card h3,#dash-root .tq .tq-card .tq-h3{color:#002060}
+#dash-root .tq .tq-t th{background:#002060!important;color:#ffc000!important;font-weight:700}
+#dash-root .tq .tq-t thead th:first-child{background:#002060!important}
+#dash-root .tq .tq-t tbody tr:hover td{background:#eef2f7}
+#dash-root .tq .tq-ok{color:#0070c0} #dash-root .tq .tq-bad{color:#c00000}
+#dash-root .tq td.tq-bad{background:#ffc7ce;color:#9c0006}
+#dash-root .tq .tq-chip{background:#ffc000;border-color:#ffc000;color:#002060}
+#tqbar button{background:#0070c0!important;font-family:"Aptos","Segoe UI","Be Vietnam Pro",sans-serif!important}
+
 </style>
 
 <div class="tq">
@@ -386,7 +431,7 @@ dash.calc('loi_nhom', {
 <script>
 (() => {
   const ALL = 'Toàn vùng';
-  const PAL = ['#2563eb', '#f59e0b', '#ef4444'];
+  const PAL = ['#0070c0', '#ffc000', '#d65a2e'];
   const $ = (s) => document.querySelector(s);
   const nf = new Intl.NumberFormat('vi-VN');
   const n0 = (v) => (v == null || isNaN(v) ? '—' : Math.round(v) === 0 ? '-' : nf.format(Math.round(v)));
@@ -552,6 +597,9 @@ dash.calc('loi_nhom', {
       // sản lượng: lũy kế = thực tế / (mục tiêu tháng × ngày kỳ / số ngày của tháng), như cột Lũy kế sheet BC
       const lk = S.period === 'M' && mode !== 'USER' && T.sl ? R.don_tc / (T.sl * (M.ngay_ky || 1) / (M.so_ngay_thang || 30)) : null;
       pill('sl', lk, lk == null ? null : 1, ' · Lũy kế ');
+      if (lk != null) { const mtlk = T.sl * (M.ngay_ky || 1) / (M.so_ngay_thang || 30);   // mục tiêu lũy kế đến ngày báo cáo (số đơn)
+        const dk = R.don_tc / (M.ngay_ky || 1) * (M.so_ngay_thang || 30);   // dự kiến đến hết tháng theo tốc độ hiện tại
+        const h = document.querySelector('.ht[data-h="sl"]'); h.replaceChildren(); [['Lũy kế đến nay', n0(mtlk) + ' đơn · ' + pc(lk, 1)], ['Dự kiến hết tháng', n0(dk) + ' đơn · ' + pc(dk / T.sl, 1)]].forEach(([a, v]) => { const d = document.createElement('span'); d.style.display = 'block'; d.append(a + ': '); const bb = document.createElement('b'); bb.textContent = v; bb.style.color = '#002060'; d.append(bb); h.append(d); }); }
     } else { pill('dh', null); pill('tn', null); pill('sao', null); pill('sl', null); }
     // hủy / nhập trả: số tháng theo sheet BC (cột HỦY NHẬP TRẢ) + Q_HỦY NHẬP TRẢ; càng thấp càng tốt
     {
