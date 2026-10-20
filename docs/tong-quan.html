@@ -599,7 +599,7 @@ dash.calc('loi_nhom', {
       pill('sl', lk, lk == null ? null : 1, ' · Lũy kế ');
       if (lk != null) { const mtlk = T.sl * (M.ngay_ky || 1) / (M.so_ngay_thang || 30);   // mục tiêu lũy kế đến ngày báo cáo (số đơn)
         const dk = R.don_tc / (M.ngay_ky || 1) * (M.so_ngay_thang || 30);   // dự kiến đến hết tháng theo tốc độ hiện tại
-        const h = document.querySelector('.ht[data-h="sl"]'); h.replaceChildren(); [['Lũy kế đến nay', n0(mtlk) + ' đơn · ' + pc(lk, 1)], ['Dự kiến hết tháng', n0(dk) + ' đơn · ' + pc(dk / T.sl, 1)]].forEach(([a, v]) => { const d = document.createElement('span'); d.style.display = 'block'; d.append(a + ': '); const bb = document.createElement('b'); bb.textContent = v; bb.style.color = '#002060'; d.append(bb); h.append(d); }); }
+        const h = document.querySelector('.ht[data-h="sl"]'); h.replaceChildren(); [['Dự kiến hết tháng', n0(dk) + ' đơn → đạt ' + pc(dk / T.sl, 1) + ' mục tiêu tháng']].forEach(([a, v]) => { const d = document.createElement('span'); d.style.display = 'block'; d.append(a + ': '); const bb = document.createElement('b'); bb.textContent = v; bb.style.color = '#002060'; d.append(bb); h.append(d); }); }
     } else { pill('dh', null); pill('tn', null); pill('sao', null); pill('sl', null); }
     // hủy / nhập trả: số tháng theo sheet BC (cột HỦY NHẬP TRẢ) + Q_HỦY NHẬP TRẢ; càng thấp càng tốt
     {
