@@ -220,10 +220,11 @@ const kName = gi => (BC().groups[gi].name||'').replace(/^[^\wÀ-ỹ]+/u,'').trim
 function U(){ const u = S.data.users; const ix = {}; u.cols.forEach((c,i) => ix[c] = i); return {rows:u.rows, ix, cols:u.cols}; }
 const userRows = () => { const {rows, ix} = U(); return rows.filter(r => r[ix['Vùng rút gọn']] === BC().vung); };
 
+const ULBL = {'Tỉ lệ tiếp cận thành công':'%Tiếp cận TC', '% Tay nghề (/đơn TC)':'% Tay nghề'};  // nhãn hiển thị trang thợ
 function fmtU(col, v){
   if (v === null || v === undefined) return '–';
   if (typeof v !== 'number') return esc(v);
-  if (/^%/.test(col)) return (v*100).toLocaleString('vi-VN',{maximumFractionDigits:1}) + '%';
+  if (/^%/.test(col) || col === 'Tỉ lệ tiếp cận thành công') return (v*100).toLocaleString('vi-VN',{maximumFractionDigits:1}) + '%';
   if (/Sao/.test(col)) return v.toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
   return v.toLocaleString('vi-VN',{maximumFractionDigits:2});
 }
@@ -546,8 +547,8 @@ function viewThoDetail(ma){
     <div class="ttl" style="font-size:20px">${esc(u[ix['Tên user']])}</div>
     <div class="sub" style="margin-bottom:10px">${esc(ma)} · ${esc(u[ix['Tên kho ĐP']])}</div>
     <div class="card"><div class="stat num">${cols.filter(c => !skip.has(c)).map(c => c === 'Số ĐH đánh giá' && saoRows(ma).length
-      ? `<div class="sao-lk" data-saoct="${esc(ma)}"><span>${esc(c)}</span><b>${fmtU(c, u[ix[c]])} ›</b></div>`
-      : `<div><span>${esc(c)}</span><b>${fmtU(c, u[ix[c]])}</b></div>`).join('')}</div></div>
+      ? `<div class="sao-lk" data-saoct="${esc(ma)}"><span>${esc(ULBL[c] || c)}</span><b>${fmtU(c, u[ix[c]])} ›</b></div>`
+      : `<div><span>${esc(ULBL[c] || c)}</span><b>${fmtU(c, u[ix[c]])}</b></div>`).join('')}</div></div>
     ${loi.length ? `<h3>Lỗi tay nghề theo nhóm hàng</h3><div class="card">${loi.map(x => `<div class="row"><div class="n"><div>${esc(x[li['Nhóm hàng']])}</div></div><div class="r num" style="font-weight:700">${x[li['Số lỗi']]}</div></div>`).join('')}</div>` : ''}
     ${thoXe(ma)}
     <h3>Đơn trễ hẹn (${tre.length})</h3>
