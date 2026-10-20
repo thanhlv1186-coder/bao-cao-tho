@@ -293,7 +293,7 @@ let _rz; window.addEventListener('resize', () => { clearTimeout(_rz); _rz = setT
     </div>
   </section>
 
-  <p class="tq-foot">Nguồn: cùng nguồn với sheet BC trong BÁO CÁO.xlsx — sản lượng (Q_SẢN LƯỢNG), đúng hẹn (Q_ĐÚNG HẸN), tay nghề (Q_TAY NGHỀ), sao phục vụ kho (Q_SAO PHỤC VỤ 2), thợ bán hàng (report 40, doanh thu sau VAT); loại xe và biển số từ report 3268. Toàn vùng: % đúng hẹn, % tay nghề và sao là trung bình 10 kho, như sheet BC. Tự cập nhật mỗi tối sau khi báo cáo 20h chạy xong. Tuần: T1 ngày 1–7, T2 8–14, T3 15–21, T4 22–cuối tháng. Sao phục vụ và tiếp cận thành công luôn tính cả tháng. Xe thuê là đơn xe tải có biển số không nằm trong sheet KHAI BÁO XE TẢI.</p>
+  <p class="tq-foot">Nguồn: cùng nguồn với sheet BC trong BÁO CÁO.xlsx — sản lượng (Q_SẢN LƯỢNG), đúng hẹn (Q_ĐÚNG HẸN), tay nghề (Q_TAY NGHỀ), sao phục vụ kho (Q_SAO PHỤC VỤ 2), thợ bán hàng (report 40, doanh thu sau VAT); loại xe và biển số từ report 3268. Toàn vùng: % đúng hẹn, % tay nghề, hủy nhập trả = cộng gộp cả vùng; sao = trung bình 10 kho (cách tính của công ty, như sheet BC). Tự cập nhật mỗi tối sau khi báo cáo 20h chạy xong. Tuần: T1 ngày 1–7, T2 8–14, T3 15–21, T4 22–cuối tháng. Sao phục vụ và tiếp cận thành công luôn tính cả tháng. Xe thuê là đơn xe tải có biển số không nằm trong sheet KHAI BÁO XE TẢI.</p>
 </div>
 
 <script>
@@ -301,7 +301,7 @@ let _rz; window.addEventListener('resize', () => { clearTimeout(_rz); _rz = setT
 dash.calc('kpi', {
   inputs: ['kho_ngay', 'kho', 'nv_ngay', 'meta'],
   title: 'Chỉ số theo kho và kỳ',
-  description: 'Cộng đơn, xe, trễ hẹn, lỗi, doanh số theo từng kho và toàn vùng, cho cả tháng (M) và từng tuần (W1 ngày 1–7, W2 8–14, W3 15–21, W4 22–cuối tháng). Mỗi kho: % đúng hẹn = 1 − trễ/đơn TC, % tay nghề = 1 − lỗi/mẫu số. Toàn vùng: % đúng hẹn, % tay nghề và sao = trung bình các kho (giống sheet BC); số kho đạt sao so với mục tiêu riêng của từng kho.',
+  description: 'Cộng đơn, xe, trễ hẹn, lỗi, doanh số theo từng kho và toàn vùng, cho cả tháng (M) và từng tuần (W1 ngày 1–7, W2 8–14, W3 15–21, W4 22–cuối tháng). Mỗi kho: % đúng hẹn = 1 − trễ/đơn TC, % tay nghề = 1 − lỗi/mẫu số. Toàn vùng: % đúng hẹn, % tay nghề = cộng gộp cả vùng; sao = trung bình các kho (giống công ty và sheet BC); số kho đạt sao so với mục tiêu riêng của từng kho.',
   fn: (kho_ngay, kho, nv_ngay, meta) => {
     const wk = (d) => { const n = +d.slice(8, 10); return n <= 7 ? 'W1' : n <= 14 ? 'W2' : n <= 21 ? 'W3' : 'W4'; };
     const F = ['don_tc', 'xe_may', 'xe_tai', 'xe_tai_nb', 'tre_hen', 'loi_tn', 'mau_tn', 'don_ban', 'doanh_so'];
@@ -324,8 +324,8 @@ dash.calc('kpi', {
       const all = a.scope === 'Toàn vùng';
       const s = all ? (vs.length ? vs.reduce((x, y) => x + y, 0) / vs.length : null) : (sao.get(a.scope) ?? null);
       return { ...a, xe_thue, pct_thue: a.don_tc ? xe_thue / a.don_tc : null,
-        dung_hen: all ? avg(kr.get(a.period)?.dh) : (a.don_tc ? 1 - a.tre_hen / a.don_tc : null),
-        tay_nghe: all ? avg(kr.get(a.period)?.tn) : (a.mau_tn ? 1 - a.loi_tn / a.mau_tn : null),
+        dung_hen: a.don_tc ? 1 - a.tre_hen / a.don_tc : null,
+        tay_nghe: a.mau_tn ? 1 - a.loi_tn / a.mau_tn : null,
         dt_don: a.don_ban ? a.doanh_so / a.don_ban : null, tho_ban: sellers.get(a.k)?.size ?? 0,
         sao: s, so_kho_co_sao: all ? vs.length : null, so_kho_dat_sao: all ? [...sao].filter(([k, v]) => v >= mtK.get(k)).length : null };
     });
