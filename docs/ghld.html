@@ -199,7 +199,7 @@ td.ok{color:var(--tl-ok);font-weight:700}td.bad{color:var(--tl-bad);font-weight:
     <div class="panel"><div class="ph"><h3>Kho cần chú ý</h3><span>Ít tiêu chí đạt nhất</span></div><div class="watch" id="watch"></div></div>
   </section>
 
-  <p class="foot" id="foot">Nguồn: sheet BC trong BÁO CÁO.xlsx — sản lượng (Q_SẢN LƯỢNG), đúng hẹn (Q_ĐÚNG HẸN), tay nghề (Q_TAY NGHỀ), sao phục vụ (Q_SAO PHỤC VỤ 2), hủy nhập trả (sheet BC). KPI từng kho lấy theo sheet BC. Toàn vùng = trung bình các kho, như sheet BC. TLHT = thực hiện ÷ KPI (hủy nhập trả: KPI ÷ thực hiện, thấp hơn là tốt). Tuần: T1 ngày 1–7, T2 8–14, T3 15–21, T4 22–cuối tháng; sao phục vụ và hủy nhập trả chỉ có số cả tháng. Tự cập nhật mỗi tối sau báo cáo 20h.</p>
+  <p class="foot" id="foot">Nguồn: sheet BC trong BÁO CÁO.xlsx — sản lượng (Q_SẢN LƯỢNG), đúng hẹn (Q_ĐÚNG HẸN), tay nghề (Q_TAY NGHỀ), sao phục vụ (Q_SAO PHỤC VỤ 2), hủy nhập trả (sheet BC). KPI từng kho lấy theo sheet BC. Toàn vùng: đúng hẹn, tay nghề, hủy nhập trả = cộng gộp cả vùng; sao = trung bình các kho (cách tính của công ty, như sheet BC). TLHT = thực hiện ÷ KPI (hủy nhập trả: KPI ÷ thực hiện, thấp hơn là tốt). Tuần: T1 ngày 1–7, T2 8–14, T3 15–21, T4 22–cuối tháng; sao phục vụ và hủy nhập trả chỉ có số cả tháng. Tự cập nhật mỗi tối sau báo cáo 20h.</p>
 </main>
 <div id="tip"></div>
 <script>
@@ -255,9 +255,10 @@ td.ok{color:var(--tl-ok);font-weight:700}td.bad{color:var(--tl-bad);font-weight:
     });
     const m = D.meta[0];
     const reg = { kho: 'Vùng Trung Bộ', reg: true, tc: rows.reduce((s, r) => s + r.tc, 0), tre: rows.reduce((s, r) => s + r.tre, 0), loi: rows.reduce((s, r) => s + r.loi, 0), mau: rows.reduce((s, r) => s + r.mau, 0),
-      sao: avg(rows.map(r => r.sao)), dh: avg(rows.filter(r => r.tc > 0).map(r => r.dh)), tn: avg(rows.filter(r => r.mau > 0).map(r => r.tn)),
+      sao: avg(rows.map(r => r.sao)), dh: null, tn: null,
       huy: m.ty_le_huy, huy_nt: m.huy_nt, tong_huy: m.tong_don_huy,
       kpi: { sao: m.mt_sao, dh: m.mt_dung_hen, tn: m.mt_tay_nghe, huy: m.mt_huy } };
+    reg.dh = reg.tc > 0 ? 1 - reg.tre / reg.tc : null; reg.tn = reg.mau > 0 ? 1 - reg.loi / reg.mau : null;   // cộng gộp như công ty
     fin(reg);
     return { reg, rows };
   }
