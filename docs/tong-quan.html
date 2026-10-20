@@ -167,6 +167,22 @@ let _rz; window.addEventListener('resize', () => { clearTimeout(_rz); _rz = setT
 [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
 [data-dash-source-state=empty] { color: transparent; }
 @media (max-width: 520px) { .tq-bar { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) 4rem; } .tq-card { padding: var(--cds-pad-md); } }
+/* MOBILE-DAM: chỉ màn hình điện thoại – nút Tháng/Tuần nâng cấp, chữ đậm rõ hơn */
+@media (max-width: 520px) {
+  .tq .tq-seg { gap: 8px; padding: 2px 0 4px; }
+  .tq .tq-seg button { min-width: 78px; padding: 9px 12px; border-width: 1.5px; border-color: #b9cdf5; font-size: 15px; font-weight: 800; color: #1f5fe0; background: #fff; box-shadow: 0 2px 6px rgba(31,95,224,.12); }
+  .tq .tq-seg button small { font-size: 12px; font-weight: 700; color: #34476a; margin-top: 2px; }
+  .tq .tq-seg button[aria-pressed="true"] { background: linear-gradient(135deg, #1a56db 0%, #2f7bf5 100%); color: #fff; border-color: #1a56db; box-shadow: 0 4px 12px rgba(31,95,224,.35); }
+  .tq .tq-seg button[aria-pressed="true"] small { color: #fff; opacity: 1; }
+  .tq .tq-seg button:disabled { opacity: .45; }
+  .tq .tq-row select, .tq .tq-row input { font-weight: 700; color: #0f1f3a; border-width: 1.5px; }
+  .tq .tq-row input::placeholder { font-weight: 600; color: #6b7d99; }
+  .tq .tq-h2 { font-size: 15px; font-weight: 800; color: #34476a; }
+  .tq .tq-tile .lb { font-size: 13px; font-weight: 800; }
+  .tq .tq-tile .vl { font-weight: 900; font-size: 28px; }
+  .tq .tq-tile .nt { font-size: 13px; font-weight: 700; color: #34476a; } .tq .tq-tile .nt * { font-weight: 700; }
+  .tq .tq-pill { font-weight: 800; font-size: 12px; }
+}
 </style>
 
 <div class="tq">
