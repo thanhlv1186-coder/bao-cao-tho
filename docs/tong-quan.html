@@ -136,6 +136,7 @@ let _rz; window.addEventListener('resize', () => { clearTimeout(_rz); _rz = setT
 .tq-tile .nt { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
 .tq-pill { display: inline-block; font-size: 11px; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; margin-top: 4px; align-self: flex-start; }
 .tq-ok { color: var(--color-ok); } .tq-bad { color: var(--color-bad); } .tq-warn { color: var(--color-warn); }
+.tq td.tq-bad { background: var(--tq-bad-bg); color: #dc2626; font-weight: 700; }
 .tq-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
 .tq-card .nt { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
 .tq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
@@ -372,11 +373,12 @@ dash.calc('loi_nhom', {
   const PAL = ['#2563eb', '#f59e0b', '#ef4444'];
   const $ = (s) => document.querySelector(s);
   const nf = new Intl.NumberFormat('vi-VN');
-  const n0 = (v) => (v == null || isNaN(v) ? '—' : nf.format(Math.round(v)));
-  const pc = (v, d = 2) => (v == null || isNaN(v) ? '—' : new Intl.NumberFormat('vi-VN', { style: 'percent', minimumFractionDigits: d, maximumFractionDigits: d }).format(v));
-  const s2 = (v) => (v == null || isNaN(v) ? '—' : new Intl.NumberFormat('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v));
+  const n0 = (v) => (v == null || isNaN(v) ? '—' : Math.round(v) === 0 ? '-' : nf.format(Math.round(v)));
+  const pc = (v, d = 2) => (v == null || isNaN(v) ? '—' : v === 0 ? '-' : new Intl.NumberFormat('vi-VN', { style: 'percent', minimumFractionDigits: d, maximumFractionDigits: d }).format(v));
+  const s2 = (v) => (v == null || isNaN(v) ? '—' : v === 0 ? '-' : new Intl.NumberFormat('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v));
   const money = (v) => {
     if (v == null || isNaN(v)) return '—';
+    if (Math.round(v) === 0) return '-';
     if (Math.abs(v) >= 1e9) return new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 2 }).format(v / 1e9) + ' tỷ';
     if (Math.abs(v) >= 1e6) return new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 }).format(v / 1e6) + ' triệu';
     return nf.format(Math.round(v));
@@ -620,6 +622,10 @@ dash.calc('loi_nhom', {
 
     // cảnh báo rủi ro
     if (ukpi) {
+      const MKu = new Map((khoR || []).map((x) => [x.kho, x])); const tg = (r, k) => (MKu.get(r.kho) || {})['mt_' + k] ?? (M ? M['mt_' + k] : null);
+      const cDH = (r) => r.dung_hen != null && tg(r, 'dung_hen') != null && r.dung_hen < tg(r, 'dung_hen') ? 'tq-bad' : '';
+      const cTN = (r) => r.tay_nghe != null && tg(r, 'tay_nghe') != null && r.tay_nghe < tg(r, 'tay_nghe') ? 'tq-bad' : '';
+      const cSAO = (r) => r.sao_phuc_vu != null && tg(r, 'sao') != null && r.sao_phuc_vu < tg(r, 'sao') ? 'tq-bad' : '';
       const ukho = mode === 'USER' ? (uInfo ? uInfo.kho : S.user.split('|')[0]) : scope;
       const pool = ukpi.filter((r) => r.period === S.period && (ukho === ALL || r.kho === ukho) && r.diem_rui_ro > 0)
         .sort((a, b) => d3.descending(a.diem_rui_ro, b.diem_rui_ro) || d3.descending(a.tre_hen, b.tre_hen));
@@ -630,7 +636,7 @@ dash.calc('loi_nhom', {
       const body = $('.rs tbody');
       if (!top.length) { const tr = document.createElement('tr'); const c = td('Không có user cần cảnh báo.', 'l'); c.colSpan = 8; tr.append(c); body.replaceChildren(tr); }
       else body.replaceChildren(...top.map((r) => { const tr = document.createElement('tr'); tr.dataset.key = r.k; if (r.khoa === S.user) tr.className = 'me';
-        tr.append(td(r.user, 'l'), td(r.kho, 'l'), td(n0(r.don_tc)), td(n0(r.tre_hen)), td(pc(r.dung_hen)), td(n0(r.loi_tn)), td(pc(r.tay_nghe)), td(n0(r.diem_rui_ro))); return tr; }));
+        tr.append(td(r.user, 'l'), td(r.kho, 'l'), td(n0(r.don_tc)), td(n0(r.tre_hen)), td(pc(r.dung_hen), cDH(r)), td(n0(r.loi_tn)), td(pc(r.tay_nghe), cTN(r)), td(n0(r.diem_rui_ro))); return tr; }));
 
       // danh sách user
       const list = ukpi.filter((r) => r.period === S.period && (mode === 'USER' ? r.khoa === S.user : mode === 'ALL' || r.kho === scope))
@@ -638,8 +644,8 @@ dash.calc('loi_nhom', {
       $('.us-note').textContent = (mode === 'ALL' ? 'Toàn vùng' : mode === 'KHO' ? 'Kho ' + scope : 'User đang xem') + ` · ${list.length} user · sắp xếp theo số đơn. Chạm vào một user để xem riêng.`;
       const ub = $('.us tbody');
       ub.replaceChildren(...list.map((r) => { const tr = document.createElement('tr'); tr.dataset.key = r.k;
-        tr.append(td(r.user, 'l'), td(r.kho, 'l'), td(n0(r.don_tc)), td(n0(r.xe_may)), td(n0(r.xe_tai)), td(r.tiep_can_tc == null ? '—' : pc(r.tiep_can_tc, 1)), td(r.sao_phuc_vu == null ? '—' : s2(r.sao_phuc_vu)),
-          td(n0(r.tre_hen)), td(pc(r.dung_hen)), td(n0(r.loi_tn)), td(pc(r.tay_nghe)), td(n0(r.don_ban)), td(n0(r.doanh_so))); return tr; }));
+        tr.append(td(r.user, 'l'), td(r.kho, 'l'), td(n0(r.don_tc)), td(n0(r.xe_may)), td(n0(r.xe_tai)), td(r.tiep_can_tc == null ? '—' : pc(r.tiep_can_tc, 1), r.tiep_can_tc != null && r.tiep_can_tc < 0.6 ? 'tq-bad' : ''), td(r.sao_phuc_vu == null ? '—' : s2(r.sao_phuc_vu), cSAO(r)),
+          td(n0(r.tre_hen)), td(pc(r.dung_hen), cDH(r)), td(n0(r.loi_tn)), td(pc(r.tay_nghe), cTN(r)), td(n0(r.don_ban)), td(n0(r.doanh_so))); return tr; }));
     }
   });
 })();
