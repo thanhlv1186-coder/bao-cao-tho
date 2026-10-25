@@ -686,8 +686,17 @@ function tdMonthVal(kind, key, mon, k){
 function monday(dt){ const x = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()); x.setDate(x.getDate() - (x.getDay() + 6) % 7); return x; }
 function wkNo(d){ const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
   return Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7); }
-function tdWeeks(){ const seen = {}, out = []; TDT().days.forEach(d => { const m = monday(d.dt); if (!seen[+m]){ seen[+m] = 1; out.push(m); } }); return out.reverse(); }
-function tdWeek(){ const ws = tdWeeks(); return ws.find(w => +w === +S.tdw) || ws[0]; }
+/* Tuần trong tháng: Tuần 1 = ngày 1-7, Tuần 2 = 8-14, Tuần 3 = 15-21, Tuần 4 = 22-cuối tháng */
+function tdWeekCols(){
+  const out = [], by = {};
+  TDT().days.forEach(d => { const w = Math.min(3, Math.floor((d.dt.getDate() - 1) / 7)), mon = d.f.month, key = mon + '|' + w;
+    if (!by[key]){ by[key] = {lab: 'Tuần ' + (w + 1), mon_: mon, days: []}; out.push(by[key]); } by[key].days.push(d); });
+  out.forEach((c, i) => { const a = c.days[0].dt, b = c.days[c.days.length - 1].dt;
+    c.sub = a.getDate() + (b > a ? '–' + b.getDate() : '') + '/' + (a.getMonth() + 1); c.prev = i ? {days: out[i - 1].days} : null; });
+  return out;
+}
+function tdWkMonths(){ return [...new Set(TDT().days.map(d => d.f.month))].reverse(); }
+function tdWkMonth(){ const ms = tdWkMonths(); return ms.includes(S.tdw) ? S.tdw : ms[0]; }
 function tdCols(){
   if (S.tdm === 'm'){
     const th = S.data.thang || {}, ms = new Set(Object.keys(th));
@@ -696,13 +705,14 @@ function tdCols(){
     return [...ms].sort().slice(-6).map(mon => ({lab: 'T' + (+mon.slice(5)), sub: mon.slice(0, 4), mon}));
   }
   const D = TDT().days; let ds;
-  if (S.tdm === 'w'){ const w = tdWeek(); ds = w ? D.filter(d => d.dt >= w && d.dt - w < 7 * 864e5) : []; }
+  if (S.tdm === 'w'){ const m = tdWkMonth(); return tdWeekCols().filter(c => c.mon_ === m); }
   else ds = D.slice(-(+S.tdm || 7));
   return ds.map(d => ({lab: dmy(d.dt), sub: WD[d.dt.getDay()], days: [d], d}));
 }
 function tdPrev(cols){
   const c = cols[0]; if (!c) return null;
   if (c.mon){ const [y, m] = c.mon.split('-').map(Number); return {mon: m === 1 ? (y - 1) + '-12' : y + '-' + pad2(m - 1)}; }
+  if (c.prev !== undefined) return c.prev;
   const D = TDT().days, i = D.indexOf(c.d); return i > 0 ? {days: [D[i - 1]]} : null;
 }
 function tdVal(kind, key, col, k){
@@ -743,7 +753,7 @@ function tdCell(x, p, k, mt, tot){
 function tdTable(rows, cols, k0, firstLab){
   if (!cols.length) return '<div class="empty">Chưa có dữ liệu</div>';
   const prev = tdPrev(cols), tot = cols[0].mon ? null : {days: cols.flatMap(c => c.days)};
-  const head = `<tr><th>${esc(firstLab)}</th>${cols.map(c => `<th>${esc(c.lab)}<small>${esc(c.sub)}</small></th>`).join('')}${tot ? `<th class="tot">${S.tdm === 'w' ? 'Cả tuần' : 'Cộng'}<small>${cols.length} ngày</small></th>` : ''}</tr>`;
+  const head = `<tr><th>${esc(firstLab)}</th>${cols.map(c => `<th>${esc(c.lab)}<small>${esc(c.sub)}</small></th>`).join('')}${tot ? `<th class="tot">${S.tdm === 'w' ? 'Cả tháng' : 'Cộng'}<small>${tot.days.length} ngày</small></th>` : ''}</tr>`;
   const body = rows.map(r => {
     const k = r.k ?? k0, mt = tdMT(r.kind, r.key, k);
     let p = tdVal(r.kind, r.key, prev, k).v;
@@ -763,11 +773,11 @@ function tdTiles(kind, key, cols){
   }).join('')}</div>`;
 }
 function tdCtl(){
-  const ws = S.tdm === 'w' ? tdWeeks() : [], cw = S.tdm === 'w' ? tdWeek() : null;
+  const ws = S.tdm === 'w' ? tdWkMonths() : [], cw = S.tdm === 'w' ? tdWkMonth() : null;
   return `<div class="seg tdseg">${[['3', '3 ngày'], ['7', '7 ngày'], ['w', 'Tuần'], ['m', 'Tháng']].map(o => `<button data-tdm="${o[0]}" class="${S.tdm === o[0] ? 'on' : ''}">${o[1]}</button>`).join('')}</div>
-    ${S.tdm === 'w' && ws.length ? `<div class="sel"><select id="tdw" style="flex:1">${ws.map(w => `<option value="${+w}" ${+w === +cw ? 'selected' : ''}>Tuần ${wkNo(w)} · ${dmy(w)} – ${dmy(new Date(+w + 6 * 864e5))}</option>`).join('')}</select></div>` : ''}`;
+    ${S.tdm === 'w' && ws.length ? `<div class="sel"><select id="tdw" style="flex:1">${ws.map(w => `<option value="${w}" ${w === cw ? 'selected' : ''}>Tháng ${+w.slice(5)}/${w.slice(0, 4)} · Tuần 1 – 4</option>`).join('')}</select></div>` : ''}`;
 }
-const tdNote = () => `<div class="sub" style="margin:4px 2px 12px;line-height:1.5">▲▼ so với cột trước (điểm % / điểm sao). Số đỏ = dưới mục tiêu chi nhánh.<br>
+const tdNote = () => `<div class="sub" style="margin:4px 2px 12px;line-height:1.5">▲▼ so với cột trước (điểm % / điểm sao). Tuần 1 = ngày 1–7, Tuần 2 = 8–14, Tuần 3 = 15–21, Tuần 4 = 22–cuối tháng. Số đỏ = dưới mục tiêu chi nhánh.<br>
   Đúng hẹn, Tay nghề tính như sheet BC (theo ngày hoàn tất / ngày phiếu). Sao: TB sao KH chấm thợ trong ngày (theo tháng: số sheet BC).
   Tiếp cận TC = ĐH đánh giá / notifi đã gửi trong ngày (từ 21/10/2026, tối đa 100%). Theo tháng: chi nhánh, thợ có số từ T10/2026.</div>`;
 function tdSortVal(kind, key, cols, k){
@@ -903,7 +913,7 @@ document.addEventListener('click', e => {
   if (t.dataset.back !== undefined) { history.length > 1 ? history.back() : (location.hash = route().v); }
 });
 document.addEventListener('input', e => { if (e.target.id === 'q') { S.q = e.target.value; render(); } });
-document.addEventListener('change', e => { if (e.target.id === 'tdw') { S.tdw = +e.target.value; return render(); } if (e.target.id === 'st') { S.sortTho = e.target.value; LS.set('st', S.sortTho); render(); } });
+document.addEventListener('change', e => { if (e.target.id === 'tdw') { S.tdw = e.target.value; return render(); } if (e.target.id === 'st') { S.sortTho = e.target.value; LS.set('st', S.sortTho); render(); } });
 window.addEventListener('hashchange', render);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(true); });
 setInterval(() => { if (!document.hidden) refresh(true); }, 10 * 60 * 1000);
