@@ -145,6 +145,7 @@ table.tdt{width:auto;min-width:100%;border-collapse:separate;border-spacing:0;ba
 .tdt tr.tdv td{background:var(--ylbg)!important}
 .tdt tr[data-tdcn],.tdt tr[data-tdu]{cursor:pointer}
 .tdt tr[data-tdcn] .tdn::after,.tdt tr[data-tdu] .tdn::after{content:' ›';color:var(--ac)}
+.tdt td.tev{background:var(--acbg)!important;vertical-align:middle}.tdt td.tev small{font-size:11px;font-weight:700;color:var(--tx);margin-top:3px}
 .tdtile{text-align:left;width:100%;display:block;margin:0}
 .tdtile.on{box-shadow:inset 0 0 0 2px var(--ac)}
 </style>
@@ -750,15 +751,23 @@ function tdCell(x, p, k, mt, tot){
   const s = x.a ? TDK[k].sub(x.a) : '';
   return `<td class="${cls}${tot ? ' tot' : ''}"><b>${tdFmt(v, k)}</b>${tot ? '' : tdDelta(v, p, k)}${s ? `<small>${esc(s)}</small>` : ''}</td>`;
 }
+/* Cột "Đánh giá": so cột mới nhất có số với cột đầu tiên có số trong kỳ đang xem -> Tăng / Giảm / Giữ nguyên */
+function tdEval(vals, k){
+  const xs = vals.filter(v => v != null);
+  if (xs.length < 2) return '<td class="tev"><span class="chip c-na">–</span></td>';
+  const K = TDK[k], r = +((K.pct ? (xs[xs.length - 1] - xs[0]) * 100 : xs[xs.length - 1] - xs[0]).toFixed(K.d));
+  const amt = Math.abs(r).toLocaleString('vi-VN', {maximumFractionDigits: K.d});
+  return `<td class="tev">${!r ? '<span class="chip c-na">= Giữ nguyên</span>' : r > 0 ? `<span class="chip c-ok">▲ Tăng</span><small>+${amt}</small>` : `<span class="chip c-bad">▼ Giảm</span><small>−${amt}</small>`}</td>`;
+}
 function tdTable(rows, cols, k0, firstLab){
   if (!cols.length) return '<div class="empty">Chưa có dữ liệu</div>';
-  const prev = tdPrev(cols), tot = cols[0].mon ? null : {days: cols.flatMap(c => c.days)};
-  const head = `<tr><th>${esc(firstLab)}</th>${cols.map(c => `<th>${esc(c.lab)}<small>${esc(c.sub)}</small></th>`).join('')}${tot ? `<th class="tot">${S.tdm === 'w' ? 'Cả tháng' : 'Cộng'}<small>${tot.days.length} ngày</small></th>` : ''}</tr>`;
+  const prev = tdPrev(cols);
+  const head = `<tr><th>${esc(firstLab)}</th>${cols.map(c => `<th>${esc(c.lab)}<small>${esc(c.sub)}</small></th>`).join('')}<th class="tot">Đánh giá<small>${esc(cols[0].lab)} → ${esc(cols[cols.length - 1].lab)}</small></th></tr>`;
   const body = rows.map(r => {
-    const k = r.k ?? k0, mt = tdMT(r.kind, r.key, k);
+    const k = r.k ?? k0, mt = tdMT(r.kind, r.key, k), vals = [];
     let p = tdVal(r.kind, r.key, prev, k).v;
-    const cells = cols.map(c => { const x = tdVal(r.kind, r.key, c, k), h = tdCell(x, p, k, mt); if (x.v != null) p = x.v; return h; }).join('');
-    return `<tr class="${r.cls || ''}" ${r.attr || ''}><td><div class="tdn">${esc(r.name)}</div>${r.sub ? `<div class="sub">${esc(r.sub)}</div>` : ''}</td>${cells}${tot ? tdCell(tdVal(r.kind, r.key, tot, k), null, k, mt, 1) : ''}</tr>`;
+    const cells = cols.map(c => { const x = tdVal(r.kind, r.key, c, k), h = tdCell(x, p, k, mt); vals.push(x.v); if (x.v != null) p = x.v; return h; }).join('');
+    return `<tr class="${r.cls || ''}" ${r.attr || ''}><td><div class="tdn">${esc(r.name)}</div>${r.sub ? `<div class="sub">${esc(r.sub)}</div>` : ''}</td>${cells}${tdEval(vals, k)}</tr>`;
   }).join('');
   return `<div class="tdwrap"><table class="tdt num"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
 }
@@ -777,7 +786,7 @@ function tdCtl(){
   return `<div class="seg tdseg">${[['3', '3 ngày'], ['7', '7 ngày'], ['w', 'Tuần'], ['m', 'Tháng']].map(o => `<button data-tdm="${o[0]}" class="${S.tdm === o[0] ? 'on' : ''}">${o[1]}</button>`).join('')}</div>
     ${S.tdm === 'w' && ws.length ? `<div class="sel"><select id="tdw" style="flex:1">${ws.map(w => `<option value="${w}" ${w === cw ? 'selected' : ''}>Tháng ${+w.slice(5)}/${w.slice(0, 4)} · Tuần 1 – 4</option>`).join('')}</select></div>` : ''}`;
 }
-const tdNote = () => `<div class="sub" style="margin:4px 2px 12px;line-height:1.5">▲▼ so với cột trước (điểm % / điểm sao). Tuần 1 = ngày 1–7, Tuần 2 = 8–14, Tuần 3 = 15–21, Tuần 4 = 22–cuối tháng. Số đỏ = dưới mục tiêu chi nhánh.<br>
+const tdNote = () => `<div class="sub" style="margin:4px 2px 12px;line-height:1.5">▲▼ so với cột trước (điểm % / điểm sao). Cột Đánh giá: cột mới nhất so với cột đầu kỳ. Tuần 1 = ngày 1–7, Tuần 2 = 8–14, Tuần 3 = 15–21, Tuần 4 = 22–cuối tháng. Số đỏ = dưới mục tiêu chi nhánh.<br>
   Đúng hẹn, Tay nghề tính như sheet BC (theo ngày hoàn tất / ngày phiếu). Sao: TB sao KH chấm thợ trong ngày (theo tháng: số sheet BC).
   Tiếp cận TC = ĐH đánh giá / notifi đã gửi trong ngày (từ 21/10/2026, tối đa 100%). Theo tháng: chi nhánh, thợ có số từ T10/2026.</div>`;
 function tdSortVal(kind, key, cols, k){
