@@ -182,8 +182,8 @@ async function decrypt(enc, pw){
 }
 async function fetchEnc(){
   const urls = [
-    [`https://raw.githubusercontent.com/${CFG.repo}/main/data/app.json?t=${Date.now()}`, {}],
-    [`https://api.github.com/repos/${CFG.repo}/contents/data/app.json?t=${Date.now()}`, {headers:{Accept:'application/vnd.github.raw+json'}}]
+    [`https://raw.githubusercontent.com/${CFG.repo}/main/data/app_dtb.json?t=${Date.now()}`, {}],
+    [`https://api.github.com/repos/${CFG.repo}/contents/data/app_dtb.json?t=${Date.now()}`, {headers:{Accept:'application/vnd.github.raw+json'}}]
   ];
   let last;
   for (const [u, o] of urls){
