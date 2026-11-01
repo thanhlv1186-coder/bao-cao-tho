@@ -243,7 +243,7 @@ const kName = gi => (BC().groups[gi].name||'').replace(/^[^\wÀ-ỹ]+/u,'').trim
 function U(){ const u = S.data.users; const ix = {}; u.cols.forEach((c,i) => ix[c] = i); return {rows:u.rows, ix, cols:u.cols}; }
 const userRows = () => { const {rows, ix} = U(); return rows.filter(r => r[ix['Vùng rút gọn']] === BC().vung); };
 
-const ULBL = {'Tỉ lệ tiếp cận thành công':'%Tiếp cận TC', '% Tay nghề (/đơn TC)':'% Tay nghề'};  // nhãn hiển thị trang thợ
+const ULBL = {'Tỉ lệ tiếp cận thành công':'%Tiếp cận TC', '% Tay nghề (/đơn TC)':'% Tay nghề', 'Doanh thu thuần':'Doanh thu'};  // nhãn hiển thị trang thợ
 function fmtU(col, v){
   if (v === null || v === undefined) return '–';
   if (typeof v !== 'number') return esc(v);
