@@ -577,7 +577,20 @@ function viewThoDetail(ma){
     <h3>Đơn trễ hẹn (${tre.length})</h3>
     <div class="card">${tre.map(r => `<div class="row" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num">${esc(r[ti['Mã đơn hàng vật lý']])}</b><span class="chip c-bad num">trễ ${fmtU('', Math.round(r[ti['Số phút trễ']]||0))}′</span></div>
       <div class="sub">${esc(r[ti['TÊN YCVC']])}</div>
-      <div class="sub num">Hẹn cuối ${esc(r[ti['TG HẸN GIAO CUỐI']])} · đến nhà ${esc(r[ti['TG ĐẾN NHÀ KHÁCH']])} · ${esc(r[ti['Kiểu đổi giờ']])} · ${esc(r[ti['Xác nhận KH']])}</div></div>`).join('') || '<div class="empty">Không có đơn trễ hẹn 👏</div>'}</div>`;
+      <div class="sub num">Hẹn cuối ${esc(r[ti['TG HẸN GIAO CUỐI']])} · đến nhà ${esc(r[ti['TG ĐẾN NHÀ KHÁCH']])} · ${esc(r[ti['Kiểu đổi giờ']])} · ${esc(r[ti['Xác nhận KH']])}</div></div>`).join('') || '<div class="empty">Không có đơn trễ hẹn 👏</div>'}</div>
+    ${thoLoiCT(ma)}`;
+}
+
+/* ---------- CHI TIẾT ĐƠN LỖI TAY NGHỀ (01/11/2026) — TQ_LOI_CT: 1065 / 1063 / ĐH 1025 */
+function thoLoiCT(ma){
+  const T = S.data.loi_ct; if (!T || !T.cols) return '';
+  const ix = {}; T.cols.forEach((c,i) => ix[c] = i);
+  const rows = T.rows.filter(r => String(r[ix['Mã user']]) === String(ma));
+  const src = {'1065':'Tổng đài 1065', '1063':'CSKH 1063', 'ĐH 1025':'ĐH bảo hành 1025'};
+  return `<h3>Đơn lỗi tay nghề (${rows.length})</h3>
+    <div class="card">${rows.map(r => `<div class="row" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num" style="word-break:break-all">${esc(r[ix['SO']] || r[ix['Mã phiếu / vận đơn']] || '–')}</b><span class="chip c-bad">${esc(src[r[ix['Nguồn']]] || r[ix['Nguồn']])}</span></div>
+      <div class="sub">${esc(r[ix['Sản phẩm']] || '')}${r[ix['Nhóm hàng']] ? ' · ' + esc(r[ix['Nhóm hàng']]) : ''}</div>
+      <div class="sub num">${r[ix['Ngày']] ? esc(r[ix['Ngày']]) + ' · ' : ''}Phiếu/VĐ ${esc(r[ix['Mã phiếu / vận đơn']] || '–')}${r[ix['Kết quả']] ? ' · ' + esc(String(r[ix['Kết quả']]).replace(/^\s*\|\s*|\s*\|\s*$/g, '')) : ''}</div></div>`).join('') || '<div class="empty">Không có đơn lỗi tay nghề 👏</div>'}</div>`;
 }
 
 /* ---------- CHI TIẾT ĐÁNH GIÁ SAO (bấm "Số ĐH đánh giá" trong trang thợ) — CRM diem-hai-long-ThoDMX */
