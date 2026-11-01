@@ -335,7 +335,7 @@ function thoRow(r, ix, showCN){
   return `<div class="row" data-tho="${esc(r[ix['Mã user']])}"><div class="rk ${risk >= 5 ? 'hot' : ''}">${rank ?? '–'}</div>
     <div class="n"><div>${esc(r[ix['Tên user']] || r[ix['User']])}</div><div class="sub">${esc(r[ix['Mã user']])}${showCN ? ' · ' + esc(r[ix['Chi nhánh']]) : ''} · ${fmtU('',r[ix['Đơn TC (3268)']])} đơn</div></div>
     <div class="r num"><div>${fmtU('% Đúng hẹn', r[ix['% Đúng hẹn']])} <span class="sub">đúng hẹn</span></div>
-    <div class="sub">trễ ${fmtU('',r[ix['Đơn trễ hẹn']])} · lỗi ${fmtU('',r[ix['Tổng lỗi TN']])} · ⭐${fmtU('Sao',r[ix['Sao phục vụ']])}</div></div></div>`;
+    <div class="sub">trễ ${fmtU('',r[ix['Đơn trễ hẹn']])} · lỗi ${fmtU('',r[ix['Tổng lỗi TN']])} · ⭐${fmtU('Sao',r[ix['Sao phục vụ']])}</div>${ix['SO giao TC'] !== undefined ? `<div class="sub">SO đã ĐG ${fmtU('',r[ix['SO đã đánh giá']])} · chưa ĐG <b style="color:var(--bad)">${fmtU('',r[ix['SO chưa đánh giá']])}</b></div>` : ''}</div></div>`;
 }
 
 /* ---------------- Chia sẻ ảnh báo cáo chi nhánh (vẽ ngay trên máy, không lưu server) */
@@ -569,8 +569,10 @@ function viewThoDetail(ma){
   return `<button class="back" data-back>‹ Quay lại</button>
     <div class="ttl" style="font-size:20px">${esc(u[ix['Tên user']])}</div>
     <div class="sub" style="margin-bottom:10px">${esc(ma)} · ${esc(u[ix['Tên kho ĐP']])}</div>
-    <div class="card"><div class="stat num">${cols.filter(c => !skip.has(c)).map(c => c === 'Số ĐH đánh giá' && saoRows(ma).length
+    <div class="card"><div class="stat num">${soOrder(cols).filter(c => !skip.has(c)).map(c => (c === 'Số ĐH đánh giá' || c === 'SO đã đánh giá') && saoRows(ma).length
       ? `<div class="sao-lk" data-saoct="${esc(ma)}"><span>${esc(ULBL[c] || c)}</span><b>${fmtU(c, u[ix[c]])} ›</b></div>`
+      : c === 'SO chưa đánh giá' && soCDG(ma).length
+      ? `<div class="sao-lk" data-socdg="${esc(ma)}"><span>${esc(ULBL[c] || c)}</span><b>${fmtU(c, u[ix[c]])} ›</b></div>`
       : `<div><span>${esc(ULBL[c] || c)}</span><b>${fmtU(c, u[ix[c]])}</b></div>`).join('')}</div></div>
     ${loi.length ? `<h3>Lỗi tay nghề theo nhóm hàng</h3><div class="card">${loi.map(x => `<div class="row"><div class="n"><div>${esc(x[li['Nhóm hàng']])}</div></div><div class="r num" style="font-weight:700">${x[li['Số lỗi']]}</div></div>`).join('')}</div>` : ''}
     ${thoXe(ma)}
@@ -606,6 +608,21 @@ function saoCT(ma, f){
     <div class="chips"><button data-saof="0" data-saom="${esc(ma)}" class="${!f ? 'on' : ''}">Tất cả ${all.length}</button>${[5,4,3,2,1].map(s => `<button data-saof="${s}" data-saom="${esc(ma)}" class="${f === s ? 'on' : ''}">${s}★ ${n(s)}</button>`).join('')}</div>
     <div class="card">${rows.map(r => `<div class="row"><span class="sao-st s${r[1]}">${r[1]}★</span>
       <div style="flex:1;min-width:0"><div class="num" style="font-weight:700;word-break:break-all">${esc(r[2])}</div><div class="sub num">Phiếu ${esc(r[3])} · ${esc(r[4] || '')}</div></div></div>`).join('') || '<div class="empty">Không có đánh giá</div>'}</div>`;
+  ov.scrollTop = 0;
+}
+/* ---------- SO CHƯA ĐƯỢC KH ĐÁNH GIÁ (01/11/2026): SO thợ giao TC trong kỳ chưa có lượt chấm sao */
+function soOrder(cols){   // đưa 3 cột SO đánh giá lên cạnh Sao / Tiếp cận TC
+  const so = ['SO giao TC', 'SO đã đánh giá', 'SO chưa đánh giá'], rest = cols.filter(c => !so.includes(c)), i = rest.indexOf('Tỉ lệ tiếp cận thành công');
+  return i < 0 ? cols : [...rest.slice(0, i + 1), ...so.filter(c => cols.includes(c)), ...rest.slice(i + 1)];
+}
+function soCDG(ma){ const t = S.data.so_cdg; return (t && t[String(ma)]) || []; }
+function soCDGView(ma){
+  const rows = soCDG(ma), {rows: us, ix} = U(), u = us.find(r => String(r[ix['Mã user']]) === String(ma));
+  let ov = document.querySelector('.saov'); if (!ov){ ov = document.createElement('div'); ov.className = 'saov'; document.body.appendChild(ov); document.body.style.overflow = 'hidden'; }
+  ov.innerHTML = `<button class="back" data-saox>‹ Đóng</button>
+    <div class="ttl" style="font-size:18px">SO chưa được đánh giá</div>
+    <div class="sub" style="margin-bottom:10px">${esc(ma)} · ${esc(u ? u[ix['Tên user']] : '')} · ${rows.length} SO${u && ix['SO giao TC'] !== undefined ? ' / ' + fmtU('', u[ix['SO giao TC']]) + ' SO giao TC' : ''}</div>
+    <div class="card">${rows.map(r => `<div class="row"><div style="flex:1;min-width:0" class="num"><b style="word-break:break-all">${esc(r[0])}</b></div><span class="sub num">hoàn tất ${esc(r[1])}</span></div>`).join('') || '<div class="empty">Tất cả SO đã được đánh giá 👏</div>'}</div>`;
   ov.scrollTop = 0;
 }
 function saoClose(){ const ov = document.querySelector('.saov'); if (ov) ov.remove(); document.body.style.overflow = ''; }
@@ -911,7 +928,8 @@ function render(){
 }
 
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-tdm],[data-tdk],[data-tdcn],[data-tdu],[data-saox],[data-saof],[data-saoct],[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],[data-share],#rf,#me,#lo'); if (!t) return;
+  const t = e.target.closest('[data-socdg],[data-tdm],[data-tdk],[data-tdcn],[data-tdu],[data-saox],[data-saof],[data-saoct],[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],[data-share],#rf,#me,#lo'); if (!t) return;
+  if (t.dataset.socdg) return soCDGView(t.dataset.socdg);
   if (t.dataset.tdm) { S.tdm = t.dataset.tdm; LS.set('tdm', S.tdm); return render(); }
   if (t.dataset.tdk !== undefined) { S.tdk = +t.dataset.tdk; LS.set('tdk', S.tdk); return render(); }
   if (t.dataset.tdcn) { location.hash = 'td/' + encodeURIComponent(t.dataset.tdcn); return; }
