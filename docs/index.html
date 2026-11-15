@@ -148,6 +148,46 @@ table.tdt{width:auto;min-width:100%;border-collapse:separate;border-spacing:0;ba
 .tdt td.tev{background:var(--acbg)!important}.tdt td.tev .chip{margin-top:3px}.tdt td.tev small{margin-top:2px}
 .tdtile{text-align:left;width:100%;display:block;margin:0}
 .tdtile.on{box-shadow:inset 0 0 0 2px var(--ac)}
+.dg-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:10px}
+@media(min-width:620px){.dg-grid{grid-template-columns:1fr 1fr}}
+.dg-card{margin:0;border-left:4px solid var(--line)}.dg-card.is-ok{border-left-color:var(--ok)}.dg-card.is-bad{border-left-color:var(--bad)}
+.dg-h{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;font-size:14px}
+.dg-top{display:flex;align-items:center;gap:10px;margin:2px 0 4px}.dg-v{font-size:26px;font-weight:800;flex:none}
+.dg-sp{flex:1;height:30px;min-width:0}
+.dg-ok{color:var(--ok)}.dg-bad{color:var(--bad)}.dg-warn{color:#b45309}
+.dg-pill{display:inline-block;font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:8px;margin-bottom:4px}.dg-pill.ok{background:var(--okbg);color:var(--ok)}.dg-pill.bad{background:var(--badbg);color:var(--bad)}
+.dg-pill small{font-weight:600;opacity:.85}
+.dg-l{font-size:12.5px;color:var(--mu)}.dg-l b{color:var(--tx)}
+.dg-bar{position:relative;height:8px;background:var(--line);border-radius:6px;margin:8px 0 6px}.dg-bar i{display:block;height:100%;border-radius:6px}
+.dg-bar span{position:absolute;top:-4px;bottom:-4px;width:3px;margin-left:-1px;background:var(--tx);border-radius:2px}
+.dg-f{display:flex;justify-content:space-between;gap:10px;font-size:12px;align-items:flex-start}.dg-f>span:first-child{flex:none;max-width:48%}.dg-f .sub{text-align:right}
+.dg-c{font-size:12px;color:var(--mu);border-top:1px dashed var(--line);margin-top:6px;padding-top:5px}
+.dg-c .du,.dg-c .dd,.dg-c .dz{font-weight:700}
+.dg-ins .dg-pt,.dg-pt{font-size:13px;padding:4px 0;line-height:1.45}
+.c-warn{color:#b45309;background:var(--ylbg)}
+.dg-hm td{min-width:58px}.dg-hm td.hm-ok b{color:var(--ok)}.dg-hm td.hm-bad{background:var(--badbg)!important}.dg-hm td.hm-bad b{color:var(--bad)}
+.dg-hm tr[data-dgs]{cursor:pointer}.dg-hm tr[data-dgs] .tdn::after{content:' ›';color:var(--ac)}
+.dg-seg{margin:0 0 10px}.dg-seg button{font-size:13px}
+.dg-ev .n div:first-child{white-space:normal}
+.dg-kh{margin-top:4px;font-size:12.5px}.dg-kh summary{color:var(--ac);cursor:pointer;font-weight:600}.dg-kh div{background:var(--card2);border-radius:8px;padding:8px;margin-top:4px;line-height:1.45}
+.dg-pa{margin-bottom:10px}.dg-pr{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:3px 0}
+.dg-pn{width:42%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dg-pb{flex:1;height:8px;background:var(--line);border-radius:5px;overflow:hidden}.dg-pb i{display:block;height:100%;background:var(--ac)}
+
+.dg-g2{margin-bottom:10px}
+.dg-mini{display:block;width:100%;text-align:left;margin:0;padding:10px 11px;border-top:3px solid var(--line)}
+.dg-mini.st-ok{border-top-color:var(--ok)}.dg-mini.st-bad{border-top-color:var(--bad)}.dg-mini.sel{box-shadow:inset 0 0 0 2px var(--ac)}
+.dg-mh{display:flex;justify-content:space-between;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:var(--hd)}
+.dg-dot{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:12px;flex:none;color:#fff;background:var(--na)}
+.st-ok .dg-dot{background:var(--ok)}.st-bad .dg-dot{background:var(--bad)}
+.dg-mv{font-size:22px;font-weight:800;margin:3px 0 1px}.st-ok .dg-mv{color:var(--ok)}.st-bad .dg-mv{color:var(--bad)}
+.dg-mm{font-size:11.5px;color:var(--mu)}
+.dg-pips{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;margin:7px 0 5px}.dg-pips i{height:7px;border-radius:2px;background:var(--line)}
+.dg-pips i.pg{background:var(--ok)}.dg-pips i.pb{background:var(--bad)}.dg-pips i.pm{outline:2px solid var(--tx);outline-offset:0}
+.dg-mk{display:flex;justify-content:space-between;gap:4px;font-size:11px;color:var(--mu)}.dg-mk .du,.dg-mk .dd{font-weight:700}
+.dg-det{border-left:4px solid var(--ac)}.dg-det.st-ok{border-left-color:var(--ok)}.dg-det.st-bad{border-left-color:var(--bad)}
+.dg-vd{font-size:13px;font-weight:600;margin:6px 0;padding:7px 9px;border-radius:8px;background:var(--card2)}
+.dg-spw{margin:4px 0 6px}.dg-spw .dg-sp{width:100%;height:46px}
+.dg-kv div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:13px}.dg-kv div span{color:var(--mu)}.dg-kv b{text-align:right}
 </style>
 </head>
 <body>
@@ -276,7 +316,7 @@ function loginView(msg){
 
 function shell(body){
   const d = S.data, r = route();
-  const tabs = [['tq','Tổng quan',IC.tq],['cn','Chi nhánh',IC.cn],['dh','Đơn hàng',IC.dh],['tho','Thợ',IC.tho],['td','Theo dõi',IC.th]];
+  const tabs = [['tq','Tổng quan',IC.tq],['dg','Đánh giá',IC.cn],['dh','Đơn hàng',IC.dh],['tho','Thợ',IC.tho],['td','Theo dõi',IC.th]];
   return `<header><div class="hrow"><div style="flex:1;min-width:0"><div class="ttl">BÁO CÁO THỢ GHLĐ</div>
       <div class="sub num">${esc(d.ky)} · cập nhật ${esc(d.updated)}</div></div>
       <button class="icon" id="rf" aria-label="Làm mới">${IC.ref}</button><button class="icon" id="me" aria-label="Đổi tên">${IC.tho}</button><button class="icon" id="lo" aria-label="Đăng xuất">${IC.out}</button></div>
@@ -844,6 +884,263 @@ function viewTDU(ma){
     `<a class="lnk" href="#tho/${encodeURIComponent(ma)}">Xem chi tiết thợ (đơn trễ, lỗi, sao) ›</a>` + tdNote();
 }
 
+/* ================= TAB ĐÁNH GIÁ (16/11/2026) — thay tab Chi nhánh =================
+   Nguồn: S.data.dg (số chốt 6 nhóm chỉ tiêu từ dashboard + đơn trễ/than phiền/lỗi có ngày) + S.data.td (số từng ngày) */
+const DGK = [
+  {k:'sl',  n:'Sản lượng',          i:'📦', t:'cum'},
+  {k:'dh',  n:'Đúng hẹn',           i:'⏰', t:'rate', bad:'dt', base:'dn', u:'đơn trễ'},
+  {k:'tn',  n:'Tay nghề',           i:'🛠️', t:'rate', bad:'tl', base:'tm', u:'lỗi'},
+  {k:'sao', n:'Sao phục vụ',        i:'⭐', t:'star'},
+  {k:'hnt', n:'Hủy – Nhập – Trả',   i:'↩️', t:'low',  u:'đơn hủy/trả'},
+  {k:'bh',  n:'Thợ bán hàng',       i:'💰', t:'cum'}];
+const dgN = (v, d=0) => v == null || isNaN(v) ? '–' : Number(v).toLocaleString('vi-VN', {minimumFractionDigits:d, maximumFractionDigits:d});
+const dgP = (v, d=2) => v == null || isNaN(v) ? '–' : dgN(v*100, d) + '%';
+function dgF(k, v){ return k === 'sl' ? dgN(v) : k === 'bh' ? dgN(v, 1) : k === 'sao' ? dgN(v, 2) : dgP(v); }
+function dgDiff(k, d){ if (d == null || isNaN(d)) return ''; const s = d > 0 ? '+' : d < 0 ? '−' : '±';
+  const a = Math.abs(d); return s + (k === 'sl' ? dgN(a) : k === 'bh' ? dgN(a, 1) : k === 'sao' ? dgN(a, 2) : dgN(a*100, 2)); }
+const DG = () => S.data.dg;
+const dgV = () => BC().vung.replace(/^Vùng\s+/, '');
+const dgBC = (dg) => (dg && dg.bc && dg.bc[dgV()]) || null;
+function dgScope(dg, cn){ const b = dgBC(dg || DG()); if (!b) return null; return cn ? b.cn.find(c => c.cn === cn) : b.region; }
+function dgTD(month){ return (S.data.td || []).find(f => f.month === month); }
+function dgRecs(f, cn){ if (!f) return []; const v = BC().vung;
+  if (cn) return f.cn[v + '|' + cn] ? [f.cn[v + '|' + cn]] : [];
+  return Object.keys(f.cn).filter(k => k.startsWith(v + '|')).map(k => f.cn[k]); }
+function dgSum(recs, upto){ const a = {}; ['dn','dt','tl','tm','ss','sn','gn','gd'].forEach(x => { a[x] = 0;
+  recs.forEach(r => (r[x] || []).forEach((v, i) => { if (v != null && i <= upto) a[x] += v; })); }); return a; }
+function dgDaily(recs, n){ const out = []; for (let i = 0; i < n; i++){ const a = {}; ['dn','dt','tl','tm','ss','sn'].forEach(x => a[x] = recs.reduce((s, r) => s + ((r[x] || [])[i] || 0), 0)); out.push(a); } return out; }
+const dgDayVal = {sl: a => a.dn || null, dh: a => a.dn ? 1 - a.dt/a.dn : null, tn: a => a.tm ? 1 - a.tl/a.tm : null, sao: a => a.sn ? a.ss/a.sn : null};
+function dgKho(cn){ const dg = DG(), v = BC().vung; return Object.keys(dg.kho || {}).filter(k => dg.kho[k][0] === v && (!cn || dg.kho[k][1] === cn)); }
+function dgSpark(vals, mt, good){ const p = vals.map((v, i) => [i, v]).filter(x => x[1] != null); if (p.length < 2) return '';
+  const ys = p.map(x => x[1]).concat(mt != null ? [mt] : []); let lo = Math.min(...ys), hi = Math.max(...ys); const pad = (hi - lo) * .15 || Math.abs(hi) * .02 || 1; lo -= pad; hi += pad;
+  const W = 120, H = 30, X = i => i / Math.max(1, vals.length - 1) * W, Y = v => H - (v - lo) / (hi - lo) * H;
+  return `<svg class="dg-sp" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${mt != null ? `<line x1="0" x2="${W}" y1="${Y(mt)}" y2="${Y(mt)}" stroke="var(--dim)" stroke-dasharray="3 3" stroke-width="1"/>` : ''}
+    <polyline points="${p.map(x => X(x[0]) + ',' + Y(x[1])).join(' ')}" fill="none" stroke="${good ? 'var(--ok)' : 'var(--ac)'}" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`; }
+
+/* ---- tính số liệu 1 chỉ tiêu cho 1 phạm vi ---- */
+function dgCalc(o, cn){
+  const dg = DG(), x = dgScope(dg, cn); if (!x || !x[o.k]) return null;
+  const X = x[o.k], f = dgTD(dg.month), nd = f ? f.nd : 30, N = f ? Math.min(f.last, f.nd - 1) + 1 : null, left = N ? nd - N : null;
+  const recs = dgRecs(f, cn), A = f ? dgSum(recs, N - 1) : null;
+  const c = {o, X, tt: X.tt, mt: X.mt, ok: X.dg === 'Đạt', N, nd, left, rows: []};
+  c.na = !(typeof c.tt === 'number') || (o.k === 'bh' && !c.tt);
+  c.diff = typeof c.tt === 'number' && typeof c.mt === 'number' ? c.tt - c.mt : null;
+  const R = (k, v, cls) => c.rows.push([k, v, cls || '']);
+  if (c.na) return c;
+  R('Thực tế / Mục tiêu', `${dgF(o.k, c.tt)} / ${dgF(o.k, c.mt)}`);
+  R('Chênh lệch', dgDiff(o.k, c.diff) + (o.t === 'rate' || o.t === 'low' ? ' điểm %' : ''), (o.t === 'low' ? c.diff <= 0 : c.diff >= 0) ? 'g' : 'b');
+  if (N) R('Thời gian đã qua', `${N}/${nd} ngày (${dgN(N / nd * 100, 0)}%)`);
+  if (o.t === 'cum'){
+    const exp = X.ht ? c.tt / X.ht : null, proj = o.k === 'bh' ? X.dk : (X.ht && c.mt ? c.mt * X.ht : null);
+    c.meter = c.mt ? c.tt / c.mt : 0; c.mark = exp && c.mt ? exp / c.mt : null; c.meterBad = !c.ok; c.gap = exp != null ? c.tt - exp : null;
+    c.key = `Tiến độ ${dgP(X.ht, 0)}`;
+    R('Mức cần có đến nay', dgF(o.k, exp)); R('So mức cần có', dgDiff(o.k, c.tt - exp), c.tt >= exp ? 'g' : 'b');
+    R('Dự báo cuối tháng', dgF(o.k, proj), proj >= c.mt ? 'g' : 'b');
+    if (c.mt && c.tt < c.mt && left) R('Cần bình quân mỗi ngày còn lại', dgF(o.k, (c.mt - c.tt) / left) + ` <span class="sub">(hiện ${dgF(o.k, c.tt / N)}/ngày)</span>`);
+    else if (c.mt && c.tt >= c.mt) R('Đã vượt mục tiêu tháng', dgF(o.k, c.tt - c.mt), 'g');
+    c.verdict = proj == null ? '' : proj >= c.mt ? `Theo nhịp hiện tại sẽ hoàn thành ${dgP(proj / c.mt, 0)} mục tiêu tháng.` : `Theo nhịp hiện tại chỉ đạt ${dgP(proj / c.mt, 0)} mục tiêu – cần tăng tốc.`;
+  } else if (o.t === 'rate' && A){
+    const n = A[o.base], used = A[o.bad], allow = Math.floor(n * (1 - c.mt) + 1e-9), perDay = N ? n / N : 0, endN = n + perDay * left, endAllow = Math.floor(endN * (1 - c.mt) + 1e-9);
+    c.meter = allow ? used / allow : (used ? 1.5 : 0); c.mark = N / nd; c.meterBad = used > allow || c.meter > c.mark + .001;
+    c.key = `${o.k === 'dh' ? 'Trễ' : 'Lỗi'} ${used}/${allow}`;
+    R(`${o.k === 'dh' ? 'Đơn hoàn tất' : 'Mẫu số (phiếu + đơn BH)'}`, dgN(n));
+    R(`Số ${o.u} / mức được phép`, `${used} / ${allow}`, used <= allow ? 'g' : 'b');
+    R(`Dự kiến cả tháng được phép`, `${endAllow} ${o.u} <span class="sub">(≈ ${dgN(endN)} ${o.k === 'dh' ? 'đơn' : 'mẫu'})</span>`);
+    R(`Còn được phép đến cuối tháng`, used <= endAllow ? `${endAllow - used} ${o.u}` : `đã vượt ${used - endAllow}`, used <= endAllow ? 'g' : 'b');
+    c.verdict = used > endAllow ? `Đã vượt cả quỹ ${o.u} dự kiến của tháng – khó lấy lại mục tiêu.` : used > allow ? `Đang vượt quỹ ${o.u} tới hôm nay; ${left} ngày còn lại chỉ được thêm ${endAllow - used}.` : (allow && used / allow > N / nd) ? `Đạt nhưng quỹ ${o.u} đang dùng nhanh hơn tiến độ thời gian.` : `An toàn – quỹ ${o.u} còn dư.`;
+  } else if (o.t === 'star'){
+    c.meter = (c.tt - 3) / 2; c.mark = (c.mt - 3) / 2; c.meterBad = !c.ok;
+    c.key = c.diff >= 0 ? `Dư ${dgN(c.diff, 2)}★` : `Thiếu ${dgN(-c.diff, 2)}★`;
+    c.verdict = c.ok ? 'Điểm sao trên mục tiêu.' : 'Điểm sao dưới mục tiêu – rà các lượt chấm thấp.';
+  } else if (o.t === 'low'){
+    const h = dg.hnt || {}; let tot = 0, bad = 0; dgKho(cn).forEach(k => { if (h[k]){ tot += h[k][0]; bad += h[k][1]; } });
+    const allow = Math.floor(tot * c.mt + 1e-9);
+    c.meter = allow ? bad / allow : 0; c.mark = N ? N / nd : null; c.meterBad = bad > allow;
+    c.key = `Hủy/trả ${bad}/${allow}`;
+    R('Tổng đơn (TC + hủy)', dgN(tot)); R('Đơn hủy + nhập trả / được phép', `${bad} / ${allow}`, bad <= allow ? 'g' : 'b');
+    c.verdict = bad <= allow ? `Còn dư ${allow - bad} đơn hủy/trả so với hạn mức.` : `Vượt hạn mức ${bad - allow} đơn hủy/trả.`;
+  }
+  /* hạng */
+  const b = dgBC(dg), low = o.t === 'low', vals = b.cn.filter(z => z[o.k] && typeof z[o.k].tt === 'number' && !(o.k === 'bh' && !z[o.k].tt));
+  const key = z => o.t === 'cum' ? (z[o.k].ht || 0) : z[o.k].tt;
+  vals.sort((p, q) => low ? key(p) - key(q) : key(q) - key(p));
+  const show = z => o.t === 'cum' ? dgP(z[o.k].ht, 0) + ' tiến độ' : dgF(o.k, z[o.k].tt);
+  if (vals.length){ if (cn){ c.rank = vals.findIndex(z => z.cn === cn) + 1; c.nrank = vals.length; R('Hạng trong vùng', `${c.rank}/${vals.length}`); }
+    R('Dẫn đầu vùng', `${esc(vals[0].cn)} · ${show(vals[0])}`); if (!cn) R('Thấp nhất vùng', `${esc(vals[vals.length - 1].cn)} · ${show(vals[vals.length - 1])}`); }
+  /* so tháng trước */
+  const pv = dg.prev && dgScope({bc: dg.prev.bc}, cn), P = pv && pv[o.k], pm = dg.prev ? 'T' + (+dg.prev.month.slice(5)) : '';
+  if ((o.k === 'dh' || o.k === 'tn') && N){
+    const pf = dgTD(dg.prev && dg.prev.month), pr = dgRecs(pf, cn);
+    if (pf && pr.length){ const pvv = dgDayVal[o.k](dgSum(pr, N - 1)), cvv = dgDayVal[o.k](A);
+      if (pvv != null && cvv != null){ c.vs = cvv - pvv; c.vsTxt = `${pm} cùng ${N} ngày`; R(`So ${pm} cùng ${N} ngày đầu`, `${dgF(o.k, pvv)} → ${dgF(o.k, cvv)}`, c.vs >= 0 ? 'g' : 'b'); } } }
+  if (c.vs == null && P && typeof P.tt === 'number'){
+    if (o.t === 'cum' && N){ const pd = P.tt / 31, cd = c.tt / N; if (pd){ c.vs = cd / pd - 1; c.vsTxt = `TB/ngày ${pm}`; R(`Bình quân/ngày so ${pm}`, `${dgF(o.k, pd)} → ${dgF(o.k, cd)}`, c.vs >= 0 ? 'g' : 'b'); } }
+    else { c.vs = c.tt - P.tt; c.vsTxt = `${pm} cả tháng`; R(`So ${pm} cả tháng`, `${dgF(o.k, P.tt)} → ${dgF(o.k, c.tt)}`, (low ? c.vs <= 0 : c.vs >= 0) ? 'g' : 'b'); } }
+  c.vsGood = c.vs == null ? null : (low ? c.vs <= 0 : c.vs >= 0);
+  if (f && (o.k === 'sl' || o.k === 'dh' || o.k === 'tn')) c.spark = dgDaily(recs, N).map(dgDayVal[o.k]);
+  return c;
+}
+function dgVsShort(c){ if (c.vs == null) return ''; const o = c.o, a = Math.abs(c.vs);
+  const v = o.t === 'cum' ? dgN(a * 100, 0) + '%' : o.k === 'sao' ? dgN(a, 2) + '★' : dgN(a * 100, 2) + 'đ';
+  return `<span class="${c.vsGood ? 'du' : 'dd'}">${c.vs > 0 ? '▲' : c.vs < 0 ? '▼' : '='}${v}</span>`; }
+function dgPips(c){ const n = 10, fill = Math.max(0, Math.min(n, Math.round((c.meter || 0) * n))), mk = c.mark == null ? -1 : Math.min(n - 1, Math.floor(c.mark * n - 1e-9));
+  let h = ''; for (let i = 0; i < n; i++) h += `<i class="${i < fill ? (c.meterBad ? 'pb' : 'pg') : ''}${i === mk ? ' pm' : ''}"></i>`; return `<div class="dg-pips">${h}</div>`; }
+/* ô nhỏ (lưới 2 cột) */
+function dgMini(o, cn){
+  const c = dgCalc(o, cn); if (!c) return '';
+  const st = c.na ? 'na' : c.ok ? 'ok' : 'bad';
+  return `<button class="card dg-mini st-${st} ${S.dgk === o.k ? 'sel' : ''}" data-dgk="${o.k}">
+    <div class="dg-mh"><span>${o.i} ${o.n}</span><b class="dg-dot">${c.na ? '–' : c.ok ? '✓' : '!'}</b></div>
+    <div class="dg-mv num">${c.na ? '–' : dgF(o.k, c.tt)}</div>
+    <div class="dg-mm num">MT ${dgF(o.k, c.mt)}${c.na ? '' : o.t === 'cum' ? (c.gap != null ? ` · <b class="${c.gap >= 0 ? 'dg-ok' : 'dg-bad'}">${dgDiff(o.k, c.gap)}</b> tiến độ` : '') : ` · <b class="${(o.t === 'low' ? c.diff <= 0 : c.diff >= 0) ? 'dg-ok' : 'dg-bad'}">${dgDiff(o.k, c.diff)}</b>`}</div>
+    ${c.na ? '<div class="dg-mk sub">Chưa có số trong kỳ</div>' : dgPips(c) + `<div class="dg-mk num"><span>${c.key || ''}</span><span>${c.rank ? '#' + c.rank + ' ' : ''}${dgVsShort(c)}</span></div>`}</button>`;
+}
+/* bảng phân tích chi tiết của chỉ tiêu đang chọn */
+function dgDetail(o, cn){
+  const c = dgCalc(o, cn); if (!c || c.na) return '';
+  const sp = c.spark ? dgSpark(c.spark, o.k === 'sl' ? null : c.mt, c.ok) : '';
+  return `<div class="card dg-det st-${c.ok ? 'ok' : 'bad'}"><div class="dg-h"><span>${o.i} Phân tích: ${o.n}</span><span class="chip ${c.ok ? 'c-ok' : 'c-bad'}">${c.ok ? 'Đang đạt' : 'Chưa đạt'}</span></div>
+    ${c.verdict ? `<div class="dg-vd">${c.verdict}</div>` : ''}
+    ${sp ? `<div class="dg-spw">${sp}<div class="sub">${o.k === 'sl' ? 'Đơn hoàn tất từng ngày' : 'Từng ngày · nét đứt = mục tiêu'}</div></div>` : ''}
+    <div class="dg-kv num">${c.rows.map(r => `<div><span>${r[0]}</span><b class="${r[2] === 'g' ? 'dg-ok' : r[2] === 'b' ? 'dg-bad' : ''}">${r[1]}</b></div>`).join('')}</div></div>`;
+}
+/* ---- nhận định chuyên gia (tự sinh theo luật) ---- */
+function dgInsight(cn){
+  const dg = DG(), x = dgScope(dg, cn), f = dgTD(dg.month), N = f ? Math.min(f.last, f.nd - 1) + 1 : 0, nd = f ? f.nd : 30;
+  const ks = DGK.filter(o => x[o.k] && typeof x[o.k].tt === 'number' && !(o.k === 'bh' && !x[o.k].tt));
+  const bad = ks.filter(o => x[o.k].dg === 'Chưa đạt'), good = ks.filter(o => x[o.k].dg === 'Đạt');
+  const lv = bad.length === 0 ? ['Tốt', 'ok'] : bad.length === 1 ? ['Khá', 'ok'] : bad.length === 2 ? ['Trung bình', 'warn'] : ['Cần cải thiện', 'bad'];
+  const pts = [];
+  if (good.length) pts.push(`✅ <b>Đạt ${good.length}/${ks.length}</b> chỉ tiêu: ${good.map(o => o.n).join(', ')}.`);
+  if (bad.length) pts.push(`⚠️ <b>Chưa đạt:</b> ${bad.map(o => `${o.n} (${dgF(o.k, x[o.k].tt)} / MT ${dgF(o.k, x[o.k].mt)})`).join('; ')}.`);
+  /* ngân sách lỗi */
+  const recs = dgRecs(f, cn), A = f ? dgSum(recs, N - 1) : null;
+  if (A) [['dh', 'dt', 'dn', 'đơn trễ'], ['tn', 'tl', 'tm', 'lỗi tay nghề']].forEach(([k, b, n, u]) => { const mt = x[k] && x[k].mt; if (mt == null) return;
+    const allow = Math.floor(A[n] * (1 - mt) + 1e-9), used = A[b], left = nd - N, perDay = N ? A[n] / N : 0, futAllow = Math.floor((A[n] + perDay * left) * (1 - mt) + 1e-9);
+    if (used > allow) pts.push(`🔴 ${k === 'dh' ? 'Đúng hẹn' : 'Tay nghề'}: đã ${used} ${u}, vượt ${used - allow} so mức cho phép. Để kịp MT cuối tháng, ${left} ngày còn lại chỉ được thêm tối đa <b>${Math.max(0, futAllow - used)}</b> ${u}.`);
+    else if (allow && used / allow > N / nd) pts.push(`🟠 ${k === 'dh' ? 'Đúng hẹn' : 'Tay nghề'}: đã dùng ${used}/${allow} ${u} được phép (${dgN(used / allow * 100, 0)}%) trong khi mới qua ${dgN(N / nd * 100, 0)}% tháng → cần siết lại.`); });
+  /* xu hướng 3 ngày */
+  if (f){ const days = dgDaily(recs, N).slice(-4);
+    [['dh', 'Đúng hẹn'], ['tn', 'Tay nghề']].forEach(([k, nm]) => { const v = days.map(dgDayVal[k]); if (v.length === 4 && v.every(z => z != null) && v[1] < v[0] && v[2] < v[1] && v[3] < v[2]) pts.push(`📉 ${nm} giảm liên tục 3 ngày gần nhất (${v.map(z => dgP(z, 1)).join(' → ')}).`); }); }
+  if (!pts.length) pts.push('Chưa đủ dữ liệu để nhận định.');
+  return `<div class="card dg-ins"><div class="dg-h"><span>🧭 Nhận định – ${esc(cn || BC().vung)}</span><span class="chip ${lv[1] === 'ok' ? 'c-ok' : lv[1] === 'warn' ? 'c-warn' : 'c-bad'}">Xếp loại: ${lv[0]}</span></div>
+    <div class="sub" style="margin:2px 0 6px">${esc(dg.meta || '')} · đã qua ${N}/${nd} ngày</div>${pts.map(p => `<div class="dg-pt">${p}</div>`).join('')}</div>`;
+}
+
+/* ---- bảng xếp hạng chi nhánh (heatmap) ---- */
+function dgRank(){
+  const b = dgBC(DG()); if (!b) return '';
+  const cols = [['sl', 'SL'], ['dh', 'Đúng hẹn'], ['tn', 'Tay nghề'], ['sao', 'Sao'], ['hnt', 'Hủy-NT'], ['bh', 'Bán hàng']];
+  const cell = (c, k) => { const x = c[k]; if (!x || typeof x.tt !== 'number' || (k === 'bh' && !x.tt)) return '<td class="tz"><b>–</b></td>';
+    const v = (k === 'sl' || k === 'bh') ? dgP(x.ht, 0) : dgF(k, x.tt); return `<td class="${x.dg === 'Đạt' ? 'hm-ok' : 'hm-bad'}"><b>${v}</b></td>`; };
+  const nbad = c => cols.filter(([k]) => c[k] && c[k].dg === 'Chưa đạt' && !(k === 'bh' && !c[k].tt)).length;
+  const rows = b.cn.slice().sort((p, q) => nbad(p) - nbad(q) || p.cn.localeCompare(q.cn));
+  return `<h3>Xếp hạng chi nhánh · ${esc(BC().vung)}</h3><div class="tdwrap dg-w"><table class="tdt num dg-hm"><thead><tr><th>Chi nhánh</th>${cols.map(c => `<th>${c[1]}</th>`).join('')}<th class="tot">Chưa đạt</th></tr></thead>
+    <tbody>${rows.map(c => `<tr data-dgs="${esc(c.cn)}"><td><div class="tdn">${esc(c.cn)}</div></td>${cols.map(([k]) => cell(c, k)).join('')}<td class="tev"><span class="chip ${nbad(c) ? 'c-bad' : 'c-ok'}">${nbad(c)}</span></td></tr>`).join('')}</tbody></table></div>
+    <div class="sub" style="margin:0 2px 10px">SL, Bán hàng: % hoàn thành tiến độ · xanh = đạt, đỏ = chưa đạt · bấm 1 dòng để xem chi nhánh.</div>`;
+}
+
+/* ---- sự cố phát sinh theo ngày: tay nghề / trễ hẹn / than phiền ---- */
+const dgDate = s => { const m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(String(s || '')); return m ? m[3] + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0') : null; };
+const dgIx = t => { const ix = {}; (t && t.cols || []).forEach((c, i) => ix[c] = i); return ix; };
+function dgEvents(cn){
+  const dg = DG(), v = BC().vung, kho = dg.kho || {}, inScope = k => { const h = kho[String(k)]; return h && h[0] === v && (!cn || h[1] === cn); };
+  const L = dg.loi || {cols: [], rows: []}, li = dgIx(L), T = dg.tre || {cols: [], rows: []}, ti = dgIx(T), P = dg.tp || {cols: [], rows: []}, pi = dgIx(P);
+  return {
+    tn: L.rows.filter(r => r[li['Vùng rút gọn']] === v && (!cn || r[li['Chi nhánh']] === cn)).map(r => ({d: dgDate(r[li['Ngày']]), r, ix: li})),
+    dh: T.rows.filter(r => inScope(r[ti['Mã kho ĐP']])).map(r => ({d: dgDate(r[ti['Ngày']]), r, ix: ti})),
+    tp: P.rows.filter(r => inScope(r[pi['Mã kho ĐP']])).map(r => ({d: dgDate(r[pi['Ngày']]), r, ix: pi}))};
+}
+const dgUid = s => (String(s || '').match(/^\s*(\d+)/) || [])[1] || '';
+const dgCN = k => ((DG().kho || {})[String(k)] || [])[1] || '';
+function dgItem(t, e){
+  const r = e.r, x = e.ix, g = c => r[x[c]];
+  if (t === 'tn'){ const src = {'1065': 'Tổng đài 1065', '1063': 'CSKH 1063', 'ĐH 1025': 'ĐH bảo hành 1025'};
+    return `<div class="row dg-ev" data-tho="${esc(g('Mã user'))}"><div class="n"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num" style="white-space:normal;word-break:break-all">${esc(g('SO') || g('Mã phiếu / vận đơn'))}</b><span class="chip c-bad">${esc(src[g('Nguồn')] || g('Nguồn'))}</span></div>
+      <div class="sub"><b style="color:var(--tx)">${esc(g('Tên user'))}</b> · ${esc(g('Mã user'))} · ${esc(g('Chi nhánh'))}</div>
+      <div class="sub">${esc(g('Sản phẩm') || '')}${g('Nhóm hàng') ? ' · ' + esc(g('Nhóm hàng')) : ''}</div>
+      <div class="sub num">${esc(g('Ngày'))} · Phiếu/VĐ ${esc(g('Mã phiếu / vận đơn'))}${g('Kết quả') ? ' · ' + esc(String(g('Kết quả')).replace(/^\s*\|\s*|\s*\|\s*$/g, '')) : ''}</div></div></div>`; }
+  if (t === 'dh'){ const nv = String(g('Nhân viên giao') || ''), ma = dgUid(nv), ph = Math.round(g('Số phút trễ') || 0);
+    return `<div class="row dg-ev" ${ma ? `data-tho="${esc(ma)}"` : ''}><div class="n"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num" style="white-space:normal;word-break:break-all">${esc(g('Mã đơn hàng vật lý'))}</b><span class="chip c-bad num">${ph > 0 ? 'trễ ' + dgN(ph) + '′' : esc(g('Kiểu đổi giờ'))}</span></div>
+      <div class="sub"><b style="color:var(--tx)">${esc(nv.replace(/^\s*\d+\s*-\s*/, ''))}</b>${ma ? ' · ' + esc(ma) : ''} · ${esc(dgCN(g('Mã kho ĐP')))}</div>
+      <div class="sub">${esc(g('TÊN YCVC') || '')}</div>
+      <div class="sub num">VĐ ${esc(g('MÃ VẬN ĐƠN'))} · hẹn cuối ${esc(g('TG HẸN GIAO CUỐI'))} · đến nhà ${esc(g('TG ĐẾN NHÀ KHÁCH'))} · ${esc(g('Kiểu đổi giờ'))} · ${esc(g('Xác nhận KH'))}</div></div></div>`; }
+  const nv = String(g('NV vi phạm') || ''), ma = dgUid(nv), kh = String(g('KH phản ánh') || '');
+  return `<div class="row dg-ev" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num">Phiếu ${esc(g('Mã phiếu'))}</b><span class="chip ${g('Lỗi TN') ? 'c-bad' : 'c-warn'}">${esc(g('Chủ đề'))}</span></div>
+    <div class="sub">${nv ? `<b style="color:var(--tx)">${esc(nv.replace(/^\s*\d+\s*-\s*/, ''))}</b> · ${esc(ma)} · ` : ''}${esc(dgCN(g('Mã kho ĐP')))} · ${esc(g('Nguồn tạo phiếu') || '')}${g('Lỗi TN') ? ' · <b style="color:var(--bad)">tính lỗi tay nghề</b>' : ''}</div>
+    <div class="sub">${esc(g('Nội dung liên quan') || '')}${g('Sản phẩm') ? ' · ' + esc(g('Sản phẩm')) : ''}</div>
+    <div class="sub num">${esc(g('Ngày'))}${g('SO') ? ' · SO ' + esc(g('SO')) : ''}</div>
+    ${kh ? `<details class="dg-kh"><summary>Nội dung KH phản ánh</summary><div>${esc(kh).replace(/\n/g, '<br>')}</div></details>` : ''}</div>`;
+}
+function dgDays(){ const f = dgTD(DG().month); if (!f) return [];
+  const [y, m] = f.month.split('-').map(Number), n = Math.min(f.last, f.nd - 1) + 1, out = [];
+  for (let i = n; i >= 1 && out.length < 7; i--) out.push(y + '-' + String(m).padStart(2, '0') + '-' + String(i).padStart(2, '0'));
+  return out; }
+function dgEventsBox(cn){
+  const days = dgDays(); if (!days.length) return '';
+  const day = days.includes(S.dgd) ? S.dgd : days[0], E = dgEvents(cn), cnt = t => E[t].filter(e => e.d === day).length;
+  const t = S.dgt || 'tn', list = E[t].filter(e => e.d === day);
+  const now = new Date(), today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+  const lab = d => { const [y, m, dd] = d.split('-'); return (d === today ? 'Hôm nay ' : '') + (+dd) + '/' + (+m); };
+  const ttl = {tn: '🛠️ Tay nghề', dh: '⏰ Trễ hẹn', tp: '💬 Than phiền'};
+  return `<h3>Sự cố phát sinh trong ngày</h3>
+    <div class="chips">${days.map(d => `<button data-dgd="${d}" class="${d === day ? 'on' : ''}">${lab(d)}</button>`).join('')}</div>
+    <div class="seg dg-seg">${['tn', 'dh', 'tp'].map(k => `<button data-dgt="${k}" class="${k === t ? 'on' : ''}">${ttl[k]} <b class="num">${cnt(k)}</b></button>`).join('')}</div>
+    <div class="card">${list.map(e => dgItem(t, e)).join('') || `<div class="empty">Không có ${ttl[t].slice(3).toLowerCase()} phát sinh ngày ${lab(day).replace('Hôm nay ', '')} 👏</div>`}</div>
+    <div class="sub" style="margin:-4px 2px 10px">Ngày: tay nghề = ngày ghi nhận phiếu/đơn BH · trễ hẹn = ngày hoàn tất đơn · than phiền = ngày chốt phiếu. Than phiền chỉ có số theo lượt cập nhật CSKH.</div>`;
+}
+
+/* ---- thợ cần chú ý (7 ngày): ≥ 2 sự cố, hoặc có lỗi tay nghề + sự cố khác ---- */
+function dgWatch(cn){
+  const days = dgDays(); if (!days.length) return '';
+  const set = new Set(days), E = dgEvents(cn), M = {};
+  const add = (ma, nm, k, cnn) => { if (!ma) return; const o = M[ma] = M[ma] || {ma, nm, cn: cnn, tn: 0, dh: 0, tp: 0}; o[k]++; if (!o.nm && nm) o.nm = nm; };
+  E.tn.filter(e => set.has(e.d)).forEach(e => add(String(e.r[e.ix['Mã user']]), e.r[e.ix['Tên user']], 'tn', e.r[e.ix['Chi nhánh']]));
+  E.dh.filter(e => set.has(e.d)).forEach(e => { const nv = String(e.r[e.ix['Nhân viên giao']] || ''); add(dgUid(nv), nv.replace(/^\s*\d+\s*-\s*/, ''), 'dh', dgCN(e.r[e.ix['Mã kho ĐP']])); });
+  E.tp.filter(e => set.has(e.d)).forEach(e => { const nv = String(e.r[e.ix['NV vi phạm']] || ''); add(dgUid(nv), nv.replace(/^\s*\d+\s*-\s*/, ''), 'tp', dgCN(e.r[e.ix['Mã kho ĐP']])); });
+  const L = Object.values(M).map(o => ({...o, s: o.tn * 3 + o.dh + o.tp * 2})).filter(o => o.tn + o.dh + o.tp >= 2).sort((a, b) => b.s - a.s).slice(0, 15);
+  return `<h3>Thợ cần chú ý · 7 ngày gần nhất</h3><div class="card list">${L.map(o => `<div class="row" data-tho="${esc(o.ma)}"><div class="rk hot">${o.tn + o.dh + o.tp}</div>
+    <div class="n"><div>${esc(o.nm || o.ma)}</div><div class="sub">${esc(o.ma)} · ${esc(o.cn || '')}</div></div>
+    <div class="r num">${o.tn ? `<span class="chip c-bad">🛠️ ${o.tn}</span> ` : ''}${o.dh ? `<span class="chip c-warn">⏰ ${o.dh}</span> ` : ''}${o.tp ? `<span class="chip c-warn">💬 ${o.tp}</span>` : ''}</div></div>`).join('')
+    || '<div class="empty">Không có thợ nào lặp lại sự cố trong 7 ngày 👏</div>'}</div>
+    <div class="sub" style="margin:-4px 2px 10px">Thợ có từ 2 sự cố trở lên (lỗi tay nghề, trễ hẹn, than phiền) trong 7 ngày; xếp theo mức độ (lỗi TN ×3, than phiền ×2, trễ ×1).</div>`;
+}
+
+/* ---- Pareto: nhóm hàng lỗi tay nghề + chủ đề than phiền (cả tháng) ---- */
+function dgPareto(cn){
+  const E = dgEvents(cn), bars = (title, arr) => { const tot = arr.reduce((s, x) => s + x[1], 0); if (!tot) return '';
+    let cum = 0; return `<div class="dg-pa"><div class="sub" style="font-weight:700;color:var(--tx);margin-bottom:4px">${title} · ${tot}</div>${arr.slice(0, 6).map(([k, n]) => { cum += n;
+      return `<div class="dg-pr"><span class="dg-pn">${esc(k)}</span><span class="dg-pb"><i style="width:${n / arr[0][1] * 100}%"></i></span><b class="num">${n}</b><span class="sub num" style="width:38px;text-align:right">${dgN(cum / tot * 100, 0)}%</span></div>`; }).join('')}</div>`; };
+  const cnt = (list, f) => { const m = {}; list.forEach(e => { const k = f(e) || 'Không rõ'; m[k] = (m[k] || 0) + 1; }); return Object.entries(m).sort((a, b) => b[1] - a[1]); };
+  const a = bars('🛠️ Lỗi tay nghề theo nhóm hàng', cnt(E.tn, e => e.r[e.ix['Nhóm hàng']])), b = bars('💬 Than phiền theo chủ đề', cnt(E.tp, e => e.r[e.ix['Chủ đề']]));
+  return a || b ? `<h3>Nguyên nhân chính trong tháng (Pareto)</h3><div class="card">${a}${b}<div class="sub">% cộng dồn: tập trung xử lý các nhóm đầu bảng giải quyết phần lớn sự cố.</div></div>` : '';
+}
+
+/* ---- kiểm soát thống kê (p-chart): ngày bất thường ---- */
+function dgSPC(cn){
+  const f = dgTD(DG().month); if (!f) return '';
+  const recs = dgRecs(f, cn), N = Math.min(f.last, f.nd - 1) + 1, days = dgDaily(recs, N), [y, m] = f.month.split('-').map(Number), out = [];
+  [['dh', 'dt', 'dn', 'Tỉ lệ trễ hẹn'], ['tn', 'tl', 'tm', 'Tỉ lệ lỗi tay nghề']].forEach(([k, b, n, nm]) => {
+    const B = days.reduce((s, a) => s + a[b], 0), T = days.reduce((s, a) => s + a[n], 0); if (!T) return; const p = B / T;
+    days.forEach((a, i) => { if (a[n] < 20 || !a[b]) return; const ucl = p + 3 * Math.sqrt(p * (1 - p) / a[n]), pi = a[b] / a[n];
+      if (pi > ucl) out.push(`<div class="dg-pt">🚨 <b>${i + 1}/${m}</b> · ${nm} <b>${dgP(pi, 1)}</b> (${a[b]}/${a[n]}) vượt giới hạn kiểm soát ${dgP(ucl, 1)} — trung bình tháng ${dgP(p, 2)}.</div>`); }); });
+  return `<h3>Kiểm soát bất thường (SPC)</h3><div class="card">${out.join('') || '<div class="dg-pt">✅ Không có ngày nào vượt giới hạn kiểm soát 3σ — quá trình đang ổn định.</div>'}
+    <div class="sub" style="margin-top:6px">Ngày có tỉ lệ trễ hẹn / lỗi tay nghề cao bất thường so với trung bình tháng (biểu đồ p, giới hạn trên 3σ, ngày ≥ 20 đơn).</div></div>`;
+}
+
+function viewDG(){
+  const dg = DG(); if (!dg || !dgBC(dg)) return '<div class="empty">Chưa có dữ liệu đánh giá – có sau lượt đồng bộ tối nay</div>';
+  const b = dgBC(dg), cn = b.cn.some(c => c.cn === S.dgs) ? S.dgs : '';
+  const sel = `<div class="sel"><select id="dgs" style="flex:1"><option value="">Tổng ${esc(BC().vung)}</option>${b.cn.map(c => `<option value="${esc(c.cn)}" ${c.cn === cn ? 'selected' : ''}>Chi nhánh ${esc(c.cn)}</option>`).join('')}</select></div>`;
+  if (!DGK.some(o => o.k === S.dgk)){ const x = dgScope(dg, cn), bad = DGK.find(o => x[o.k] && x[o.k].dg === 'Chưa đạt' && !(o.k === 'bh' && !x[o.k].tt)); S.dgk = bad ? bad.k : 'dh'; }
+  const ko = DGK.find(o => o.k === S.dgk);
+  return sel + dgInsight(cn) + `<h3>Chỉ tiêu tháng · bấm ô để xem phân tích</h3><div class="grid2 dg-g2">${DGK.map(o => dgMini(o, cn)).join('')}</div>
+    <div class="sub" style="margin:-2px 2px 10px">10 vạch = quỹ/tiến độ (xanh trong mức, đỏ vượt) · vạch viền = mốc thời gian đã qua hoặc mục tiêu · #hạng trong vùng · ▲▼ so tháng trước.</div>`
+    + dgDetail(ko, cn)
+    + (cn ? '' : dgRank()) + dgEventsBox(cn) + dgWatch(cn) + dgPareto(cn) + dgSPC(cn)
+    + (cn ? `<a class="lnk" href="#cn/${encodeURIComponent(cn)}">Xem chi tiết chi nhánh ${esc(cn)} (thợ, đơn hàng) ›</a>` : '');
+}
+
 /* ---------------- Thống kê sử dụng: mỗi lần mở app gửi 1 dòng về Google Sheet (Apps Script) */
 const LOG_URL = 'https://script.google.com/macros/s/AKfycbyBsGSKTNq_eDRyYIdwrEWndHXT8jyjv1TFPfsxOfozRKXhH6zkiMSJZ4P3NwV93ppB/exec';   // Google Apps Script nhận log
 function devId(){ let d = LS.get('did'); if (!d){ d = (Date.now().toString(36) + Math.random().toString(36).slice(2, 8)).toUpperCase(); LS.set('did', d); } return d; }
@@ -915,20 +1212,25 @@ function render(){
   if (S.vi >= S.data.bc.length) S.vi = 0;
   const r = route(); let body;
   if (r.v === 'cn') body = r.id ? viewCNDetail(r.id) : viewCN();
+  else if (r.v === 'dg') body = viewDG();
   else if (r.v === 'tho') body = r.id ? viewThoDetail(r.id) : viewTho();
   else if (r.v === 'td' || r.v === 'th') body = r.id ? (r.id.startsWith('u:') ? viewTDU(r.id.slice(2)) : viewTDCN(r.id)) : viewTD();
   else if (r.v === 'dh') body = r.id ? viewDHDetail(r.id) : viewDH();
   else body = viewTQ();
   const y = window.scrollY, keepQ = document.activeElement && document.activeElement.id === 'q';
   $('#app').innerHTML = shell(body);
-  document.querySelectorAll('.tdwrap').forEach(w => w.scrollLeft = w.scrollWidth);   // Theo dõi: luôn thấy ngày/tháng mới nhất
+  document.querySelectorAll('.tdwrap:not(.dg-w)').forEach(w => w.scrollLeft = w.scrollWidth);   // Theo dõi: luôn thấy ngày/tháng mới nhất
   if (keepQ){ const q = $('#q'); q.focus(); q.setSelectionRange(q.value.length, q.value.length); }
   else if (!r.id && render._last === location.hash) window.scrollTo(0, y); else window.scrollTo(0, 0);
   render._last = location.hash;
 }
 
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-socdg],[data-tdm],[data-tdk],[data-tdcn],[data-tdu],[data-saox],[data-saof],[data-saoct],[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],[data-share],#rf,#me,#lo'); if (!t) return;
+  const t = e.target.closest('[data-dgk],[data-dgs],[data-dgd],[data-dgt],[data-socdg],[data-tdm],[data-tdk],[data-tdcn],[data-tdu],[data-saox],[data-saof],[data-saoct],[data-vi],[data-go],[data-dh],[data-cn],[data-tho],[data-kpi],[data-mk],[data-back],[data-share],#rf,#me,#lo'); if (!t) return;
+  if (t.dataset.dgs !== undefined) { S.dgs = t.dataset.dgs; S.dgk = null; window.scrollTo(0, 0); return render(); }
+  if (t.dataset.dgk) { S.dgk = t.dataset.dgk; return render(); }
+  if (t.dataset.dgd) { S.dgd = t.dataset.dgd; return render(); }
+  if (t.dataset.dgt) { S.dgt = t.dataset.dgt; return render(); }
   if (t.dataset.socdg) return soCDGView(t.dataset.socdg);
   if (t.dataset.tdm) { S.tdm = t.dataset.tdm; LS.set('tdm', S.tdm); return render(); }
   if (t.dataset.tdk !== undefined) { S.tdk = +t.dataset.tdk; LS.set('tdk', S.tdk); return render(); }
@@ -951,7 +1253,7 @@ document.addEventListener('click', e => {
   if (t.dataset.back !== undefined) { history.length > 1 ? history.back() : (location.hash = route().v); }
 });
 document.addEventListener('input', e => { if (e.target.id === 'q') { S.q = e.target.value; render(); } });
-document.addEventListener('change', e => { if (e.target.id === 'tdw') { S.tdw = e.target.value; return render(); } if (e.target.id === 'st') { S.sortTho = e.target.value; LS.set('st', S.sortTho); render(); } });
+document.addEventListener('change', e => { if (e.target.id === 'dgs') { S.dgs = e.target.value; S.dgk = null; return render(); } if (e.target.id === 'tdw') { S.tdw = e.target.value; return render(); } if (e.target.id === 'st') { S.sortTho = e.target.value; LS.set('st', S.sortTho); render(); } });
 window.addEventListener('hashchange', render);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(true); });
 setInterval(() => { if (!document.hidden) refresh(true); }, 10 * 60 * 1000);
