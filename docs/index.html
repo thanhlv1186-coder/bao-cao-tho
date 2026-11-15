@@ -195,6 +195,8 @@ table.tdt{width:auto;min-width:100%;border-collapse:separate;border-spacing:0;ba
 .dg-ar{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:grid;place-items:center;font-size:12px;pointer-events:none}
 .dg-cc{margin:8px -12px 2px;padding:0 12px 4px}.dg-cc button{padding:6px 11px;font-size:12.5px}
 .dg-hint{font-size:11.5px;margin:0 0 2px}
+.ng-gi{font-size:12.5px;margin:3px 0 2px;padding:4px 8px;border-radius:8px;background:var(--card2);display:inline-block}
+.ng-gi.na{color:var(--dim)}.ng-d{padding:0 6px;border-radius:999px}.ng-d.n7{color:var(--bad);background:var(--badbg)}.ng-d.n30{color:#b45309;background:var(--ylbg)}.ng-d.nx{color:var(--mu);background:var(--nabg)}
 </style>
 </head>
 <body>
@@ -630,6 +632,13 @@ function viewThoDetail(ma){
     ${thoLoiCT(ma)}`;
 }
 
+/* 16/11/2026: ngày giao đơn gốc + số ngày từ lúc giao đến khi phát sinh lỗi */
+function ngGiao(ng, sn){
+  ng = String(ng || '').trim(); const n = sn === '' || sn == null || isNaN(+sn) ? null : Math.round(+sn);
+  if (!ng) return '<div class="ng-gi na">🚚 Chưa xác định được ngày giao đơn gốc</div>';
+  const cls = n == null ? '' : n <= 7 ? 'n7' : n <= 30 ? 'n30' : 'nx';
+  return `<div class="ng-gi">🚚 Giao <b class="num">${esc(ng.slice(0, 10))}</b>${ng.length > 10 ? ' <span class="num">' + esc(ng.slice(11, 16)) + '</span>' : ''}${n != null ? ` · lỗi sau <b class="ng-d ${cls} num">${n} ngày</b>` : ''}</div>`;
+}
 /* ---------- CHI TIẾT ĐƠN LỖI TAY NGHỀ (01/11/2026) — TQ_LOI_CT: 1065 / 1063 / ĐH 1025 */
 function thoLoiCT(ma){
   const T = S.data.loi_ct; if (!T || !T.cols) return '';
@@ -639,7 +648,8 @@ function thoLoiCT(ma){
   return `<h3>Đơn lỗi tay nghề (${rows.length})</h3>
     <div class="card">${rows.map(r => `<div class="row" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num" style="word-break:break-all">${esc(r[ix['SO']] || r[ix['Mã phiếu / vận đơn']] || '–')}</b><span class="chip c-bad">${esc(src[r[ix['Nguồn']]] || r[ix['Nguồn']])}</span></div>
       <div class="sub">${esc(r[ix['Sản phẩm']] || '')}${r[ix['Nhóm hàng']] ? ' · ' + esc(r[ix['Nhóm hàng']]) : ''}</div>
-      <div class="sub num">${r[ix['Ngày']] ? esc(r[ix['Ngày']]) + ' · ' : ''}Phiếu/VĐ ${esc(r[ix['Mã phiếu / vận đơn']] || '–')}${r[ix['Kết quả']] ? ' · ' + esc(String(r[ix['Kết quả']]).replace(/^\s*\|\s*|\s*\|\s*$/g, '')) : ''}</div></div>`).join('') || '<div class="empty">Không có đơn lỗi tay nghề 👏</div>'}</div>`;
+      ${ix['Ngày giao'] !== undefined ? ngGiao(r[ix['Ngày giao']], r[ix['Số ngày sau giao']]) : ''}
+      <div class="sub num">${r[ix['Ngày']] ? '⚠️ Ghi nhận lỗi ' + esc(r[ix['Ngày']]) + ' · ' : ''}Phiếu/VĐ ${esc(r[ix['Mã phiếu / vận đơn']] || '–')}${r[ix['Kết quả']] ? ' · ' + esc(String(r[ix['Kết quả']]).replace(/^\s*\|\s*|\s*\|\s*$/g, '')) : ''}</div></div>`).join('') || '<div class="empty">Không có đơn lỗi tay nghề 👏</div>'}</div>`;
 }
 
 /* ---------- CHI TIẾT ĐÁNH GIÁ SAO (bấm "Số ĐH đánh giá" trong trang thợ) — CRM diem-hai-long-ThoDMX */
@@ -1066,7 +1076,8 @@ function dgItem(t, e){
     return `<div class="row dg-ev" data-tho="${esc(g('Mã user'))}"><div class="n"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num" style="white-space:normal;word-break:break-all">${esc(g('SO') || g('Mã phiếu / vận đơn'))}</b><span class="chip c-bad">${esc(src[g('Nguồn')] || g('Nguồn'))}</span></div>
       <div class="sub"><b style="color:var(--tx)">${esc(g('Tên user'))}</b> · ${esc(g('Mã user'))} · ${esc(g('Chi nhánh'))}</div>
       <div class="sub">${esc(g('Sản phẩm') || '')}${g('Nhóm hàng') ? ' · ' + esc(g('Nhóm hàng')) : ''}</div>
-      <div class="sub num">${esc(g('Ngày'))} · Phiếu/VĐ ${esc(g('Mã phiếu / vận đơn'))}${g('Kết quả') ? ' · ' + esc(String(g('Kết quả')).replace(/^\s*\|\s*|\s*\|\s*$/g, '')) : ''}</div></div></div>`; }
+      ${x['Ngày giao'] !== undefined ? ngGiao(g('Ngày giao'), g('Số ngày sau giao')) : ''}
+      <div class="sub num">⚠️ Ghi nhận lỗi ${esc(g('Ngày'))} · Phiếu/VĐ ${esc(g('Mã phiếu / vận đơn'))}${g('Kết quả') ? ' · ' + esc(String(g('Kết quả')).replace(/^\s*\|\s*|\s*\|\s*$/g, '')) : ''}</div></div></div>`; }
   if (t === 'dh'){ const nv = String(g('Nhân viên giao') || ''), ma = dgUid(nv), ph = Math.round(g('Số phút trễ') || 0);
     return `<div class="row dg-ev" ${ma ? `data-tho="${esc(ma)}"` : ''}><div class="n"><div style="display:flex;justify-content:space-between;gap:8px"><b class="num" style="white-space:normal;word-break:break-all">${esc(g('Mã đơn hàng vật lý'))}</b><span class="chip c-bad num">${ph > 0 ? 'trễ ' + dgN(ph) + '′' : esc(g('Kiểu đổi giờ'))}</span></div>
       <div class="sub"><b style="color:var(--tx)">${esc(nv.replace(/^\s*\d+\s*-\s*/, ''))}</b>${ma ? ' · ' + esc(ma) : ''} · ${esc(dgCN(g('Mã kho ĐP')))}</div>
