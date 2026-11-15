@@ -197,6 +197,7 @@ table.tdt{width:auto;min-width:100%;border-collapse:separate;border-spacing:0;ba
 .dg-hint{font-size:11.5px;margin:0 0 2px}
 .ng-gi{font-size:12.5px;margin:3px 0 2px;padding:4px 8px;border-radius:8px;background:var(--card2);display:inline-block}
 .ng-gi.na{color:var(--dim)}.ng-d{padding:0 6px;border-radius:999px}.ng-d.n7{color:var(--bad);background:var(--badbg)}.ng-d.n30{color:#b45309;background:var(--ylbg)}.ng-d.nx{color:var(--mu);background:var(--nabg)}
+.dg-cm{font-weight:800}.dg-dh{font-size:12px;font-weight:700;color:var(--hd);background:var(--acbg);border-radius:8px;padding:4px 10px;margin:10px 0 2px}.dg-dh:first-child{margin-top:0}
 </style>
 </head>
 <body>
@@ -1095,16 +1096,23 @@ function dgDays(){ const f = dgTD(DG().month); if (!f) return [];
   for (let i = n; i >= 1 && out.length < 7; i--) out.push(y + '-' + String(m).padStart(2, '0') + '-' + String(i).padStart(2, '0'));
   return out; }
 function dgEventsBox(cn){
+  /* 16/11/2026: thêm mục "Cả tháng" đứng trước 7 ngày gần nhất */
   const days = dgDays(); if (!days.length) return '';
-  const day = days.includes(S.dgd) ? S.dgd : days[0], E = dgEvents(cn), cnt = t => E[t].filter(e => e.d === day).length;
-  const t = S.dgt || 'tn', list = E[t].filter(e => e.d === day);
+  const mon = DG().month, mlab = 'Tháng ' + (+mon.slice(5));
+  const day = S.dgd === 'all' || days.includes(S.dgd) ? S.dgd : days[0], all = day === 'all', E = dgEvents(cn);
+  const pick = t => (all ? E[t].filter(e => !e.d || e.d.slice(0, 7) === mon) : E[t].filter(e => e.d === day));
+  const t = S.dgt || 'tn', list = pick(t).slice().sort((a, b) => String(b.d || '').localeCompare(String(a.d || '')));
   const now = new Date(), today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
   const lab = d => { const [y, m, dd] = d.split('-'); return (d === today ? 'Hôm nay ' : '') + (+dd) + '/' + (+m); };
   const ttl = {tn: '🛠️ Tay nghề', dh: '⏰ Trễ hẹn', tp: '💬 Than phiền'};
-  return `<h3>Sự cố phát sinh trong ngày</h3>
-    <div class="chips">${days.map(d => `<button data-dgd="${d}" class="${d === day ? 'on' : ''}">${lab(d)}</button>`).join('')}</div>
-    <div class="seg dg-seg">${['tn', 'dh', 'tp'].map(k => `<button data-dgt="${k}" class="${k === t ? 'on' : ''}">${ttl[k]} <b class="num">${cnt(k)}</b></button>`).join('')}</div>
-    <div class="card">${list.map(e => dgItem(t, e)).join('') || `<div class="empty">Không có ${ttl[t].slice(3).toLowerCase()} phát sinh ngày ${lab(day).replace('Hôm nay ', '')} 👏</div>`}</div>
+  /* cả tháng: chia nhóm theo ngày để dễ đọc */
+  let body = '';
+  if (all){ let cur = null; list.forEach(e => { if (e.d !== cur){ cur = e.d; body += `<div class="dg-dh">${cur ? lab(cur) : 'Không rõ ngày'} · ${list.filter(x => x.d === cur).length}</div>`; } body += dgItem(t, e); }); }
+  else body = list.map(e => dgItem(t, e)).join('');
+  return `<h3>Sự cố phát sinh ${all ? 'trong ' + mlab.toLowerCase() : 'trong ngày'}</h3>
+    <div class="chips"><button data-dgd="all" class="dg-cm ${all ? 'on' : ''}">📅 ${mlab}</button>${days.map(d => `<button data-dgd="${d}" class="${d === day ? 'on' : ''}">${lab(d)}</button>`).join('')}</div>
+    <div class="seg dg-seg">${['tn', 'dh', 'tp'].map(k => `<button data-dgt="${k}" class="${k === t ? 'on' : ''}">${ttl[k]} <b class="num">${pick(k).length}</b></button>`).join('')}</div>
+    <div class="card">${body || `<div class="empty">Không có ${ttl[t].slice(3).toLowerCase()} phát sinh ${all ? 'trong ' + mlab.toLowerCase() : 'ngày ' + lab(day).replace('Hôm nay ', '')} 👏</div>`}</div>
     <div class="sub" style="margin:-4px 2px 10px">Ngày: tay nghề = ngày ghi nhận phiếu/đơn BH · trễ hẹn = ngày hoàn tất đơn · than phiền = ngày chốt phiếu. Than phiền chỉ có số theo lượt cập nhật CSKH.</div>`;
 }
 
