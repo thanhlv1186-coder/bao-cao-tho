@@ -188,6 +188,13 @@ table.tdt{width:auto;min-width:100%;border-collapse:separate;border-spacing:0;ba
 .dg-vd{font-size:13px;font-weight:600;margin:6px 0;padding:7px 9px;border-radius:8px;background:var(--card2)}
 .dg-spw{margin:4px 0 6px}.dg-spw .dg-sp{width:100%;height:46px}
 .dg-kv div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:13px}.dg-kv div span{color:var(--mu)}.dg-kv b{text-align:right}
+.dg-pick{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px 6px;margin-bottom:10px;box-shadow:0 1px 3px rgba(30,64,120,.08)}
+.dg-pl{font-size:13px;font-weight:700;color:var(--hd);margin-bottom:6px}.dg-pl span{font-weight:500;color:var(--mu)}
+.dg-sw{position:relative;display:block}
+.dg-sw select{width:100%;appearance:none;-webkit-appearance:none;padding:11px 44px 11px 12px;border-radius:10px;border:2px solid var(--ac);background:var(--acbg);color:var(--hd);font:inherit;font-weight:700;font-size:15px}
+.dg-ar{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:8px;background:var(--ac);color:#fff;display:grid;place-items:center;font-size:12px;pointer-events:none}
+.dg-cc{margin:8px -12px 2px;padding:0 12px 4px}.dg-cc button{padding:6px 11px;font-size:12.5px}
+.dg-hint{font-size:11.5px;margin:0 0 2px}
 </style>
 </head>
 <body>
@@ -1131,7 +1138,10 @@ function dgSPC(cn){
 function viewDG(){
   const dg = DG(); if (!dg || !dgBC(dg)) return '<div class="empty">Chưa có dữ liệu đánh giá – có sau lượt đồng bộ tối nay</div>';
   const b = dgBC(dg), cn = b.cn.some(c => c.cn === S.dgs) ? S.dgs : '';
-  const sel = `<div class="sel"><select id="dgs" style="flex:1"><option value="">Tổng ${esc(BC().vung)}</option>${b.cn.map(c => `<option value="${esc(c.cn)}" ${c.cn === cn ? 'selected' : ''}>Chi nhánh ${esc(c.cn)}</option>`).join('')}</select></div>`;
+  const sel = `<div class="dg-pick"><div class="dg-pl">📍 Chọn phạm vi đánh giá <span>· bấm để đổi</span></div>
+    <label class="dg-sw"><select id="dgs"><option value="">🏢 Tổng ${esc(BC().vung)}</option>${b.cn.map(c => `<option value="${esc(c.cn)}" ${c.cn === cn ? 'selected' : ''}>🏠 Chi nhánh ${esc(c.cn)}</option>`).join('')}</select><span class="dg-ar">▼</span></label>
+    <div class="chips dg-cc"><button data-dgs="" class="${cn ? '' : 'on'}">Tổng vùng</button>${b.cn.map(c => `<button data-dgs="${esc(c.cn)}" class="${c.cn === cn ? 'on' : ''}">${esc(c.cn)}</button>`).join('')}</div>
+    <div class="sub dg-hint">👉 Vuốt ngang để xem hết chi nhánh</div></div>`;
   if (!DGK.some(o => o.k === S.dgk)){ const x = dgScope(dg, cn), bad = DGK.find(o => x[o.k] && x[o.k].dg === 'Chưa đạt' && !(o.k === 'bh' && !x[o.k].tt)); S.dgk = bad ? bad.k : 'dh'; }
   const ko = DGK.find(o => o.k === S.dgk);
   return sel + dgInsight(cn) + `<h3>Chỉ tiêu tháng · bấm ô để xem phân tích</h3><div class="grid2 dg-g2">${DGK.map(o => dgMini(o, cn)).join('')}</div>
